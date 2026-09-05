@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { hero, navLinks } from "@/lib/site";
@@ -130,54 +130,135 @@ export function Hero() {
 }
 
 /**
- * Three rotated glass panes stacked behind a slowly orbiting core.
- * Replaces the illustration slot without pulling in an image.
+ * The hero centrepiece: glass panes sitting on separate Z planes inside a real
+ * 3D scene, so the assembly has actual parallax rather than a painted-on
+ * illusion. It drifts on its own and leans toward the cursor.
+ *
+ * Nothing in this subtree may use `overflow: hidden` — that forces
+ * `transform-style: flat` and collapses every layer onto one plane.
  */
 function GlassStack() {
+  const sceneRef = useRef(null);
+  const frame = useRef(0);
+  const interactive = useRef(true);
+
+  useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const sync = () => {
+      interactive.current = !reduce.matches && fine.matches;
+    };
+
+    sync();
+    reduce.addEventListener("change", sync);
+    fine.addEventListener("change", sync);
+
+    // The scene leans toward the pointer anywhere on the hero, not just when
+    // the cursor is over the panes themselves.
+    const handleMove = (event) => {
+      if (!interactive.current) return;
+      cancelAnimationFrame(frame.current);
+      frame.current = requestAnimationFrame(() => {
+        const node = sceneRef.current;
+        if (!node) return;
+        const x = event.clientX / window.innerWidth - 0.5;
+        const y = event.clientY / window.innerHeight - 0.5;
+        node.style.setProperty("--scene-x", `${-y * 18}deg`);
+        node.style.setProperty("--scene-y", `${x * 22}deg`);
+      });
+    };
+
+    window.addEventListener("pointermove", handleMove);
+    return () => {
+      window.removeEventListener("pointermove", handleMove);
+      reduce.removeEventListener("change", sync);
+      fine.removeEventListener("change", sync);
+      cancelAnimationFrame(frame.current);
+    };
+  }, []);
+
+  // z: how far each pane floats toward the viewer.
   const panes = [
-    { rotate: -14, scale: 0.86, opacity: 0.25 },
-    { rotate: -7, scale: 0.93, opacity: 0.4 },
-    { rotate: 0, scale: 1, opacity: 1 },
+    { rotate: -16, scale: 0.82, opacity: 0.22, z: -120 },
+    { rotate: -8, scale: 0.91, opacity: 0.38, z: -60 },
+    { rotate: 0, scale: 1, opacity: 1, z: 0 },
   ];
 
   return (
-    <div className="relative h-72 w-72 sm:h-80 sm:w-80 xl:h-96 xl:w-96">
-      {panes.map((pane) => (
+    <div
+      className="relative h-72 w-72 sm:h-80 sm:w-80 xl:h-96 xl:w-96"
+      style={{ perspective: "1200px" }}
+    >
+      {/* Motion owns `transform` on any element it animates, so the float, the
+          cursor lean and each layer's translateZ each get their own element
+          rather than fighting over one transform property. */}
+      <motion.div
+        animate={{ y: [-8, 8, -8] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        className="h-full w-full"
+        style={{ transformStyle: "preserve-3d" }}
+      >
         <div
-          key={pane.rotate}
-          aria-hidden={pane.rotate !== 0}
-          className="absolute inset-0 rounded-[2rem] border border-line-strong bg-white/[0.015] backdrop-blur-[2px]"
+          ref={sceneRef}
+          className="relative h-full w-full transition-transform duration-500 ease-out"
           style={{
-            transform: `rotate(${pane.rotate}deg) scale(${pane.scale})`,
-            opacity: pane.opacity,
+            transformStyle: "preserve-3d",
+            transform:
+              "rotateX(var(--scene-x, 0deg)) rotateY(var(--scene-y, 0deg))",
           }}
-        />
-      ))}
-
-      {/* Core: a soft gradient bloom with the brand mark riding on top. */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <motion.div
-          animate={{ scale: [1, 1.08, 1], opacity: [0.55, 0.85, 0.55] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute h-44 w-44 rounded-full bg-[radial-gradient(circle,var(--color-brand),transparent_70%)] blur-2xl sm:h-52 sm:w-52"
-        />
-        <motion.div
-          animate={{ y: [-10, 10, -10] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="relative"
         >
-          <Logo className="h-24 w-24 drop-shadow-[0_0_28px_var(--color-brand)] sm:h-28 sm:w-28" />
-        </motion.div>
+          {panes.map((pane) => (
+            <div
+              key={pane.rotate}
+              aria-hidden="true"
+              className="absolute inset-0 rounded-[2rem] border border-line-strong bg-white/[0.02]"
+              style={{
+                transform: `translateZ(${pane.z}px) rotate(${pane.rotate}deg) scale(${pane.scale})`,
+                opacity: pane.opacity,
+              }}
+            />
+          ))}
 
-        {/* Orbit ring. */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
-          className="absolute h-56 w-56 rounded-full border border-dashed border-line-strong sm:h-64 sm:w-64"
-        >
-          <span className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-accent shadow-[0_0_12px_var(--color-accent)]" />
-        </motion.div>
-      </div>
+          {/* Bloom sits behind the mark. */}
+          <div
+            aria-hidden="true"
+            className="absolute left-1/2 top-1/2 h-44 w-44 sm:h-52 sm:w-52"
+            style={{ transform: "translate3d(-50%,-50%,-30px)" }}
+          >
+            <motion.div
+              animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.85, 0.5] }}
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+              className="h-full w-full rounded-full bg-[radial-gradient(circle,var(--color-brand),transparent_70%)] blur-2xl"
+            />
+          </div>
+
+          {/* Dashed orbit, laid flat into the scene like a ring around a planet. */}
+          <div
+            aria-hidden="true"
+            className="absolute left-1/2 top-1/2 h-60 w-60 sm:h-72 sm:w-72"
+            style={{
+              transform: "translate3d(-50%,-50%,20px) rotateX(68deg)",
+              transformStyle: "preserve-3d",
+            }}
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+              className="h-full w-full rounded-full border border-dashed border-line-strong"
+            >
+              <span className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-accent shadow-[0_0_12px_var(--color-accent)]" />
+            </motion.div>
+          </div>
+
+          {/* The mark floats furthest forward, so it parallaxes most. */}
+          <div
+            className="absolute left-1/2 top-1/2"
+            style={{ transform: "translate3d(-50%,-50%,90px)" }}
+          >
+            <Logo className="h-24 w-24 drop-shadow-[0_0_28px_var(--color-brand)] sm:h-28 sm:w-28" />
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }

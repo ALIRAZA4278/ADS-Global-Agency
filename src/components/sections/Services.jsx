@@ -4,6 +4,7 @@ import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
+import { Tilt3D } from "@/components/ui/Tilt3D";
 
 export function Services() {
   return (
@@ -25,7 +26,8 @@ export function Services() {
               delay={(index % 4) * 0.08}
               className="h-full"
             >
-              <SpotlightCard as="article" className="flex h-full flex-col p-7">
+              <Tilt3D innerClassName="rounded-2xl">
+                <SpotlightCard as="article" className="flex h-full flex-col p-7">
                 <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-line bg-ink text-brand-soft transition-all duration-300 group-hover/spot:border-brand/40 group-hover/spot:text-accent">
                   <Icon name={service.icon} className="h-5.5 w-5.5" />
                 </span>
@@ -49,7 +51,8 @@ export function Services() {
                     </li>
                   ))}
                 </ul>
-              </SpotlightCard>
+                </SpotlightCard>
+              </Tilt3D>
             </Reveal>
           ))}
         </div>

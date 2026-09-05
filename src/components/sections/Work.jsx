@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Tilt3D } from "@/components/ui/Tilt3D";
 
 export function Work() {
   const [filter, setFilter] = useState("All");
@@ -80,8 +81,9 @@ function ProjectCard({ project }) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className="group relative overflow-hidden rounded-3xl border border-line bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-surface))] transition-colors duration-300 hover:border-line-strong"
     >
+      <Tilt3D innerClassName="rounded-3xl" max={7}>
+        <div className="group relative h-full overflow-hidden rounded-3xl border border-line bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-surface))] transition-colors duration-300 hover:border-line-strong">
       {/* Abstract project visual — a mock browser window tinted per project. */}
       <div className="relative aspect-16/10 overflow-hidden border-b border-line">
         <div
@@ -146,6 +148,8 @@ function ProjectCard({ project }) {
           ))}
         </ul>
       </div>
+        </div>
+      </Tilt3D>
     </motion.article>
   );
 }
