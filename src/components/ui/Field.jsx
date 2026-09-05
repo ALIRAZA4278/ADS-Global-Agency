@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /** Shared input skin for the contact form, the enquiry modal and careers. */
@@ -32,18 +33,35 @@ export function TextField({ error, className, ...props }) {
   );
 }
 
+/**
+ * `appearance-none` strips the platform arrow along with the rest of the
+ * native chrome, which leaves a select looking exactly like a text input —
+ * so the chevron is drawn back in manually.
+ */
 export function SelectField({ error, className, options, ...props }) {
   return (
-    <select
-      className={cn(fieldClass, "appearance-none", error && "border-red-500/60", className)}
-      {...props}
-    >
-      {options.map((option) => (
-        <option key={option} value={option} className="bg-surface-2">
-          {option}
-        </option>
-      ))}
-    </select>
+    <div className="relative">
+      <select
+        className={cn(
+          fieldClass,
+          "cursor-pointer appearance-none pr-11",
+          error && "border-red-500/60",
+          className
+        )}
+        {...props}
+      >
+        {options.map((option) => (
+          <option key={option} value={option} className="bg-surface-2 text-body">
+            {option}
+          </option>
+        ))}
+      </select>
+
+      <ChevronDown
+        aria-hidden="true"
+        className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+      />
+    </div>
   );
 }
 
