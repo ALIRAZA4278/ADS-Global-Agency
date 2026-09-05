@@ -153,9 +153,12 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 bg-ink/95 backdrop-blur-xl lg:hidden"
+            className="fixed inset-0 z-40 overflow-y-auto bg-ink/95 backdrop-blur-xl lg:hidden"
           >
-            <div className="shell flex h-full flex-col justify-center gap-2 pb-20">
+            {/* min-h-full + justify-center centres the list when it fits and
+                lets it scroll when it doesn't; pt-24 keeps the first link out
+                from under the header, which sits above this overlay. */}
+            <div className="shell flex min-h-full flex-col justify-center gap-1 pt-24 pb-14">
               {navLinks.map((link, index) => (
                 <motion.a
                   key={link.href}
@@ -164,16 +167,19 @@ export function Navbar() {
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.06 * index + 0.08, duration: 0.4 }}
-                  className="border-b border-line py-5 text-2xl font-medium text-body transition-colors hover:text-accent"
+                  className="flex items-center justify-between border-b border-line py-4 text-2xl font-medium text-body transition-colors hover:text-accent"
                 >
                   {link.label}
+                  <span className="font-mono text-xs tabular-nums text-faint">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
                 </motion.a>
               ))}
               <motion.div
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.06 * navLinks.length + 0.08, duration: 0.4 }}
-                className="pt-8"
+                className="pt-7"
               >
                 <Button
                   size="lg"
