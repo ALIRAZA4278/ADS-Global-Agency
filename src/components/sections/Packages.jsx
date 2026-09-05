@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Tilt3D } from "@/components/ui/Tilt3D";
 
 export function Packages() {
   const [filter, setFilter] = useState("All");
@@ -98,48 +99,57 @@ function PlanCard({ plan }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -12 }}
       transition={{ duration: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className={cn(
-        "group relative flex flex-col rounded-3xl border p-7 transition-all duration-300",
-        plan.featured
-          ? "border-brand/40 bg-[linear-gradient(160deg,color-mix(in_oklab,var(--color-brand)_10%,var(--color-surface-2)),var(--color-surface))] shadow-[0_24px_70px_-40px_var(--color-brand)]"
-          : "border-line bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-surface))] hover:border-line-strong"
-      )}
+      className="h-full"
     >
-      {plan.featured && (
-        <span className="absolute -top-3 left-7 inline-flex items-center gap-1.5 rounded-full bg-[linear-gradient(100deg,var(--color-brand),var(--color-accent))] px-3 py-1 text-[0.7rem] font-medium text-white">
-          <Sparkles className="h-3 w-3" />
-          Most popular
-        </span>
-      )}
+      <Tilt3D innerClassName="rounded-3xl" max={6}>
+        <div
+          className={cn(
+            "group relative flex h-full flex-col rounded-3xl border p-7 transition-all duration-300",
+            plan.featured
+              ? "border-brand/40 bg-[linear-gradient(160deg,color-mix(in_oklab,var(--color-brand)_10%,var(--color-surface-2)),var(--color-surface))] shadow-[0_24px_70px_-40px_var(--color-brand)]"
+              : "border-line bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-surface))] hover:border-line-strong"
+          )}
+        >
+          {plan.featured && (
+            <span className="absolute -top-3 left-7 inline-flex items-center gap-1.5 rounded-full bg-[linear-gradient(100deg,var(--color-brand),var(--color-accent))] px-3 py-1 text-[0.7rem] font-medium text-white">
+              <Sparkles className="h-3 w-3" />
+              Most popular
+            </span>
+          )}
 
-      <h3 className="text-base font-semibold tracking-tight">{plan.name}</h3>
-      <p className="mt-1 text-sm text-muted">{plan.blurb}</p>
+          <h3 className="text-base font-semibold tracking-tight">{plan.name}</h3>
+          <p className="mt-1 text-sm text-muted">{plan.blurb}</p>
 
-      <div className="mt-6 flex items-baseline gap-1.5">
-        <span className="text-4xl font-semibold tracking-tight text-white">
-          ${plan.price.toLocaleString("en-US")}
-        </span>
-        <span className="text-sm text-faint">{plan.unit}</span>
-      </div>
+          <div className="mt-6 flex items-baseline gap-1.5">
+            <span className="text-4xl font-semibold tracking-tight text-white">
+              ${plan.price.toLocaleString("en-US")}
+            </span>
+            <span className="text-sm text-faint">{plan.unit}</span>
+          </div>
 
-      <ul className="mt-6 flex flex-1 flex-col gap-3 border-t border-line pt-6">
-        {plan.features.map((feature) => (
-          <li key={feature} className="flex items-start gap-2.5 text-sm text-body/80">
-            <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-            {feature}
-          </li>
-        ))}
-      </ul>
+          <ul className="mt-6 flex flex-1 flex-col gap-3 border-t border-line pt-6">
+            {plan.features.map((feature) => (
+              <li
+                key={feature}
+                className="flex items-start gap-2.5 text-sm text-body/80"
+              >
+                <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                {feature}
+              </li>
+            ))}
+          </ul>
 
-      <Button
-        href="#contact"
-        variant={plan.featured ? "primary" : "outline"}
-        size="sm"
-        magnetic={false}
-        className="mt-7 w-full"
-      >
-        Get started
-      </Button>
+          <Button
+            href="#contact"
+            variant={plan.featured ? "primary" : "outline"}
+            size="sm"
+            magnetic={false}
+            className="mt-7 w-full"
+          >
+            Get started
+          </Button>
+        </div>
+      </Tilt3D>
     </motion.article>
   );
 }

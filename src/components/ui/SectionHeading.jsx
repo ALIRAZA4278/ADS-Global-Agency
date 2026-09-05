@@ -38,7 +38,7 @@ export function SectionHeading({
       <Reveal delay={0.06}>
         <h2
           className={cn(
-            "text-balance text-3xl font-semibold leading-[1.15] tracking-tight sm:text-4xl md:text-[2.75rem]",
+            "text-balance text-3xl font-bold leading-[1.12] tracking-tight sm:text-4xl md:text-5xl lg:text-[3.25rem]",
             centered ? "max-w-3xl" : "max-w-2xl"
           )}
         >
