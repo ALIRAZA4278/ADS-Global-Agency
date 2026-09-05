@@ -204,14 +204,18 @@ export const services = {
 };
 
 export const work = {
-  eyebrow: "Our creative work",
-  title: "Projects that define the standard",
+  eyebrow: "Selected work",
+  title: "Recent work,",
+  titleHighlight: "and what it moved",
   description:
-    "A selection of recent builds across healthcare, retail, and hiring.",
+    "Builds across healthcare, retail and hiring — with the number each one was measured against.",
   categories: ["All", "Web Development", "E-Commerce"],
   projects: [
     {
       title: "Health Mate",
+      featured: true,
+      metric: "–64%",
+      metricLabel: "time to first insight",
       category: "Web Development",
       description:
         "AI-powered health report analyzer that turns dense medical PDFs into plain-language insights and next steps.",
@@ -221,6 +225,9 @@ export const work = {
     },
     {
       title: "Halwaiii",
+      featured: false,
+      metric: "3.4%",
+      metricLabel: "checkout conversion",
       category: "E-Commerce",
       description:
         "Premium Pakistani sweets storefront that pairs heritage craftsmanship with a modern shopping experience.",
@@ -230,6 +237,9 @@ export const work = {
     },
     {
       title: "GracePoint Medical",
+      featured: false,
+      metric: "3×",
+      metricLabel: "placements per month",
       category: "Web Development",
       description:
         "Healthcare staffing platform connecting medical professionals with facilities across three continents.",
@@ -239,6 +249,9 @@ export const work = {
     },
     {
       title: "Aurea Collective",
+      featured: false,
+      metric: "+180%",
+      metricLabel: "completed bookings",
       category: "Web Development",
       description:
         "Mobile beauty services platform specialising in accessible, sensory-friendly appointments and booking.",
@@ -248,6 +261,9 @@ export const work = {
     },
     {
       title: "Quality Care Living",
+      featured: false,
+      metric: "+41%",
+      metricLabel: "enquiry rate",
       category: "Web Development",
       description:
         "Senior care home website with warm aesthetics, virtual tours and a full service showcase.",
@@ -257,6 +273,9 @@ export const work = {
     },
     {
       title: "Workoura",
+      featured: true,
+      metric: "18k",
+      metricLabel: "active listings",
       category: "Web Development",
       description:
         "Modern job board connecting candidates with verified employers, built for scale from day one.",
