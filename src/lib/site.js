@@ -139,9 +139,10 @@ export const about = {
 
 export const services = {
   eyebrow: "What we offer",
-  title: "Services built to compound",
+  title: "Everything you need,",
+  titleHighlight: "under one roof",
   description:
-    "Comprehensive digital solutions that help your business win in a crowded market — pick one, or let them work together.",
+    "Design, engineering and growth in the same room — take one service on its own, or let them compound on each other.",
   items: [
     {
       icon: "code",

@@ -12,8 +12,8 @@ export function Services() {
       <div className="shell">
         <SectionHeading
           eyebrow={services.eyebrow}
-          title="Services built to"
-          highlight="compound"
+          title={services.title}
+          highlight={services.titleHighlight}
           description={services.description}
         />
 
@@ -31,15 +31,24 @@ export function Services() {
             >
               <Tilt3D innerClassName="rounded-2xl" max={6}>
                 <SpotlightCard as="article" className="h-full p-7 sm:p-8">
-                  <div className="flex gap-6">
-                    <div className="flex shrink-0 flex-col items-center gap-4">
-                      <span className="flex h-14 w-14 items-center justify-center rounded-xl border border-line bg-ink text-brand-soft transition-all duration-300 group-hover/spot:border-brand/40 group-hover/spot:text-accent">
-                        <Icon name={service.icon} className="h-6 w-6" />
-                      </span>
-                      <span className="font-mono text-xs tabular-nums text-faint">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                    </div>
+                  {/* Oversized index, echoing the process deck. */}
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -top-5 right-3 select-none text-[6.5rem] font-bold leading-none tracking-tighter text-white/[0.028] transition-colors duration-500 group-hover/spot:text-white/[0.055]"
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+
+                  {/* Accent rail that grows down the left edge on hover. */}
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute left-0 top-8 h-16 w-0.5 origin-top scale-y-0 rounded-full bg-[linear-gradient(180deg,var(--color-brand),var(--color-accent))] transition-transform duration-500 group-hover/spot:scale-y-100"
+                  />
+
+                  <div className="relative flex gap-6">
+                    <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-line bg-ink text-brand-soft transition-all duration-300 group-hover/spot:border-brand/40 group-hover/spot:text-accent">
+                      <Icon name={service.icon} className="h-6 w-6" />
+                    </span>
 
                     <div className="min-w-0 flex-1">
                       <h3 className="flex items-start justify-between gap-3 text-xl font-semibold tracking-tight">
@@ -55,7 +64,7 @@ export function Services() {
                         {service.tags.map((tag) => (
                           <li
                             key={tag}
-                            className="rounded-full border border-line bg-white/[0.03] px-2.5 py-1 text-[0.7rem] text-faint"
+                            className="rounded-full border border-line bg-white/[0.03] px-2.5 py-1 text-[0.7rem] text-faint transition-colors duration-300 group-hover/spot:border-line-strong group-hover/spot:text-muted"
                           >
                             {tag}
                           </li>
