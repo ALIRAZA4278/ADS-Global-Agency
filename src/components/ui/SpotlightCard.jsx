@@ -47,7 +47,7 @@ export function SpotlightCard({ children, className, as: Tag = "div", ...props }
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,var(--color-brand-soft),transparent)] opacity-0 transition-opacity duration-500 group-hover/spot:opacity-70"
       />
-      <div className="relative">{children}</div>
+      <div className="relative h-full">{children}</div>
     </Tag>
   );
 }

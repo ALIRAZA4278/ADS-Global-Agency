@@ -1,4 +1,5 @@
 import {
+  Blocks,
   Braces,
   Clock,
   Code2,
@@ -13,12 +14,16 @@ import {
   Rocket,
   Search,
   Send,
+  Smartphone,
+  Sparkles,
   Share2,
   ShieldCheck,
   ShoppingCart,
   Target,
   TrendingUp,
+  Users,
   Video,
+  Workflow,
 } from "lucide-react";
 
 /**
@@ -26,6 +31,7 @@ import {
  * free of JSX. This map is the only place those names are resolved.
  */
 const registry = {
+  blocks: Blocks,
   braces: Braces,
   cart: ShoppingCart,
   clock: Clock,
@@ -41,11 +47,15 @@ const registry = {
   rocket: Rocket,
   search: Search,
   send: Send,
+  smartphone: Smartphone,
+  sparkles: Sparkles,
   share: Share2,
   shield: ShieldCheck,
   target: Target,
   trendingUp: TrendingUp,
+  users: Users,
   video: Video,
+  workflow: Workflow,
 };
 
 export function Icon({ name, className, ...props }) {

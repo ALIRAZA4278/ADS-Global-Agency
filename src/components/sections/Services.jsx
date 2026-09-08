@@ -45,12 +45,12 @@ export function Services() {
                     className="pointer-events-none absolute left-0 top-8 h-16 w-0.5 origin-top scale-y-0 rounded-full bg-[linear-gradient(180deg,var(--color-brand),var(--color-accent))] transition-transform duration-500 group-hover/spot:scale-y-100"
                   />
 
-                  <div className="relative flex gap-6">
+                  <div className="relative flex h-full gap-6">
                     <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-line bg-ink text-brand-soft transition-all duration-300 group-hover/spot:border-brand/40 group-hover/spot:text-accent">
                       <Icon name={service.icon} className="h-6 w-6" />
                     </span>
 
-                    <div className="min-w-0 flex-1">
+                    <div className="flex min-w-0 flex-1 flex-col">
                       <h3 className="flex items-start justify-between gap-3 text-xl font-semibold tracking-tight">
                         {service.title}
                         <ArrowUpRight className="h-4.5 w-4.5 shrink-0 translate-y-1 text-faint opacity-0 transition-all duration-300 group-hover/spot:translate-y-0 group-hover/spot:text-accent group-hover/spot:opacity-100" />
@@ -60,13 +60,16 @@ export function Services() {
                         {service.description}
                       </p>
 
-                      <ul className="mt-5 flex flex-wrap gap-1.5 border-t border-line pt-5">
-                        {service.tags.map((tag) => (
+                      {/* mt-auto pins the capability list to the bottom, so
+                          cards in a row line up even when their descriptions
+                          run to different lengths. */}
+                      <ul className="mt-auto flex flex-wrap gap-1.5 border-t border-line pt-5">
+                        {service.capabilities.map((capability) => (
                           <li
-                            key={tag}
+                            key={capability}
                             className="rounded-full border border-line bg-white/[0.03] px-2.5 py-1 text-[0.7rem] text-faint transition-colors duration-300 group-hover/spot:border-line-strong group-hover/spot:text-muted"
                           >
-                            {tag}
+                            {capability}
                           </li>
                         ))}
                       </ul>
