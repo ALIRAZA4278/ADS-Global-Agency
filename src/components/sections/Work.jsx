@@ -9,8 +9,10 @@ import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Tilt3D } from "@/components/ui/Tilt3D";
+import { useInquiry } from "@/components/inquiry/InquiryContext";
 
 export function Work() {
+  const { openInquiry } = useInquiry();
   const [filter, setFilter] = useState("All");
 
   const visible =
@@ -70,7 +72,7 @@ export function Work() {
         </motion.div>
 
         <Reveal delay={0.1} className="mt-12 flex justify-center">
-          <Button href="#contact" variant="outline" size="lg">
+          <Button onClick={openInquiry} variant="outline" size="lg">
             Start a project like these
             <ArrowUpRight className="h-4 w-4" />
           </Button>

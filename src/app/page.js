@@ -9,7 +9,6 @@ import { Work } from "@/components/sections/Work";
 import { Packages } from "@/components/sections/Packages";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Faq } from "@/components/sections/Faq";
-import { Contact } from "@/components/sections/Contact";
 import { Careers } from "@/components/sections/Careers";
 
 export default function Home() {
@@ -26,7 +25,6 @@ export default function Home() {
         <Packages />
         <Testimonials />
         <Faq />
-        <Contact />
         <Careers />
       </main>
       <Footer />

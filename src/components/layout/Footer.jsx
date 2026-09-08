@@ -49,7 +49,12 @@ export function Footer() {
 
           <FooterColumn
             title="Navigate"
-            links={navLinks.map((link) => ({ label: link.label, href: link.href }))}
+            links={[
+              ...navLinks.map((link) => ({ label: link.label, href: link.href })),
+              // Not in navLinks: the enquiry form lives in the hero, so a
+              // header entry for it would be active on page load.
+              { label: "Contact", href: "#contact" },
+            ]}
           />
 
           <FooterColumn

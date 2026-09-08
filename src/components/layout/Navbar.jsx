@@ -7,21 +7,18 @@ import { brand, navLinks } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/layout/Logo";
+import { TopBar } from "@/components/layout/TopBar";
 import { useInquiry } from "@/components/inquiry/InquiryContext";
 
 export function Navbar() {
   const { openInquiry } = useInquiry();
   const [scrolled, setScrolled] = useState(false);
-  const [pastHero, setPastHero] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const { scrollY, scrollYProgress } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 24);
-    // The hero carries its own vertical nav, so the header stays out of the
-    // way until the visitor has scrolled past it.
-    setPastHero(latest > window.innerHeight * 0.7);
   });
 
   // Highlight the nav link for whichever section owns the viewport.
@@ -58,92 +55,82 @@ export function Navbar() {
 
   return (
     <>
-      <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-all duration-500",
-          scrolled
-            ? "border-b border-line bg-ink/80 backdrop-blur-xl"
-            : "border-b border-transparent bg-transparent"
-        )}
-      >
-        <nav className="shell flex h-18 items-center justify-between gap-6 py-4">
-          <a
-            href="#top"
-            aria-label={brand.fullName}
-            className={cn(
-              "flex items-center gap-2.5 transition-opacity duration-500",
-              // On desktop the logo belongs to the hero until the header takes over.
-              !pastHero && "lg:pointer-events-none lg:opacity-0"
-            )}
-          >
-            <Logo className="h-8 w-8" />
-            <span className="text-[1.05rem] font-semibold tracking-tight">
-              {brand.name}
-              <span className="text-gradient">.</span>
-            </span>
-          </a>
+      <header className="fixed inset-x-0 top-0 z-50">
+        <TopBar />
 
-          <ul
-            className={cn(
-              "hidden items-center gap-1 transition-all duration-500 lg:flex",
-              pastHero
-                ? "translate-y-0 opacity-100"
-                : "pointer-events-none -translate-y-3 opacity-0"
-            )}
-          >
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.href;
-              return (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className={cn(
-                      "relative rounded-full px-4 py-2 text-sm transition-colors duration-200",
-                      isActive ? "text-white" : "text-muted hover:text-white"
-                    )}
-                  >
-                    {isActive && (
-                      <motion.span
-                        layoutId="nav-pill"
-                        className="absolute inset-0 rounded-full border border-line-strong bg-white/[0.06]"
-                        transition={{ type: "spring", stiffness: 320, damping: 30 }}
-                      />
-                    )}
-                    <span className="relative z-10">{link.label}</span>
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-
-          <div className="flex items-center gap-3">
-            <Button
-              onClick={openInquiry}
-              size="sm"
-              className={cn(
-                "hidden transition-opacity duration-500 sm:inline-flex",
-                !pastHero && "lg:pointer-events-none lg:opacity-0"
-              )}
+        <div
+          className={cn(
+            "transition-all duration-500",
+            scrolled
+              ? "border-b border-line bg-ink/85 backdrop-blur-xl"
+              : "border-b border-transparent bg-transparent"
+          )}
+        >
+          <nav className="shell flex h-18 items-center justify-between gap-6 py-4">
+            <a
+              href="#top"
+              aria-label={brand.fullName}
+              className="flex items-center gap-2.5"
             >
-              Start a project
-            </Button>
-            <button
-              type="button"
-              onClick={() => setMenuOpen((open) => !open)}
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-body transition-colors hover:border-line-strong hover:bg-white/[0.06] lg:hidden"
-            >
-              {menuOpen ? <X className="h-4.5 w-4.5" /> : <Menu className="h-4.5 w-4.5" />}
-            </button>
-          </div>
-        </nav>
+              <Logo className="h-8 w-8" />
+              <span className="text-[1.05rem] font-semibold tracking-tight">
+                {brand.name}
+                <span className="text-gradient">.</span>
+              </span>
+            </a>
 
-        {/* Reading-progress hairline. */}
-        <motion.div
-          className="h-px origin-left bg-[linear-gradient(90deg,var(--color-brand),var(--color-accent))]"
-          style={{ scaleX: scrollYProgress }}
-        />
+            <ul className="hidden items-center gap-1 lg:flex">
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.href;
+                return (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      className={cn(
+                        "relative rounded-full px-4 py-2 text-sm transition-colors duration-200",
+                        isActive ? "text-white" : "text-muted hover:text-white"
+                      )}
+                    >
+                      {isActive && (
+                        <motion.span
+                          layoutId="nav-pill"
+                          className="absolute inset-0 rounded-full border border-line-strong bg-white/[0.06]"
+                          transition={{ type: "spring", stiffness: 320, damping: 30 }}
+                        />
+                      )}
+                      <span className="relative z-10">{link.label}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={openInquiry}
+                size="sm"
+                className="hidden sm:inline-flex"
+              >
+                Get a proposal
+              </Button>
+              <button
+                type="button"
+                onClick={() => setMenuOpen((open) => !open)}
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={menuOpen}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-line text-body transition-colors hover:border-line-strong hover:bg-white/[0.06] lg:hidden"
+              >
+                {menuOpen ? <X className="h-4.5 w-4.5" /> : <Menu className="h-4.5 w-4.5" />}
+              </button>
+            </div>
+          </nav>
+
+          {/* Reading-progress hairline. */}
+          <motion.div
+            className="h-px origin-left bg-[linear-gradient(90deg,var(--color-brand),var(--color-accent))]"
+            style={{ scaleX: scrollYProgress }}
+          />
+        </div>
       </header>
 
       <AnimatePresence>
@@ -156,9 +143,9 @@ export function Navbar() {
             className="fixed inset-0 z-40 overflow-y-auto bg-ink/95 backdrop-blur-xl lg:hidden"
           >
             {/* min-h-full + justify-center centres the list when it fits and
-                lets it scroll when it doesn't; pt-24 keeps the first link out
-                from under the header, which sits above this overlay. */}
-            <div className="shell flex min-h-full flex-col justify-center gap-1 pt-24 pb-14">
+                lets it scroll when it doesn't; the top padding clears the
+                utility bar and header, which render above this overlay. */}
+            <div className="shell flex min-h-full flex-col justify-center gap-1 pt-32 pb-14">
               {navLinks.map((link, index) => (
                 <motion.a
                   key={link.href}
@@ -190,7 +177,7 @@ export function Navbar() {
                     openInquiry();
                   }}
                 >
-                  Start a project
+                  Get a proposal
                 </Button>
               </motion.div>
             </div>

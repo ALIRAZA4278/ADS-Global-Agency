@@ -18,13 +18,17 @@ export const brand = {
   ],
 };
 
+/**
+ * Section anchors tracked by the header. "Contact" is deliberately absent —
+ * the enquiry form now lives inside the hero, so a nav entry for it would
+ * light up the moment the page loads.
+ */
 export const navLinks = [
   { label: "About", href: "#about" },
   { label: "Services", href: "#services" },
   { label: "Work", href: "#work" },
   { label: "Packages", href: "#packages" },
   { label: "Careers", href: "#careers" },
-  { label: "Contact", href: "#contact" },
 ];
 
 export const hero = {
@@ -34,19 +38,24 @@ export const hero = {
    * reads light-then-heavy; `gradient` paints the final line in the accent.
    */
   titleLines: [
-    { text: "Let's Build" },
-    { text: "Your" },
-    { text: "Digital", bold: true },
-    { text: "Legacy.", bold: true, gradient: true },
+    { text: "Let's Build Your" },
+    { text: "Digital Legacy.", bold: true, gradient: true },
   ],
-  description: "Designing meaningful digital experiences that drive real impact.",
-  primaryCta: { label: "Get Started", href: "#contact" },
+  description:
+    "Websites, storefronts and brands that earn their keep. Tell us what you're building and we'll come back with a fixed-price plan.",
   secondaryCta: { label: "See our work", href: "#work" },
+  trust: [
+    "Fixed scope, fixed price",
+    "Reply within one business day",
+    "You own the code and the files",
+  ],
   quickStats: [
     { value: "150+", label: "Projects shipped" },
     { value: "50+", label: "Happy clients" },
     { value: "5+", label: "Years in business" },
   ],
+  formTitle: "Get your free proposal",
+  formSubtitle: "Two minutes now, a costed plan in your inbox tomorrow.",
 };
 
 export const marqueeItems = [
@@ -502,7 +511,7 @@ export const faqs = {
   ],
 };
 
-/** Shared by the contact section and the hero enquiry modal. */
+/** Shared by the hero enquiry form and the enquiry modal. */
 export const serviceOptions = [
   "UI/UX",
   "Website Development",
@@ -529,15 +538,6 @@ export const budgetOptions = [
   "$10,000+",
   "Other",
 ];
-
-export const contact = {
-  eyebrow: "Get in touch",
-  title: "Let's talk about what you're building",
-  description:
-    "Tell us where you are and where you want to be. We reply to every enquiry within one business day.",
-  budgets: budgetOptions,
-  serviceOptions,
-};
 
 export const inquiry = {
   title: "Start your project",

@@ -46,7 +46,7 @@ export function Providers({ children }) {
       if (!target) return;
 
       event.preventDefault();
-      lenis.scrollTo(target, { offset: -80 });
+      lenis.scrollTo(target, { offset: -124 });
       window.history.replaceState(null, "", hash);
     };
 

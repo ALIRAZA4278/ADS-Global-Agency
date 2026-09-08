@@ -1,17 +1,16 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, Check, X } from "lucide-react";
-import { submitEnquiry } from "@/app/actions";
-import { budgetOptions, inquiry, serviceOptions } from "@/lib/site";
-import { Field, SelectField, TextField } from "@/components/ui/Field";
-import { cn } from "@/lib/utils";
+import { X } from "lucide-react";
+import { inquiry } from "@/lib/site";
+import { InquiryForm } from "@/components/inquiry/InquiryForm";
 
-const initialState = { status: "idle", errors: {}, values: null };
-
+/**
+ * Hosts the enquiry form for CTAs further down the page, where scrolling all
+ * the way back to the hero form would be the alternative.
+ */
 export function InquiryModal({ open, onClose }) {
-  const [state, formAction, pending] = useActionState(submitEnquiry, initialState);
   const panelRef = useRef(null);
   const firstFieldRef = useRef(null);
 
@@ -65,8 +64,6 @@ export function InquiryModal({ open, onClose }) {
     return () => document.removeEventListener("keydown", handleTab);
   }, [open]);
 
-  const succeeded = state.status === "success";
-
   return (
     <AnimatePresence>
       {open && (
@@ -107,139 +104,23 @@ export function InquiryModal({ open, onClose }) {
               <X className="h-4 w-4" />
             </button>
 
-            {succeeded ? (
-              <div className="flex min-h-72 flex-col items-center justify-center text-center">
-                <span className="flex h-16 w-16 items-center justify-center rounded-full border border-accent/40 bg-accent/10 text-accent">
-                  <Check className="h-7 w-7" />
-                </span>
-                <h2 id="inquiry-title" className="mt-6 text-xl font-semibold tracking-tight">
-                  {inquiry.successTitle}
-                </h2>
-                <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">
-                  {inquiry.successBody}
-                </p>
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="mt-7 rounded-full border border-line px-6 py-2.5 text-sm text-body transition-colors hover:border-line-strong hover:bg-white/[0.06]"
-                >
-                  Close
-                </button>
-              </div>
-            ) : (
-              <>
-                <h2
-                  id="inquiry-title"
-                  className="pr-12 text-2xl font-bold tracking-tight sm:text-3xl"
-                >
-                  {inquiry.title}
-                </h2>
-                <p className="mt-3 text-sm leading-relaxed text-muted">
-                  {inquiry.description}
-                </p>
+            <h2
+              id="inquiry-title"
+              className="pr-12 text-2xl font-bold tracking-tight sm:text-3xl"
+            >
+              {inquiry.title}
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              {inquiry.description}
+            </p>
 
-                <form action={formAction} className="mt-7 flex flex-col gap-5" noValidate>
-                  {/* Tells the shared action to require a phone number instead
-                      of a written brief. */}
-                  <input type="hidden" name="formType" value="modal" />
-
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <Field label="Name" htmlFor="inq-name" error={state.errors?.name}>
-                      <TextField
-                        ref={firstFieldRef}
-                        id="inq-name"
-                        name="name"
-                        type="text"
-                        autoComplete="name"
-                        placeholder="Jane Cooper"
-                        defaultValue={state.values?.name}
-                        error={state.errors?.name}
-                      />
-                    </Field>
-
-                    <Field label="Email" htmlFor="inq-email" error={state.errors?.email}>
-                      <TextField
-                        id="inq-email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        placeholder="jane@company.com"
-                        defaultValue={state.values?.email}
-                        error={state.errors?.email}
-                      />
-                    </Field>
-                  </div>
-
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <Field label="Company" htmlFor="inq-company" optional>
-                      <TextField
-                        id="inq-company"
-                        name="company"
-                        type="text"
-                        autoComplete="organization"
-                        placeholder="Acme Inc."
-                        defaultValue={state.values?.company}
-                      />
-                    </Field>
-
-                    <Field
-                      label="Phone / WhatsApp"
-                      htmlFor="inq-phone"
-                      error={state.errors?.phone}
-                    >
-                      <TextField
-                        id="inq-phone"
-                        name="phone"
-                        type="tel"
-                        autoComplete="tel"
-                        placeholder="+1 555 019 4477"
-                        defaultValue={state.values?.phone}
-                        error={state.errors?.phone}
-                      />
-                    </Field>
-                  </div>
-
-                  <Field label="Service" htmlFor="inq-service">
-                    <SelectField
-                      id="inq-service"
-                      name="service"
-                      options={serviceOptions}
-                      defaultValue={state.values?.service || serviceOptions[0]}
-                    />
-                  </Field>
-
-                  <Field label="Budget" htmlFor="inq-budget">
-                    <SelectField
-                      id="inq-budget"
-                      name="budget"
-                      options={budgetOptions}
-                      defaultValue={state.values?.budget || budgetOptions[1]}
-                    />
-                  </Field>
-
-                  <button
-                    type="submit"
-                    disabled={pending}
-                    className={cn(
-                      "group mt-1 inline-flex h-13 items-center justify-center gap-2 rounded-full text-sm font-medium text-white",
-                      "bg-[linear-gradient(100deg,var(--color-brand-deep),var(--color-brand)_45%,var(--color-accent))]",
-                      "shadow-[0_10px_40px_-14px_var(--color-brand)] transition-all duration-300",
-                      "hover:shadow-[0_16px_50px_-12px_var(--color-brand)]",
-                      "disabled:cursor-not-allowed disabled:opacity-60"
-                    )}
-                  >
-                    {pending ? "Sending…" : "Send enquiry"}
-                    {!pending && (
-                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                    )}
-                  </button>
-
-                  <p className="text-center text-xs text-faint">
-                    We&apos;ll never share your details. Replies within one business day.
-                  </p>
-                </form>
-              </>
-            )}
+            <div className="mt-7">
+              <InquiryForm
+                idPrefix="modal"
+                firstFieldRef={firstFieldRef}
+                onDone={onClose}
+              />
+            </div>
           </motion.div>
         </motion.div>
       )}

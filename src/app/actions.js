@@ -14,21 +14,17 @@ const RESUME_TYPES = [
 const text = (formData, key) => (formData.get(key) ?? "").toString().trim();
 
 /**
- * Handles a contact-form submission.
+ * Handles an enquiry submission.
  *
- * Two forms post here: the full contact section (`formType` "full", which
- * expects a written brief) and the hero enquiry modal ("modal", which asks for
- * a phone number instead). Validation runs on the server so the forms are safe
- * even with JS disabled or the client bundle tampered with.
+ * One form shape posts here, hosted in two places: inline in the hero and
+ * inside the enquiry modal. Validation runs on the server so it holds even
+ * with JS disabled or the client bundle tampered with.
  *
  * Delivery is the one piece left open — drop your provider call where the TODO
  * is and the rest of the flow already works.
  */
 export async function submitEnquiry(_previousState, formData) {
-  const formType = text(formData, "formType") || "full";
-
   const values = {
-    formType,
     name: text(formData, "name"),
     email: text(formData, "email"),
     company: text(formData, "company"),
@@ -46,15 +42,10 @@ export async function submitEnquiry(_previousState, formData) {
   if (!EMAIL_PATTERN.test(values.email)) {
     errors.email = "Please enter a valid email address.";
   }
-
-  if (formType === "modal") {
-    if (!values.phone) {
-      errors.phone = "Please add a phone or WhatsApp number.";
-    } else if (!PHONE_PATTERN.test(values.phone)) {
-      errors.phone = "That doesn't look like a valid number.";
-    }
-  } else if (values.message.length < 12) {
-    errors.message = "Tell us a little more — at least a sentence or two.";
+  if (!values.phone) {
+    errors.phone = "Please add a phone or WhatsApp number.";
+  } else if (!PHONE_PATTERN.test(values.phone)) {
+    errors.phone = "That doesn't look like a valid number.";
   }
 
   if (Object.keys(errors).length > 0) {

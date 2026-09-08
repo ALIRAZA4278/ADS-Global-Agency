@@ -9,8 +9,10 @@ import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Tilt3D } from "@/components/ui/Tilt3D";
+import { useInquiry } from "@/components/inquiry/InquiryContext";
 
 export function Packages() {
+  const { openInquiry } = useInquiry();
   const [filter, setFilter] = useState("All");
 
   const visible =
@@ -80,7 +82,7 @@ export function Packages() {
                 Tell us the problem and we&apos;ll scope a fixed-price solution around it.
               </p>
             </div>
-            <Button href="#contact" size="lg" className="shrink-0">
+            <Button onClick={openInquiry} size="lg" className="shrink-0">
               Request a custom quote
               <ArrowRight className="h-4 w-4" />
             </Button>
@@ -92,6 +94,8 @@ export function Packages() {
 }
 
 function PlanCard({ plan }) {
+  const { openInquiry } = useInquiry();
+
   return (
     <motion.article
       layout
@@ -140,7 +144,7 @@ function PlanCard({ plan }) {
           </ul>
 
           <Button
-            href="#contact"
+            onClick={openInquiry}
             variant={plan.featured ? "primary" : "outline"}
             size="sm"
             magnetic={false}
