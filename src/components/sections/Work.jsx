@@ -2,6 +2,7 @@
 
 import { ArrowUpRight } from "lucide-react";
 import { work } from "@/lib/site";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
@@ -26,7 +27,7 @@ export function Work() {
           {work.portfolios.map((archive, index) => (
             <Reveal key={archive.label} delay={index * 0.08} className="h-full">
               <Tilt3D innerClassName="rounded-3xl" max={6}>
-                <ArchiveCard archive={archive} />
+                <ArchiveCard archive={archive} index={index} />
               </Tilt3D>
             </Reveal>
           ))}
@@ -44,32 +45,64 @@ export function Work() {
 }
 
 /**
- * A whole archive as one card — the entire surface is the link, so the click
- * target is the card rather than a few words of anchor text.
+ * A whole archive as one card.
+ *
+ * The entire surface is the link, so the CTA at the bottom is a styled span
+ * rather than a real button — nesting an interactive element inside an anchor
+ * would be invalid and would fight the card for the click.
  */
-function ArchiveCard({ archive }) {
+function ArchiveCard({ archive, index }) {
   return (
     <a
       href={archive.href}
       target="_blank"
       rel="noreferrer"
-      className="group/arch flex h-full flex-col rounded-3xl border border-line bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-surface))] p-7 transition-colors duration-300 hover:border-brand/45 sm:p-8"
+      className={cn(
+        "group/arch relative flex h-full flex-col overflow-hidden rounded-3xl border p-7 sm:p-8",
+        "border-line-strong bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-surface))]",
+        "transition-all duration-300 hover:-translate-y-1 hover:border-brand/60",
+        "hover:shadow-[0_30px_80px_-40px_var(--color-brand)]"
+      )}
     >
-      <div className="flex items-start justify-between gap-4">
-        <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-line bg-ink text-brand-soft transition-all duration-300 group-hover/arch:border-brand/40 group-hover/arch:text-accent">
-          <Icon name={archive.icon} className="h-5 w-5" />
+      {/* Accent wash so the three cards aren't one flat slab of dark. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(ellipse_at_top,color-mix(in_oklab,var(--color-brand)_18%,transparent),transparent_70%)] opacity-70 transition-opacity duration-500 group-hover/arch:opacity-100"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-6 right-4 select-none text-[7rem] font-bold leading-none tracking-tighter text-white/[0.04]"
+      >
+        {String(index + 1).padStart(2, "0")}
+      </span>
+
+      <div className="relative">
+        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[linear-gradient(140deg,var(--color-brand),var(--color-accent))] text-white shadow-[0_12px_30px_-12px_var(--color-brand)]">
+          <Icon name={archive.icon} className="h-6 w-6" />
         </span>
-        <span className="rounded-full border border-line bg-white/[0.03] px-3 py-1 text-[0.7rem] uppercase tracking-[0.14em] text-faint">
+
+        <p className="mt-6 text-[0.7rem] font-medium uppercase tracking-[0.24em] text-accent">
           {archive.label}
-        </span>
+        </p>
+        <h3 className="mt-2 text-2xl font-bold leading-tight tracking-tight">
+          {archive.title}
+        </h3>
       </div>
 
-      <h3 className="mt-6 text-lg font-semibold tracking-tight">{archive.title}</h3>
-      <p className="mt-2.5 flex-1 text-sm leading-relaxed text-muted">
+      <p className="relative mt-3 flex-1 text-sm leading-relaxed text-muted">
         {archive.description}
       </p>
 
-      <span className="mt-6 inline-flex items-center gap-2 border-t border-line pt-5 text-sm font-medium text-body transition-colors duration-300 group-hover/arch:text-accent">
+      {/* Looks and behaves like the primary button, but is part of the anchor. */}
+      <span
+        className={cn(
+          "relative mt-7 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full",
+          "text-sm font-medium text-white",
+          "bg-[linear-gradient(100deg,var(--color-brand-deep),var(--color-brand)_45%,var(--color-accent))]",
+          "shadow-[0_10px_40px_-14px_var(--color-brand)] transition-shadow duration-300",
+          "group-hover/arch:shadow-[0_16px_50px_-12px_var(--color-brand)]"
+        )}
+      >
         {archive.cta}
         <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/arch:-translate-y-0.5 group-hover/arch:translate-x-0.5" />
         <span className="sr-only">(opens in a new tab)</span>
