@@ -312,83 +312,41 @@ export const services = {
 
 export const work = {
   eyebrow: "Selected work",
-  title: "Recent work,",
-  titleHighlight: "and what it moved",
+  title: "See the work,",
+  titleHighlight: "not just the pitch",
   description:
-    "Builds across healthcare, retail and hiring — with the number each one was measured against.",
-  categories: ["All", "Web Development", "E-Commerce"],
-  projects: [
+    "Three archives, kept current: branding and graphics, live websites you can click through, and product design straight from Figma.",
+  /**
+   * The full archives live outside the site, so each discipline links out to
+   * its own folder rather than trying to mirror them here.
+   */
+  portfolios: [
     {
-      title: "Health Mate",
-      featured: true,
-      metric: "–64%",
-      metricLabel: "time to first insight",
-      category: "Web Development",
+      label: "Graphic",
+      title: "Logo, branding & graphics",
       description:
-        "AI-powered health report analyzer that turns dense medical PDFs into plain-language insights and next steps.",
-      tech: ["Next.js", "AI Integration", "Healthcare"],
-      accent: "from-sky-500 to-cyan-400",
-      year: "2025",
+        "Identity systems, marketing collateral and social creative, project by project.",
+      icon: "palette",
+      cta: "View full graphic portfolio",
+      href: "https://drive.google.com/drive/folders/1eL8iZGO_8uoR3ZbCYk4FJ9ajjjI_TKfI",
     },
     {
-      title: "Halwaiii",
-      featured: false,
-      metric: "3.4%",
-      metricLabel: "checkout conversion",
-      category: "E-Commerce",
+      label: "Web",
+      title: "Live websites & storefronts",
       description:
-        "Premium Pakistani sweets storefront that pairs heritage craftsmanship with a modern shopping experience.",
-      tech: ["E-Commerce", "React", "Payments"],
-      accent: "from-amber-500 to-orange-400",
-      year: "2025",
+        "Sites and stores currently in production — open them and click around.",
+      icon: "code",
+      cta: "View full web portfolio",
+      href: "https://drive.google.com/drive/folders/19AqetSwk005-epCGqT8kEX57_mSrzpd_",
     },
     {
-      title: "GracePoint Medical",
-      featured: false,
-      metric: "3×",
-      metricLabel: "placements per month",
-      category: "Web Development",
+      label: "UI/UX",
+      title: "Product design & Figma files",
       description:
-        "Healthcare staffing platform connecting medical professionals with facilities across three continents.",
-      tech: ["Next.js", "Healthcare", "Staffing"],
-      accent: "from-blue-600 to-indigo-500",
-      year: "2024",
-    },
-    {
-      title: "Aurea Collective",
-      featured: false,
-      metric: "+180%",
-      metricLabel: "completed bookings",
-      category: "Web Development",
-      description:
-        "Mobile beauty services platform specialising in accessible, sensory-friendly appointments and booking.",
-      tech: ["React", "Accessibility", "Booking"],
-      accent: "from-fuchsia-500 to-pink-400",
-      year: "2024",
-    },
-    {
-      title: "Quality Care Living",
-      featured: false,
-      metric: "+41%",
-      metricLabel: "enquiry rate",
-      category: "Web Development",
-      description:
-        "Senior care home website with warm aesthetics, virtual tours and a full service showcase.",
-      tech: ["Next.js", "Design", "Healthcare"],
-      accent: "from-emerald-500 to-teal-400",
-      year: "2024",
-    },
-    {
-      title: "Workoura",
-      featured: true,
-      metric: "18k",
-      metricLabel: "active listings",
-      category: "Web Development",
-      description:
-        "Modern job board connecting candidates with verified employers, built for scale from day one.",
-      tech: ["Next.js", "Job Portal", "Full-Stack"],
-      accent: "from-violet-500 to-purple-400",
-      year: "2023",
+        "Flows, wireframes and interface work, linked straight through to Figma.",
+      icon: "penTool",
+      cta: "View full UI/UX portfolio",
+      href: "https://docs.google.com/document/d/15fkx5fkyVJLHw-_aYh6atkC_tza5ohncllpVZW3zgyI/edit?usp=drivesdk",
     },
   ],
 };
