@@ -13,7 +13,9 @@ import { useInquiry } from "@/components/inquiry/InquiryContext";
 
 export function Packages() {
   const { openInquiry } = useInquiry();
-  const [filter, setFilter] = useState("All");
+  // "All" stays available but is not the default: it lists every tier of every
+  // category at once, which is a lot of scrolling before the first decision.
+  const [filter, setFilter] = useState(packages.categories[1]);
 
   const visible =
     filter === "All"
@@ -21,7 +23,7 @@ export function Packages() {
       : packages.plans.filter((plan) => plan.category === filter);
 
   return (
-    <section id="packages" className="section-y relative scroll-mt-24 overflow-hidden">
+    <section id="packages" className="section-y relative scroll-mt-32 overflow-hidden">
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-0 -z-10 h-px rule-gradient"
@@ -36,7 +38,7 @@ export function Packages() {
         />
 
         <Reveal delay={0.14} className="mt-10 flex justify-center">
-          <div className="inline-flex flex-wrap justify-center gap-1 rounded-full border border-line bg-white/[0.02] p-1">
+          <div className="inline-flex max-w-5xl flex-wrap justify-center gap-1 rounded-3xl border border-line bg-white/[0.02] p-1.5">
             {packages.categories.map((category) => (
               <button
                 key={category}
@@ -61,13 +63,15 @@ export function Packages() {
           </div>
         </Reveal>
 
-        <motion.div
-          layout
-          className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
-        >
+        {/* Three columns: every category ships exactly three tiers. */}
+        <motion.div layout className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {visible.map((plan) => (
-              <PlanCard key={plan.name} plan={plan} />
+              <PlanCard
+                key={`${plan.category}-${plan.name}`}
+                plan={plan}
+                onSelect={openInquiry}
+              />
             ))}
           </AnimatePresence>
         </motion.div>
@@ -93,8 +97,8 @@ export function Packages() {
   );
 }
 
-function PlanCard({ plan }) {
-  const { openInquiry } = useInquiry();
+function PlanCard({ plan, onSelect }) {
+  const isCustom = plan.price === null;
 
   return (
     <motion.article
@@ -117,40 +121,55 @@ function PlanCard({ plan }) {
           {plan.featured && (
             <span className="absolute -top-3 left-7 inline-flex items-center gap-1.5 rounded-full bg-[linear-gradient(100deg,var(--color-brand),var(--color-accent))] px-3 py-1 text-[0.7rem] font-medium text-white">
               <Sparkles className="h-3 w-3" />
-              Most popular
+              {isCustom ? "Tailored" : "Most popular"}
             </span>
           )}
 
           <h3 className="text-base font-semibold tracking-tight">{plan.name}</h3>
-          <p className="mt-1 text-sm text-muted">{plan.blurb}</p>
+          {plan.blurb && <p className="mt-1 text-sm text-muted">{plan.blurb}</p>}
 
           <div className="mt-6 flex items-baseline gap-1.5">
-            <span className="text-4xl font-semibold tracking-tight text-white">
-              ${plan.price.toLocaleString("en-US")}
-            </span>
+            {isCustom ? (
+              <span className="text-4xl font-semibold tracking-tight text-gradient">
+                Custom
+              </span>
+            ) : (
+              <span className="text-4xl font-semibold tracking-tight text-white">
+                ${plan.price.toLocaleString("en-US")}
+              </span>
+            )}
             <span className="text-sm text-faint">{plan.unit}</span>
           </div>
 
-          <ul className="mt-6 flex flex-1 flex-col gap-3 border-t border-line pt-6">
-            {plan.features.map((feature) => (
-              <li
-                key={feature}
-                className="flex items-start gap-2.5 text-sm text-body/80"
-              >
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                {feature}
-              </li>
-            ))}
-          </ul>
+          {/* Their site sends you to a details page for the full list; it scrolls
+              in place here instead, which also keeps every card the same height
+              whatever the feature count. */}
+          <div className="relative mt-6 flex-1 border-t border-line pt-6">
+            <ul className="scroll-slim flex max-h-52 flex-col gap-3 overflow-y-auto pr-2">
+              {plan.features.map((feature) => (
+                <li
+                  key={feature}
+                  className="flex items-start gap-2.5 text-sm text-body/80"
+                >
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-[linear-gradient(to_top,var(--color-surface),transparent)]"
+            />
+          </div>
 
           <Button
-            onClick={openInquiry}
+            onClick={onSelect}
             variant={plan.featured ? "primary" : "outline"}
             size="sm"
             magnetic={false}
             className="mt-7 w-full"
           >
-            Get started
+            {isCustom ? "Book a scoping call" : "Get started"}
           </Button>
         </div>
       </Tilt3D>

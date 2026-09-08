@@ -249,6 +249,28 @@
   }
 }
 
+/* Slim scrollbar for panels that scroll inside a card, so a long feature list
+   doesn't drop the page's full-width scrollbar into the middle of the UI. */
+@utility scroll-slim {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border: 0;
+    border-radius: 999px;
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    background: var(--color-brand);
+  }
+}
+
 /* Masks the ends of the logo marquee so items fade instead of clipping. */
 @utility mask-edges {
   mask-image: linear-gradient(
