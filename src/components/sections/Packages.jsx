@@ -30,8 +30,8 @@ export function Packages() {
       <div className="shell">
         <SectionHeading
           eyebrow={packages.eyebrow}
-          title="Clear pricing,"
-          highlight="no surprises"
+          title={packages.title}
+          highlight={packages.titleHighlight}
           description={packages.description}
         />
 
