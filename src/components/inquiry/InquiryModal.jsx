@@ -72,6 +72,7 @@ export function InquiryModal({ open, onClose }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.22 }}
+          data-lenis-prevent
           className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-ink/85 p-4 backdrop-blur-md sm:items-center sm:p-6"
           onMouseDown={(event) => {
             // Only a click that starts on the backdrop closes — dragging a text

@@ -147,7 +147,12 @@ function PlanCard({ plan, onSelect }) {
               there is no row to match, so the cap is dropped rather than
               hiding features behind a scrollbar the platform won't draw. */}
           <div className="relative mt-6 flex-1 border-t border-line pt-6">
-            <ul className="scroll-slim flex flex-col gap-3 overflow-y-auto pr-2 sm:max-h-52">
+            <ul
+              // Lenis swallows wheel events page-wide; without this the
+              // list never scrolls under the cursor.
+              data-lenis-prevent
+              className="scroll-slim flex flex-col gap-3 overflow-y-auto pr-2 sm:max-h-52"
+            >
               {plan.features.map((feature) => (
                 <li
                   key={feature}

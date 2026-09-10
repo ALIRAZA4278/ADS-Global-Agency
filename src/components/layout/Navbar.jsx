@@ -140,6 +140,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
+            data-lenis-prevent
             className="fixed inset-0 z-40 overflow-y-auto bg-ink/95 backdrop-blur-xl lg:hidden"
           >
             {/* min-h-full + justify-center centres the list when it fits and
