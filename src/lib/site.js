@@ -407,7 +407,7 @@ export const packages = {
       name: "Elite Website Package",
       category: "Website Design",
       price: 1245,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Ideal For Small Businesses Just Starting Online",
       featured: false,
       features: [
@@ -423,7 +423,7 @@ export const packages = {
       name: "Corporate Website Package",
       category: "Website Design",
       price: 1998,
-      unit: "/ project",
+      unit: "one-off fee",
       featured: true,
       features: [
         "15-20 Website Pages",
@@ -438,7 +438,7 @@ export const packages = {
       name: "Business Website Package",
       category: "Website Design",
       price: 2445,
-      unit: "/ project",
+      unit: "one-off fee",
       featured: false,
       features: [
         "15 Sec Promotional Video",
@@ -453,7 +453,7 @@ export const packages = {
       name: "Starter eStore Package",
       category: "E-Commerce",
       price: 799,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Ideal For Small Businesses Just Starting Online",
       featured: false,
       features: [
@@ -469,7 +469,7 @@ export const packages = {
       name: "Standard Growth Package",
       category: "E-Commerce",
       price: 1499,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Best For Scaling eCommerce Storefronts",
       featured: true,
       features: [
@@ -485,7 +485,7 @@ export const packages = {
       name: "Premium Business Package",
       category: "E-Commerce",
       price: 2999,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Best For Large-Scale eCommerce Business",
       featured: false,
       features: [
@@ -501,7 +501,7 @@ export const packages = {
       name: "Social Starter Package",
       category: "Social Media Marketing",
       price: 499,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Ideal For Small Businesses Just Starting Social Media",
       featured: false,
       features: [
@@ -517,7 +517,7 @@ export const packages = {
       name: "Social Growth Package",
       category: "Social Media Marketing",
       price: 999,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Best For Businesses Awareness & Audience Engagement",
       featured: true,
       features: [
@@ -533,7 +533,7 @@ export const packages = {
       name: "Premium Social Package",
       category: "Social Media Marketing",
       price: 1999,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Best For Aggressive Business Growth & Boost Sales",
       featured: false,
       features: [
@@ -549,7 +549,7 @@ export const packages = {
       name: "Starter SEO Package",
       category: "Search Engine Marketing",
       price: 499,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Ideal For Small Businesses Just Starting Online",
       featured: false,
       features: [
@@ -565,7 +565,7 @@ export const packages = {
       name: "Growth SEO Package",
       category: "Search Engine Marketing",
       price: 999,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Best For Fast Growing Businesses & eCommerce Stores",
       featured: true,
       features: [
@@ -581,7 +581,7 @@ export const packages = {
       name: "Premium SEO Package",
       category: "Search Engine Marketing",
       price: 1999,
-      unit: "/ month",
+      unit: "per month",
       blurb: "High-Growth Businesses & Competitive Industries",
       featured: false,
       features: [
@@ -597,7 +597,7 @@ export const packages = {
       name: "Basic Animation Package",
       category: "Animated Video",
       price: 599,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Best For Social Media Ads, Explainer or Promotional Videos & Startup Pitches",
       featured: false,
       features: [
@@ -613,7 +613,7 @@ export const packages = {
       name: "Advanced Animation",
       category: "Animated Video",
       price: 999,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Product Launches, Crowdfunding Campaigns & Corporate Training Videos",
       featured: true,
       features: [
@@ -629,7 +629,7 @@ export const packages = {
       name: "Premium Animation",
       category: "Animated Video",
       price: 1999,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Corporate Presentations, Video Ads, Mobile App Demos & SaaS or Digital Product Videos",
       featured: false,
       features: [
@@ -645,7 +645,7 @@ export const packages = {
       name: "Starter Brand Package",
       category: "Branding",
       price: 499,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Ideal For Small Businesses Just Starting Fresh",
       featured: false,
       features: [
@@ -661,7 +661,7 @@ export const packages = {
       name: "Professional Brand Package",
       category: "Branding",
       price: 999,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Best For Small Businesses Looking To Scale",
       featured: true,
       features: [
@@ -677,7 +677,7 @@ export const packages = {
       name: "Premium Branding Kit",
       category: "Branding",
       price: 1999,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Complete Solution For Fast Growing Businesses",
       featured: false,
       features: [
@@ -693,7 +693,7 @@ export const packages = {
       name: "Starter Book Publishing",
       category: "Book Publishing",
       price: 999,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Best For Authors Seeking Visibility & Professional Presence",
       featured: false,
       features: [
@@ -709,7 +709,7 @@ export const packages = {
       name: "Standard Book Publishing",
       category: "Book Publishing",
       price: 1499,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Authors Aiming To Publish Across Multiple Platforms",
       featured: true,
       features: [
@@ -725,7 +725,7 @@ export const packages = {
       name: "Premium Book Publishing",
       category: "Book Publishing",
       price: 2499,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Ultimate Global Distribution & Marketing Solution For Authors",
       featured: false,
       features: [
@@ -741,7 +741,7 @@ export const packages = {
       name: "Basic App Package",
       category: "Mobile App Development",
       price: 4999,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Ideal For Small Businesses Just Starting Online",
       featured: false,
       features: [
@@ -757,7 +757,7 @@ export const packages = {
       name: "Business App Package",
       category: "Mobile App Development",
       price: 9999,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Best For Fast Growing Businesses Scaling Up",
       featured: true,
       features: [
@@ -773,7 +773,7 @@ export const packages = {
       name: "Enterprise App Package",
       category: "Mobile App Development",
       price: 19999,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Best For Complex Business Needs & Process Automation",
       featured: false,
       features: [
@@ -789,7 +789,7 @@ export const packages = {
       name: "Starter Web App Package",
       category: "Web Portal / App",
       price: 4999,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Ideal For Small Businesses Just Starting Automation",
       featured: false,
       features: [
@@ -805,7 +805,7 @@ export const packages = {
       name: "Business Web App Package",
       category: "Web Portal / App",
       price: 9999,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Ideal For Service-Based Businesses & Client Portals",
       featured: true,
       features: [
@@ -821,7 +821,7 @@ export const packages = {
       name: "Enterprise Web App Package",
       category: "Web Portal / App",
       price: 19999,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Best For Full-Scale Business Systems & SaaS Products",
       featured: false,
       features: [
@@ -837,7 +837,7 @@ export const packages = {
       name: "Startup Hosting Package",
       category: "Website Hosting",
       price: 49,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Best For Personal Sites & Landing Pages With Less Traffic",
       featured: false,
       features: [
@@ -853,7 +853,7 @@ export const packages = {
       name: "Business Hosting Package",
       category: "Website Hosting",
       price: 99,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Designed For Small Businesses & Fast Growing Startups",
       featured: true,
       features: [
@@ -869,7 +869,7 @@ export const packages = {
       name: "Premium Hosting Package",
       category: "Website Hosting",
       price: 149,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Built For eCommerce, Web Portals & High-Traffic Websites",
       featured: false,
       features: [
@@ -885,7 +885,7 @@ export const packages = {
       name: "Basic Maintenance Plan",
       category: "Website Maintenance",
       price: 99,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Ideal For Small Businesses Needing Essential Support",
       featured: false,
       features: [
@@ -901,7 +901,7 @@ export const packages = {
       name: "Standard Maintenance Plan",
       category: "Website Maintenance",
       price: 199,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Best For Fast Growing Websites Needing Extra Protection",
       featured: true,
       features: [
@@ -917,7 +917,7 @@ export const packages = {
       name: "Premium Maintenance Plan",
       category: "Website Maintenance",
       price: 249,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Best For High-Traffic, eCommerce & Powerful Sites",
       featured: false,
       features: [
@@ -933,7 +933,7 @@ export const packages = {
       name: "Basic Boost Package",
       category: "Social Media Ads",
       price: 499,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Best For Local Reach, Increase Following & Brand Awareness",
       featured: false,
       features: [
@@ -949,7 +949,7 @@ export const packages = {
       name: "Growth Engagement Package",
       category: "Social Media Ads",
       price: 999,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Ideal For Driving Traffic, Website Visits & Lead Generation",
       featured: true,
       features: [
@@ -965,7 +965,7 @@ export const packages = {
       name: "Full Performance Package",
       category: "Social Media Ads",
       price: 2499,
-      unit: "/ month",
+      unit: "per month",
       blurb: "Best For Serious Businesses Focused on ROI & Scaling",
       featured: false,
       features: [
@@ -981,7 +981,7 @@ export const packages = {
       name: "Startup Logo Package",
       category: "Logo Design",
       price: 199,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Ideal For Small Businesses Just Starting",
       featured: false,
       features: [
@@ -997,7 +997,7 @@ export const packages = {
       name: "Business Logo Package",
       category: "Logo Design",
       price: 399,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Best For Growing Businesses & eCommerce Stores",
       featured: true,
       features: [
@@ -1013,7 +1013,7 @@ export const packages = {
       name: "Premium Logo Package",
       category: "Logo Design",
       price: 799,
-      unit: "/ project",
+      unit: "one-off fee",
       blurb: "Best For Fast Growing Small & Medium Businesses",
       featured: false,
       features: [

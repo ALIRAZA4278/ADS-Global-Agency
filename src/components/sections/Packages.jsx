@@ -128,7 +128,7 @@ function PlanCard({ plan, onSelect }) {
           <h3 className="text-base font-semibold tracking-tight">{plan.name}</h3>
           {plan.blurb && <p className="mt-1 text-sm text-muted">{plan.blurb}</p>}
 
-          <div className="mt-6 flex items-baseline gap-1.5">
+          <div className="mt-6 flex flex-wrap items-baseline gap-x-1.5">
             {isCustom ? (
               <span className="text-4xl font-semibold tracking-tight text-gradient">
                 Custom
@@ -138,14 +138,16 @@ function PlanCard({ plan, onSelect }) {
                 ${plan.price.toLocaleString("en-US")}
               </span>
             )}
-            <span className="text-sm text-faint">{plan.unit}</span>
+            <span className="text-xs text-faint">{plan.unit}</span>
           </div>
 
-          {/* Their site sends you to a details page for the full list; it scrolls
-              in place here instead, which also keeps every card the same height
-              whatever the feature count. */}
+          {/* Their site sends you to a details page for the full list. Here it
+              scrolls in place from sm up, which holds every card in a row to
+              the same height whatever the feature count. On one-column mobile
+              there is no row to match, so the cap is dropped rather than
+              hiding features behind a scrollbar the platform won't draw. */}
           <div className="relative mt-6 flex-1 border-t border-line pt-6">
-            <ul className="scroll-slim flex max-h-52 flex-col gap-3 overflow-y-auto pr-2">
+            <ul className="scroll-slim flex flex-col gap-3 overflow-y-auto pr-2 sm:max-h-52">
               {plan.features.map((feature) => (
                 <li
                   key={feature}
@@ -158,7 +160,7 @@ function PlanCard({ plan, onSelect }) {
             </ul>
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-[linear-gradient(to_top,var(--color-surface),transparent)]"
+              className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-8 bg-[linear-gradient(to_top,var(--color-surface),transparent)] sm:block"
             />
           </div>
 
