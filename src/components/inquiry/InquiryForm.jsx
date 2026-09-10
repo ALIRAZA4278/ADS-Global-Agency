@@ -111,25 +111,25 @@ export function InquiryForm({ idPrefix, firstFieldRef, onDone }) {
         </Field>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Service" htmlFor={id("service")}>
-          <SelectField
-            id={id("service")}
-            name="service"
-            options={serviceOptions}
-            defaultValue={state.values?.service || serviceOptions[0]}
-          />
-        </Field>
+      {/* Full width, not a two-up row: service names run to nearly 30
+          characters and would truncate inside half of this panel. */}
+      <Field label="Service" htmlFor={id("service")}>
+        <SelectField
+          id={id("service")}
+          name="service"
+          options={serviceOptions}
+          defaultValue={state.values?.service || serviceOptions[0]}
+        />
+      </Field>
 
-        <Field label="Budget" htmlFor={id("budget")}>
-          <SelectField
-            id={id("budget")}
-            name="budget"
-            options={budgetOptions}
-            defaultValue={state.values?.budget || budgetOptions[1]}
-          />
-        </Field>
-      </div>
+      <Field label="Budget" htmlFor={id("budget")}>
+        <SelectField
+          id={id("budget")}
+          name="budget"
+          options={budgetOptions}
+          defaultValue={state.values?.budget || budgetOptions[1]}
+        />
+      </Field>
 
       <Field label="Project details" htmlFor={id("message")} optional>
         <TextAreaField
@@ -152,7 +152,7 @@ export function InquiryForm({ idPrefix, firstFieldRef, onDone }) {
           "disabled:cursor-not-allowed disabled:opacity-60"
         )}
       >
-        {pending ? "Sending…" : "Get my free proposal"}
+        {pending ? "Sending…" : "Get my free quote"}
         {!pending && (
           <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
         )}

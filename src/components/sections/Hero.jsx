@@ -50,14 +50,7 @@ export function Hero() {
               <span className="text-xs font-medium uppercase tracking-[0.34em] text-muted sm:text-sm">
                 {hero.eyebrow}
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white/[0.03] px-3 py-1 text-xs text-muted">
-                <span className="flex gap-0.5">
-                  {Array.from({ length: 5 }).map((_, index) => (
-                    <Star key={index} className="h-3 w-3 fill-accent text-accent" />
-                  ))}
-                </span>
-                50+ happy clients
-              </span>
+              <RatingBadge rating={hero.rating} />
             </motion.div>
 
             <h1 className="mt-7 text-4xl leading-[1.06] tracking-tight sm:text-5xl xl:text-6xl">
@@ -148,6 +141,44 @@ export function Hero() {
         </motion.div>
       </div>
     </section>
+  );
+}
+
+/**
+ * Trustpilot badge. Renders as a link once `href` is set and as plain text
+ * before that, so it is never an anchor that goes nowhere.
+ */
+function RatingBadge({ rating }) {
+  const content = (
+    <>
+      <span className="flex gap-0.5">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <Star key={index} className="h-3 w-3 fill-accent text-accent" />
+        ))}
+      </span>
+      {rating.label}
+    </>
+  );
+
+  const className =
+    "inline-flex items-center gap-1.5 rounded-full border border-line bg-white/[0.03] px-3 py-1 text-xs text-muted";
+
+  if (!rating.href) {
+    return <span className={className}>{content}</span>;
+  }
+
+  return (
+    <a
+      href={rating.href}
+      target="_blank"
+      rel="noreferrer"
+      className={cn(
+        className,
+        "transition-colors duration-300 hover:border-brand/50 hover:text-white"
+      )}
+    >
+      {content}
+    </a>
   );
 }
 

@@ -63,6 +63,15 @@ export const hero = {
   description:
     "Websites, storefronts and brands that earn their keep. Tell us what you're building and we'll come back with a fixed-price plan.",
   secondaryCta: { label: "See our work", href: "#work" },
+  /**
+   * Trustpilot badge beside the eyebrow. Drop the profile URL into `href` and
+   * it becomes a link; until then it renders as plain text rather than an
+   * anchor that goes nowhere.
+   */
+  rating: {
+    label: "Rated on Trustpilot",
+    href: null,
+  },
   trust: [
     "Fixed scope, fixed price",
     "Reply within one business day",
@@ -73,7 +82,7 @@ export const hero = {
     { value: "50+", label: "Team members" },
     { value: "10+", label: "Years in business" },
   ],
-  formTitle: "Get your free proposal",
+  formTitle: "Get a free quote",
   formSubtitle: "Two minutes now, a costed plan in your inbox tomorrow.",
 };
 

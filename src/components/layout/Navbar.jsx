@@ -111,7 +111,7 @@ export function Navbar() {
                 size="sm"
                 className="hidden sm:inline-flex"
               >
-                Get a proposal
+                Get a free quote
               </Button>
               <button
                 type="button"
@@ -177,7 +177,7 @@ export function Navbar() {
                     openInquiry();
                   }}
                 >
-                  Get a proposal
+                  Get a free quote
                 </Button>
               </motion.div>
             </div>
