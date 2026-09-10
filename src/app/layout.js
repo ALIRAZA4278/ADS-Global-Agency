@@ -2,6 +2,7 @@ import { Sora } from "next/font/google";
 import "./globals.css";
 import { brand } from "@/lib/site";
 import { Providers } from "@/components/providers/Providers";
+import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -54,7 +55,10 @@ export default function RootLayout({ children }) {
         >
           Skip to content
         </a>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <WhatsAppButton />
+        </Providers>
       </body>
     </html>
   );

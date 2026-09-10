@@ -1,4 +1,4 @@
-import { ArrowUp, Mail, Phone } from "lucide-react";
+import { ArrowUp, Mail } from "lucide-react";
 import { brand, navLinks } from "@/lib/site";
 import { Logo } from "@/components/layout/Logo";
 import { SocialIcon } from "@/components/ui/Icon";
@@ -52,13 +52,6 @@ export function Footer() {
         {/* Contact details + socials */}
         <div className="mt-8 flex flex-col items-center gap-5 border-t border-line pt-8 md:flex-row md:justify-between">
           <div className="flex flex-wrap items-center justify-center gap-x-7 gap-y-3">
-            <a
-              href={`tel:${brand.phone.replace(/[^+\d]/g, "")}`}
-              className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-white"
-            >
-              <Phone className="h-4 w-4 shrink-0 text-accent" />
-              {brand.phone}
-            </a>
             <a
               href={`mailto:${brand.email}`}
               className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-white"

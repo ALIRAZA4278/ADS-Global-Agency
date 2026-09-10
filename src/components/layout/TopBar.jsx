@@ -1,11 +1,11 @@
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import { brand } from "@/lib/site";
 import { SocialIcon } from "@/components/ui/Icon";
 
 /**
  * Utility strip above the header. The contact details used to live beside the
  * form; with the form moved into the hero they belong somewhere permanent, and
- * a landing page wants the phone number reachable from every scroll position.
+ * a landing page wants them reachable from every scroll position.
  */
 export function TopBar() {
   return (
@@ -13,22 +13,14 @@ export function TopBar() {
       <div className="shell flex h-10 items-center justify-between gap-4 text-xs">
         <div className="flex min-w-0 items-center gap-5">
           <a
-            href={`tel:${brand.phone.replace(/[^+\d]/g, "")}`}
-            className="flex items-center gap-2 text-muted transition-colors hover:text-white"
-          >
-            <Phone className="h-3.5 w-3.5 shrink-0 text-accent" />
-            <span className="truncate">{brand.phone}</span>
-          </a>
-
-          <a
             href={`mailto:${brand.email}`}
-            className="hidden items-center gap-2 text-muted transition-colors hover:text-white sm:flex"
+            className="flex items-center gap-2 text-muted transition-colors hover:text-white"
           >
             <Mail className="h-3.5 w-3.5 shrink-0 text-accent" />
             <span className="truncate">{brand.email}</span>
           </a>
 
-          <span className="hidden items-center gap-2 text-faint lg:flex">
+          <span className="hidden items-center gap-2 text-faint sm:flex">
             <MapPin className="h-3.5 w-3.5 shrink-0 text-accent" />
             {brand.offices.join(" · ")}
           </span>

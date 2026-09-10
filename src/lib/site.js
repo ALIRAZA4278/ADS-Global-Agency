@@ -7,14 +7,33 @@ export const brand = {
   name: "ADS Global",
   fullName: "ADS Global Agency",
   tagline: "Designing meaningful digital experiences that drive real impact.",
-  email: "hello@adsglobalagency.com",
-  phone: "+1 (555) 019-4477",
+  email: "support@adsglobalagency.com",
+  /**
+   * WhatsApp is the only number published, and only through the floating
+   * chat button — wa.me wants digits with no plus, spaces or punctuation.
+   */
+  whatsapp: {
+    display: "+61 8 9468 0239",
+    digits: "61894680239",
+    message: "Hi ADS Global, I'd like to talk about a project.",
+  },
   offices: ["Australia", "Canada", "Dubai", "US", "UK"],
   socials: [
-    { label: "LinkedIn", href: "#", icon: "linkedin" },
-    { label: "X", href: "#", icon: "x" },
-    { label: "Instagram", href: "#", icon: "instagram" },
-    { label: "GitHub", href: "#", icon: "github" },
+    {
+      label: "LinkedIn",
+      icon: "linkedin",
+      href: "https://www.linkedin.com/company/aussie-design-solutions/",
+    },
+    {
+      label: "Instagram",
+      icon: "instagram",
+      href: "https://www.instagram.com/adsglobalagency",
+    },
+    {
+      label: "Facebook",
+      icon: "facebook",
+      href: "https://www.facebook.com/share/1DCBkZ1kr1/",
+    },
   ],
 };
 
