@@ -249,32 +249,6 @@
   }
 }
 
-/* Slim scrollbar for panels that scroll inside a card, so a long feature list
-   doesn't drop the page's full-width scrollbar into the middle of the UI. */
-@utility scroll-slim {
-  scrollbar-width: thin;
-  /* Brand-tinted rather than the faint hairline colour: this is the only cue
-     that there is more content below, so it has to be visible at rest. */
-  scrollbar-color: color-mix(in oklab, var(--color-brand) 55%, transparent)
-    color-mix(in oklab, var(--color-line) 100%, transparent);
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-  &::-webkit-scrollbar-track {
-    background: var(--color-line);
-    border-radius: 999px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: color-mix(in oklab, var(--color-brand) 55%, transparent);
-    border: 0;
-    border-radius: 999px;
-  }
-  &:hover::-webkit-scrollbar-thumb {
-    background: var(--color-brand);
-  }
-}
-
 /* Masks the ends of the logo marquee so items fade instead of clipping. */
 @utility mask-edges {
   mask-image: linear-gradient(

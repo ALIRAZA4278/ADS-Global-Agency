@@ -141,18 +141,12 @@ function PlanCard({ plan, onSelect }) {
             <span className="text-xs text-faint">{plan.unit}</span>
           </div>
 
-          {/* Their site sends you to a details page for the full list. Here it
-              scrolls in place from sm up, which holds every card in a row to
-              the same height whatever the feature count. On one-column mobile
-              there is no row to match, so the cap is dropped rather than
-              hiding features behind a scrollbar the platform won't draw. */}
-          <div className="relative mt-6 flex-1 border-t border-line pt-6">
-            <ul
-              // Lenis swallows wheel events page-wide; without this the
-              // list never scrolls under the cursor.
-              data-lenis-prevent
-              className="scroll-slim flex flex-col gap-3 overflow-y-auto pr-2 sm:max-h-52"
-            >
+          {/* Their site sends you to a details page for the full list; every
+              feature is shown here instead. No height cap: a tier runs to
+              eight features at most, and the grid already stretches cards in
+              a row to match, so capping only ever hid content. */}
+          <div className="mt-6 flex-1 border-t border-line pt-6">
+            <ul className="flex flex-col gap-3">
               {plan.features.map((feature) => (
                 <li
                   key={feature}
@@ -163,10 +157,6 @@ function PlanCard({ plan, onSelect }) {
                 </li>
               ))}
             </ul>
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-x-0 bottom-0 hidden h-8 bg-[linear-gradient(to_top,var(--color-surface),transparent)] sm:block"
-            />
           </div>
 
           <Button
