@@ -1,5 +1,8 @@
 "use server";
 
+import { brand } from "@/lib/site";
+import { sendApplicationEmail, sendEnquiryEmail } from "@/lib/mail";
+
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 // Digits with the punctuation people actually type: + ( ) - . and spaces.
 const PHONE_PATTERN = /^\+?[\d\s().-]{7,20}$/;
@@ -13,17 +16,24 @@ const RESUME_TYPES = [
 
 const text = (formData, key) => (formData.get(key) ?? "").toString().trim();
 
+// Bots fill in every field they find; people never see this one.
+const isBot = (formData) => text(formData, "website") !== "";
+
+const DELIVERY_FAILED = `We couldn't send that just now. Please try again, or email us at ${brand.email}.`;
+
 /**
- * Handles an enquiry submission.
+ * Handles an enquiry submission and emails it to the enquiries inbox.
  *
  * One form shape posts here, hosted in two places: inline in the hero and
  * inside the enquiry modal. Validation runs on the server so it holds even
  * with JS disabled or the client bundle tampered with.
- *
- * Delivery is the one piece left open — drop your provider call where the TODO
- * is and the rest of the flow already works.
  */
 export async function submitEnquiry(_previousState, formData) {
+  // Tell a bot it worked so it has no reason to retry, but send nothing.
+  if (isBot(formData)) {
+    return { status: "success", errors: {}, values: null };
+  }
+
   const values = {
     name: text(formData, "name"),
     email: text(formData, "email"),
@@ -52,21 +62,25 @@ export async function submitEnquiry(_previousState, formData) {
     return { status: "error", errors, values };
   }
 
-  // TODO: deliver the enquiry — e.g. Resend, Postmark, or a CRM webhook.
-  // Until that is wired up the submission is only recorded in the server log.
-  console.info("[enquiry]", { ...values, receivedAt: new Date().toISOString() });
+  try {
+    await sendEnquiryEmail(values);
+  } catch (error) {
+    console.error("[enquiry] delivery failed:", error);
+    return { status: "error", errors: {}, values, formError: DELIVERY_FAILED };
+  }
 
   return { status: "success", errors: {}, values: null };
 }
 
 /**
- * Handles a job application from the careers section.
- *
- * The résumé arrives as a File in the FormData. It is validated here but not
- * yet stored — wire the TODO to your storage bucket (S3, Vercel Blob, Drive)
- * and forward the rest of the fields to wherever you track candidates.
+ * Handles a job application from the careers section and emails it, with the
+ * résumé attached, to the careers inbox.
  */
 export async function submitApplication(_previousState, formData) {
+  if (isBot(formData)) {
+    return { status: "success", errors: {}, values: null };
+  }
+
   const values = {
     name: text(formData, "name"),
     email: text(formData, "email"),
@@ -121,12 +135,12 @@ export async function submitApplication(_previousState, formData) {
     return { status: "error", errors, values };
   }
 
-  // TODO: store the résumé and forward the application to your ATS or inbox.
-  console.info("[application]", {
-    ...values,
-    resume: { name: resume.name, size: resume.size, type: resume.type },
-    receivedAt: new Date().toISOString(),
-  });
+  try {
+    await sendApplicationEmail(values, resume);
+  } catch (error) {
+    console.error("[application] delivery failed:", error);
+    return { status: "error", errors: {}, values, formError: DELIVERY_FAILED };
+  }
 
   return { status: "success", errors: {}, values: null };
 }

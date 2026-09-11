@@ -41,19 +41,37 @@ list. Two things live outside it:
 
 ## Forms
 
-Both forms are real server actions that validate on the server and return
-field-level errors while preserving what the visitor typed.
+Both forms are server actions that validate on the server, return field-level
+errors while preserving what the visitor typed, and email the result.
 
-| Form | Where | Action | Fields |
+| Form | Where | Action | Sent to |
 | --- | --- | --- | --- |
-| Enquiry modal | Hero + header CTA | `submitEnquiry` (`formType: modal`) | name, email, company, phone/WhatsApp, service, budget |
-| Contact | `#contact` | `submitEnquiry` (`formType: full`) | the above plus a written brief |
-| Application | `#careers` | `submitApplication` | name, email, phone, position, portfolio URL, short intro, résumé |
+| Enquiry | Hero, plus the "Get a free quote" modal | `submitEnquiry` | `INQUIRY_TO` (default `aussiedesignsolutions@gmail.com`) |
+| Application | `#careers` | `submitApplication` | `CAREERS_TO` (default `career@adsglobalagency.com`), résumé attached |
 
-**Delivery is the one piece still open.** Each action has a `TODO` where the
-provider call belongs — an email service (Resend, Postmark), a CRM webhook, and
-for the careers form a storage bucket for the résumé file. Until those are
-wired, submissions are validated, accepted and written to the server log.
+Mail goes out through Hostinger SMTP via `src/lib/mail.js`. Reply-to is set to
+the visitor, so answering from the inbox reaches them directly.
+
+### Setup
+
+Copy `.env.example` to `.env.local` and fill in `SMTP_PASS` — the password of
+the mailbox named in `SMTP_USER`. Set the same variables in your host's
+environment settings for production. None of them use the `NEXT_PUBLIC_`
+prefix, so the password and inbox addresses never reach the browser.
+
+### When mail isn't configured
+
+- **Development** without `SMTP_*` set: submissions log a warning and still
+  show success, so you can work on the forms without mailbox credentials.
+- **Production** without them, or when the SMTP server is unreachable: the form
+  shows an error offering the support address, and keeps what the visitor
+  typed. It never reports success for a message that was not sent.
+
+### Spam
+
+Each form carries a hidden `website` field. People never see it; bots that fill
+every input do. A submission with it filled is shown success and dropped
+without sending.
 
 Résumés are capped at 4MB and limited to PDF/Word. The server action body limit
 is raised to 5MB in `next.config.mjs` to leave room for multipart overhead.

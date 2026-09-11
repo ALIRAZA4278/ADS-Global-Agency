@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, Check, Paperclip, X } from "lucide-react";
 import { submitApplication } from "@/app/actions";
@@ -184,6 +184,33 @@ export function Careers() {
 
                     <ResumeField error={state.errors?.resume} />
 
+                    {/* Honeypot. Off-screen, out of the tab order and hidden
+                        from assistive tech, so only bots ever fill it. */}
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute -left-[9999px] h-px w-px overflow-hidden"
+                    >
+                      <label>
+                        Leave this empty
+                        <input
+                          type="text"
+                          name="website"
+                          tabIndex={-1}
+                          autoComplete="off"
+                          defaultValue=""
+                        />
+                      </label>
+                    </div>
+
+                    {state.formError && (
+                      <p
+                        role="alert"
+                        className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300"
+                      >
+                        {state.formError}
+                      </p>
+                    )}
+
                     <button
                       type="submit"
                       disabled={pending}
@@ -217,10 +244,22 @@ export function Careers() {
  * A file input can't be given a value from React, so a rejected submission
  * can't repopulate it — the filename is tracked locally so the applicant can
  * at least see what is currently attached.
+ *
+ * React resets the form after every action, file input included, so the label
+ * listens for that reset and clears with it. Otherwise it would go on naming a
+ * file that is no longer attached.
  */
 function ResumeField({ error }) {
   const inputRef = useRef(null);
   const [fileName, setFileName] = useState("");
+
+  useEffect(() => {
+    const form = inputRef.current?.form;
+    if (!form) return;
+    const clear = () => setFileName("");
+    form.addEventListener("reset", clear);
+    return () => form.removeEventListener("reset", clear);
+  }, []);
 
   return (
     <Field

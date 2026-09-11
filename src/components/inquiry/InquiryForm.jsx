@@ -141,6 +141,27 @@ export function InquiryForm({ idPrefix, firstFieldRef, onDone }) {
         />
       </Field>
 
+      {/* Honeypot. Off-screen, out of the tab order and hidden from assistive
+          tech, so only bots that fill every input ever touch it. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-[9999px] h-px w-px overflow-hidden"
+      >
+        <label>
+          Leave this empty
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" defaultValue="" />
+        </label>
+      </div>
+
+      {state.formError && (
+        <p
+          role="alert"
+          className="rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-300"
+        >
+          {state.formError}
+        </p>
+      )}
+
       <button
         type="submit"
         disabled={pending}
