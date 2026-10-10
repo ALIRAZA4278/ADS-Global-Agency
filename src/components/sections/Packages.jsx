@@ -97,6 +97,55 @@ export function Packages() {
   );
 }
 
+// Lists longer than this scroll within a capped height.
+const SCROLL_AFTER = 8;
+
+function FeatureList({ features }) {
+  const scrolls = features.length > SCROLL_AFTER;
+  const [atEnd, setAtEnd] = useState(false);
+
+  const items = (
+    <ul className="flex flex-col gap-3">
+      {features.map((feature) => (
+        <li key={feature} className="flex items-start gap-2.5 text-sm text-body/80">
+          <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+          {feature}
+        </li>
+      ))}
+    </ul>
+  );
+
+  if (!scrolls) {
+    return <div className="mt-6 flex-1 border-t border-line pt-6">{items}</div>;
+  }
+
+  return (
+    <div className="mt-6 flex-1 border-t border-line pt-6">
+      {/* data-lenis-prevent lets the wheel scroll this list instead of being
+          captured by the page's smooth scroll. The bottom fade is a mask, not
+          an overlay, so it works on the featured card's tinted background. */}
+      <div
+        data-lenis-prevent
+        tabIndex={0}
+        aria-label={`${features.length} included features`}
+        onScroll={(event) => {
+          const el = event.currentTarget;
+          setAtEnd(el.scrollTop + el.clientHeight >= el.scrollHeight - 4);
+        }}
+        className={cn(
+          "max-h-80 overflow-y-auto overscroll-contain pr-2 [scrollbar-color:var(--color-line-strong)_transparent] [scrollbar-width:thin]",
+          !atEnd && "mask-[linear-gradient(to_bottom,black_80%,transparent)]"
+        )}
+      >
+        {items}
+      </div>
+      <p className="mt-3 text-[0.7rem] text-faint">
+        {features.length} inclusions · scroll for more
+      </p>
+    </div>
+  );
+}
+
 function PlanCard({ plan, onSelect }) {
   const isCustom = plan.price === null;
 
@@ -141,23 +190,11 @@ function PlanCard({ plan, onSelect }) {
             <span className="text-xs text-faint">{plan.unit}</span>
           </div>
 
-          {/* Their site sends you to a details page for the full list; every
-              feature is shown here instead. No height cap: a tier runs to
-              eight features at most, and the grid already stretches cards in
-              a row to match, so capping only ever hid content. */}
-          <div className="mt-6 flex-1 border-t border-line pt-6">
-            <ul className="flex flex-col gap-3">
-              {plan.features.map((feature) => (
-                <li
-                  key={feature}
-                  className="flex items-start gap-2.5 text-sm text-body/80"
-                >
-                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Every feature is shown on the card. Most tiers list six; the
+              website tiers carry their full detail-page list (20–35 items),
+              which scrolls inside the card instead of stretching every card
+              in the row to its height. */}
+          <FeatureList features={plan.features} />
 
           <Button
             onClick={onSelect}
