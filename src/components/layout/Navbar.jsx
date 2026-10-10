@@ -6,7 +6,7 @@ import { Menu, X } from "lucide-react";
 import { brand, navLinks } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
-import { Logo } from "@/components/layout/Logo";
+import Image from "next/image";
 import { TopBar } from "@/components/layout/TopBar";
 import { useInquiry } from "@/components/inquiry/InquiryContext";
 
@@ -67,16 +67,15 @@ export function Navbar() {
           )}
         >
           <nav className="shell flex h-18 items-center justify-between gap-6 py-4">
-            <a
-              href="#top"
-              aria-label={brand.fullName}
-              className="flex items-center gap-2.5"
-            >
-              <Logo className="h-8 w-8" />
-              <span className="text-[1.05rem] font-semibold tracking-tight">
-                {brand.name}
-                <span className="text-gradient">.</span>
-              </span>
+            <a href="#top" aria-label={brand.fullName} className="flex items-center">
+              <Image
+                src="/logo-mark.png"
+                alt={brand.fullName}
+                width={2172}
+                height={601}
+                preload
+                className="h-9 w-auto sm:h-10"
+              />
             </a>
 
             <ul className="hidden items-center gap-1 lg:flex">

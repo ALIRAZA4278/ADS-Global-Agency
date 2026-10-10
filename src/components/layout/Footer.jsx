@@ -1,6 +1,6 @@
+import Image from "next/image";
 import { ArrowUp, Mail } from "lucide-react";
 import { brand, navLinks } from "@/lib/site";
-import { Logo } from "@/components/layout/Logo";
 import { SocialIcon } from "@/components/ui/Icon";
 
 /**
@@ -25,12 +25,14 @@ export function Footer() {
       <div className="shell relative py-12">
         {/* Brand + section links */}
         <div className="flex flex-col items-center gap-6 text-center md:flex-row md:justify-between md:text-left">
-          <a href="#top" className="inline-flex items-center gap-2.5">
-            <Logo className="h-8 w-8" />
-            <span className="text-[1.05rem] font-semibold tracking-tight">
-              {brand.name}
-              <span className="text-gradient">.</span>
-            </span>
+          <a href="#top" className="inline-flex items-center">
+            <Image
+              src="/logo-mark.png"
+              alt={brand.fullName}
+              width={2172}
+              height={601}
+              className="h-9 w-auto"
+            />
           </a>
 
           <nav aria-label="Footer">
