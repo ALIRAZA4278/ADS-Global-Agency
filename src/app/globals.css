@@ -249,6 +249,17 @@
   }
 }
 
+/* Hides the scrollbar on a horizontally-scrolling track (card sliders), where
+   arrow buttons are the visible affordance instead. */
+@utility hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* Masks the ends of the logo marquee so items fade instead of clipping. */
 @utility mask-edges {
   mask-image: linear-gradient(
