@@ -17,6 +17,15 @@ export const brand = {
     digits: "61894680239",
     message: "Hi ADS Global, I'd like to talk about a project.",
   },
+  /**
+   * Shown in the top utility bar, one per office line with a direct number.
+   * `country` picks the hand-drawn flag in src/components/ui/Flag.jsx —
+   * Unicode flag emoji fall back to plain two-letter text on Windows.
+   */
+  phones: [
+    { country: "AU", display: "+61 8 9468 0239", digits: "61894680239" },
+    { country: "US", display: "+1 (503) 569 9415", digits: "15035699415" },
+  ],
   offices: ["Australia", "Canada", "Dubai", "US", "UK"],
   socials: [
     {
@@ -61,26 +70,14 @@ export const hero = {
     { text: "Digital Legacy.", bold: true, gradient: true },
   ],
   description:
-    "Websites, storefronts and brands that earn their keep. Tell us what you're building and we'll come back with a fixed-price plan.",
+    "A new website? A better brand? Something completely custom? Tell us what you've got in mind. We'll handle the design, development and all the stuff in between.",
   secondaryCta: { label: "See our work", href: "#work" },
-  /**
-   * Trustpilot badge beside the eyebrow. Drop the profile URL into `href` and
-   * it becomes a link; until then it renders as plain text rather than an
-   * anchor that goes nowhere.
-   */
-  rating: {
-    label: "Rated on Trustpilot",
-    href: null,
-  },
+  /** Set once the Trustpilot profile exists; the logo links out automatically. */
+  trustpilotHref: null,
   trust: [
     "Fixed scope, fixed price",
     "Reply within one business day",
     "You own the code and the files",
-  ],
-  quickStats: [
-    { value: "700+", label: "Projects delivered" },
-    { value: "50+", label: "Team members" },
-    { value: "10+", label: "Years in business" },
   ],
   formTitle: "Get a free quote",
   formSubtitle: "Two minutes now, a costed plan in your inbox tomorrow.",

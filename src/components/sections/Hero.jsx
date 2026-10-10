@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { ArrowRight, Check, Star } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { hero } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
@@ -45,12 +45,12 @@ export function Hero() {
           className="grid gap-12 lg:grid-cols-[1fr_minmax(0,29rem)] lg:items-start lg:gap-x-16 lg:gap-y-10 xl:gap-x-20"
         >
           {/* Pitch */}
-          <div className="lg:col-start-1 lg:row-start-1">
-            <motion.div variants={rise} className="flex flex-wrap items-center gap-3">
+          <div>
+            <motion.div variants={rise} className="flex flex-wrap items-center gap-4">
               <span className="text-xs font-medium uppercase tracking-[0.34em] text-muted sm:text-sm">
                 {hero.eyebrow}
               </span>
-              <RatingBadge rating={hero.rating} />
+              <TrustpilotLogo href={hero.trustpilotHref} />
             </motion.div>
 
             <h1 className="mt-7 text-4xl leading-[1.06] tracking-tight sm:text-5xl xl:text-6xl">
@@ -96,13 +96,11 @@ export function Hero() {
           </div>
 
           {/* The form keeps the #contact anchor, so every existing CTA on the
-              page still lands on it now that the contact section is gone.
-              It is ordered ahead of the stats on mobile — on a landing page the
-              form should not sit a full screen below the fold. */}
+              page still lands on it now that the contact section is gone. */}
           <motion.div
             variants={rise}
             id="contact"
-            className="order-2 scroll-mt-32 lg:order-none lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-32"
+            className="scroll-mt-32 lg:sticky lg:top-32"
           >
             <div className="relative rounded-3xl border border-line bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-surface))] p-6 shadow-[0_40px_120px_-50px_var(--color-brand)] sm:p-8">
               <span
@@ -122,60 +120,54 @@ export function Hero() {
               </div>
             </div>
           </motion.div>
-
-          <motion.dl
-            variants={rise}
-            className="order-3 grid max-w-lg grid-cols-3 divide-x divide-line border-t border-line pt-7 lg:order-none lg:col-start-1 lg:row-start-2"
-          >
-            {hero.quickStats.map((stat) => (
-              <div key={stat.label} className="px-2 first:pl-0 sm:px-5">
-                <dt className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                  {stat.value}
-                </dt>
-                <dd className="mt-1 text-[0.7rem] uppercase tracking-[0.14em] text-faint">
-                  {stat.label}
-                </dd>
-              </div>
-            ))}
-          </motion.dl>
         </motion.div>
       </div>
     </section>
   );
 }
 
-/**
- * Trustpilot badge. Renders as a link once `href` is set and as plain text
- * before that, so it is never an anchor that goes nowhere.
- */
-function RatingBadge({ rating }) {
+
+// Trustpilot's own mark: small green tiles, each with a white star, plus the
+// wordmark in the same green. Hand-drawn rather than an external logo asset,
+// since that keeps the page free of outside image requests.
+const TRUSTPILOT_GREEN = "#00B67A";
+const STAR_PATH =
+  "M0,-10 L2.9,-3.1 L10,-3.1 L4.3,1.2 L6.5,8 L0,3.8 L-6.5,8 L-4.3,1.2 L-10,-3.1 L-2.9,-3.1 Z";
+
+function TrustpilotLogo({ href }) {
   const content = (
     <>
-      <span className="flex gap-0.5">
+      <span className="flex items-center gap-0.5">
         {Array.from({ length: 5 }).map((_, index) => (
-          <Star key={index} className="h-3 w-3 fill-accent text-accent" />
+          <svg key={index} viewBox="-10 -10 20 20" className="h-4 w-4 sm:h-4.5 sm:w-4.5">
+            <rect x="-10" y="-10" width="20" height="20" rx="3.5" fill={TRUSTPILOT_GREEN} />
+            <path d={STAR_PATH} fill="#fff" />
+          </svg>
         ))}
       </span>
-      {rating.label}
+      <span
+        className="text-sm font-bold tracking-tight sm:text-base"
+        style={{ color: TRUSTPILOT_GREEN }}
+      >
+        Trustpilot
+      </span>
     </>
   );
 
-  const className =
-    "inline-flex items-center gap-1.5 rounded-full border border-line bg-white/[0.03] px-3 py-1 text-xs text-muted";
+  const className = "inline-flex items-center gap-2";
 
-  if (!rating.href) {
+  // No profile URL yet — plain, not a link to nowhere. Set hero.trustpilotHref
+  // once the Trustpilot page exists and this becomes a link automatically.
+  if (!href) {
     return <span className={className}>{content}</span>;
   }
 
   return (
     <a
-      href={rating.href}
+      href={href}
       target="_blank"
       rel="noreferrer"
-      className={cn(
-        className,
-        "transition-colors duration-300 hover:border-brand/50 hover:text-white"
-      )}
+      className={cn(className, "transition-opacity duration-300 hover:opacity-80")}
     >
       {content}
     </a>
