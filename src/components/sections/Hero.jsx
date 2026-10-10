@@ -100,7 +100,7 @@ export function Hero() {
           <motion.div
             variants={rise}
             id="contact"
-            className="scroll-mt-32 lg:sticky lg:top-32"
+            className="lg:sticky lg:top-32"
           >
             <div className="relative rounded-3xl border border-line bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-surface))] p-6 shadow-[0_40px_120px_-50px_var(--color-brand)] sm:p-8">
               <span

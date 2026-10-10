@@ -23,7 +23,7 @@ export function Packages() {
       : packages.plans.filter((plan) => plan.category === filter);
 
   return (
-    <section id="packages" className="section-y relative scroll-mt-32 overflow-hidden">
+    <section id="packages" className="section-y relative overflow-hidden">
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-0 -z-10 h-px rule-gradient"

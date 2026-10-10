@@ -69,7 +69,7 @@ export function Testimonials() {
   };
 
   return (
-    <section className="section-y relative overflow-x-clip">
+    <section id="reviews" className="section-y relative overflow-x-clip">
       <div
         aria-hidden="true"
         className="absolute left-1/2 top-0 -z-10 h-96 w-[52rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,color-mix(in_oklab,var(--color-accent)_8%,transparent),transparent_70%)] blur-3xl"

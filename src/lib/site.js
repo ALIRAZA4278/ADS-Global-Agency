@@ -52,10 +52,10 @@ export const brand = {
  * light up the moment the page loads.
  */
 export const navLinks = [
-  { label: "About", href: "#about" },
+  { label: "Portfolio", href: "#portfolio" },
   { label: "Services", href: "#services" },
-  { label: "Work", href: "#work" },
-  { label: "Packages", href: "#packages" },
+  { label: "Pricing", href: "#packages" },
+  { label: "About", href: "#about" },
   { label: "Careers", href: "#careers" },
 ];
 
@@ -71,7 +71,7 @@ export const hero = {
   ],
   description:
     "A new website? A better brand? Something completely custom? Tell us what you've got in mind. We'll handle the design, development and all the stuff in between.",
-  secondaryCta: { label: "See our work", href: "#work" },
+  secondaryCta: { label: "See our work", href: "#portfolio" },
   /** Set once the Trustpilot profile exists; the logo links out automatically. */
   trustpilotHref: null,
   trust: [
@@ -335,17 +335,18 @@ export const services = {
   ],
 };
 
-export const work = {
+/**
+ * The main portfolio section — three real archives (Drive/Figma), each
+ * linking out rather than trying to mirror the work inline. id="portfolio"
+ * is what the nav and the hero's "See our work" CTA both point at.
+ */
+export const portfolio = {
   eyebrow: "Selected work",
   title: "See the work,",
   titleHighlight: "not just the pitch",
   description:
     "Three archives, kept current: branding and graphics, live websites you can click through, and product design straight from Figma.",
-  /**
-   * The full archives live outside the site, so each discipline links out to
-   * its own folder rather than trying to mirror them here.
-   */
-  portfolios: [
+  items: [
     {
       label: "Graphic",
       title: "Logo, branding & graphics",
@@ -375,6 +376,7 @@ export const work = {
     },
   ],
 };
+
 
 export const packages = {
   eyebrow: "Our packages",

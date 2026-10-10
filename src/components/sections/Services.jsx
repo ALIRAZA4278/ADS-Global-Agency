@@ -43,7 +43,7 @@ export function Services() {
   };
 
   return (
-    <section id="services" className="section-y relative scroll-mt-24">
+    <section id="services" className="section-y relative">
       <div className="shell">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <SectionHeading

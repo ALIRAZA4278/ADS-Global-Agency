@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
-import { work } from "@/lib/site";
+import { portfolio } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
@@ -10,21 +10,26 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Tilt3D } from "@/components/ui/Tilt3D";
 import { useInquiry } from "@/components/inquiry/InquiryContext";
 
-export function Work() {
+/**
+ * Three real archives (Drive/Figma), linking out rather than trying to show
+ * the work inline — real screenshots we can host and keep current beat a
+ * grid of invented placeholder tiles.
+ */
+export function Portfolio() {
   const { openInquiry } = useInquiry();
 
   return (
-    <section id="work" className="section-y relative scroll-mt-32">
+    <section id="portfolio" className="section-y relative">
       <div className="shell">
         <SectionHeading
-          eyebrow={work.eyebrow}
-          title={work.title}
-          highlight={work.titleHighlight}
-          description={work.description}
+          eyebrow={portfolio.eyebrow}
+          title={portfolio.title}
+          highlight={portfolio.titleHighlight}
+          description={portfolio.description}
         />
 
         <div className="mt-14 grid gap-5 md:grid-cols-3">
-          {work.portfolios.map((archive, index) => (
+          {portfolio.items.map((archive, index) => (
             <Reveal key={archive.label} delay={index * 0.08} className="h-full">
               <Tilt3D innerClassName="rounded-3xl" max={6}>
                 <ArchiveCard archive={archive} index={index} />

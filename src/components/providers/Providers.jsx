@@ -46,8 +46,20 @@ export function Providers({ children }) {
       if (!target) return;
 
       event.preventDefault();
-      lenis.scrollTo(target, { offset: -124 });
       window.history.replaceState(null, "", hash);
+
+      // Measure two frames later, not now. A click from the mobile menu also
+      // closes it, which releases body's overflow lock and brings the
+      // scrollbar back — that reflows the page, and a target measured before
+      // the reflow lands tens of pixels off. Two frames lets React commit the
+      // close and the browser lay out again first.
+      //
+      // No explicit offset: Lenis already reads html's scroll-padding-top and
+      // the target's scroll-margin-top (both in globals.css). Passing one too
+      // would stack on top and overshoot the header.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => lenis.scrollTo(target));
+      });
     };
 
     document.addEventListener("click", handleAnchorClick);

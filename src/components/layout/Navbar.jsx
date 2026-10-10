@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { brand, navLinks } from "@/lib/site";
@@ -17,33 +17,43 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState("");
   const { scrollY, scrollYProgress } = useScroll();
 
+  // Highlight the nav link for the section that spans a fixed line ~35% down
+  // the viewport. Computed from positions on every scroll rather than from
+  // IntersectionObserver entries: the observer only reports sections whose
+  // visibility *changed*, so "most visible among this batch" could name a
+  // section that was merely entering while another still owned the screen.
+  // Sections without a nav entry (process, reviews, FAQ) clear the highlight
+  // instead of leaving the previous link lit.
+  const updateActiveSection = useCallback(() => {
+    const line = window.innerHeight * 0.35;
+    let current = "";
+    for (const link of navLinks) {
+      const section = document.querySelector(link.href);
+      if (!section) continue;
+      const { top, bottom } = section.getBoundingClientRect();
+      if (top <= line && bottom > line) {
+        current = link.href;
+        break;
+      }
+    }
+    setActiveSection(current);
+  }, []);
+
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 24);
+    updateActiveSection();
   });
 
-  // Highlight the nav link for whichever section owns the viewport.
   useEffect(() => {
-    const sections = navLinks
-      .map((link) => document.querySelector(link.href))
-      .filter(Boolean);
-
-    if (sections.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActiveSection(`#${visible.target.id}`);
-      },
-      // The band sits in the upper-middle of the screen so a section becomes
-      // "active" as it settles into view, not when its very last pixel enters.
-      { rootMargin: "-25% 0px -55% 0px", threshold: [0, 0.25, 0.5, 1] }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
+    // First pass on the next frame, so a page that loads mid-scroll (back
+    // button, #hash URL) highlights the right link before any scroll event.
+    const frame = requestAnimationFrame(updateActiveSection);
+    window.addEventListener("resize", updateActiveSection);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", updateActiveSection);
+    };
+  }, [updateActiveSection]);
 
   // An open mobile menu must not scroll the page behind it.
   useEffect(() => {

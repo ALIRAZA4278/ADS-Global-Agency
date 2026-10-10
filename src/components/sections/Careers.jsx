@@ -21,7 +21,7 @@ export function Careers() {
   const [state, formAction, pending] = useActionState(submitApplication, initialState);
 
   return (
-    <section id="careers" className="section-y relative scroll-mt-24 overflow-x-clip">
+    <section id="careers" className="section-y relative overflow-x-clip">
       <Starfield count={40} seed={41} className="opacity-50" />
       <div
         aria-hidden="true"

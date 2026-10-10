@@ -14,7 +14,7 @@ export function Faq() {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section className="section-y relative">
+    <section id="faqs" className="section-y relative">
       <div className="shell max-w-4xl!">
         <SectionHeading
           eyebrow={faqs.eyebrow}
