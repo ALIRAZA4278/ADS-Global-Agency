@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote, Star, UserRound } from "lucide-react";
 import { testimonials } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/ui/Reveal";
@@ -99,7 +99,7 @@ export function Testimonials() {
           >
             {testimonials.items.map((item, index) => (
               <Slide
-                key={item.name}
+                key={index}
                 item={item}
                 index={index}
                 offset={ringOffset(index, active)}
@@ -119,10 +119,10 @@ export function Testimonials() {
           <div className="flex items-center gap-2.5">
             {testimonials.items.map((item, index) => (
               <button
-                key={item.name}
+                key={index}
                 type="button"
                 onClick={() => setActive(index)}
-                aria-label={`Show testimonial from ${item.name}`}
+                aria-label={`Show testimonial ${index + 1}`}
                 aria-current={index === active}
                 className={cn(
                   "h-1.5 rounded-full transition-all duration-400",
@@ -141,7 +141,7 @@ export function Testimonials() {
 
         {/* Screen readers get the position without watching the animation. */}
         <p aria-live="polite" className="sr-only">
-          Testimonial {active + 1} of {COUNT}: {testimonials.items[active].name}
+          Testimonial {active + 1} of {COUNT}: {testimonials.items[active].service}
         </p>
       </div>
     </section>
@@ -216,12 +216,12 @@ function Slide({ item, offset, onSelect, onSwipe }) {
         </blockquote>
 
         <figcaption className="mt-7 flex items-center gap-3.5 border-t border-line pt-6">
-          <span className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-[linear-gradient(140deg,color-mix(in_oklab,var(--color-brand)_28%,transparent),color-mix(in_oklab,var(--color-accent)_22%,transparent))] text-sm font-semibold text-white">
-            {item.initials}
+          <span className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-[linear-gradient(140deg,color-mix(in_oklab,var(--color-brand)_28%,transparent),color-mix(in_oklab,var(--color-accent)_22%,transparent))] text-white">
+            <UserRound className="h-5 w-5" />
           </span>
           <span>
-            <span className="block text-sm font-medium">{item.name}</span>
-            <span className="block text-xs text-faint">{item.role}</span>
+            <span className="block text-sm font-medium">Client</span>
+            <span className="block text-xs text-faint">{item.service}</span>
           </span>
         </figcaption>
       </motion.figure>

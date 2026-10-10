@@ -1045,37 +1045,35 @@ export const packages = {
   ],
 };
 
+/**
+ * DUMMY reviews — placeholders until real client feedback is in. Kept
+ * deliberately anonymous (no names, no companies) and free of specific
+ * figures, so nothing on the page reads as a claim about a real client.
+ * `service` is the only attribution shown under each quote.
+ */
 export const testimonials = {
   eyebrow: "Client stories",
   title: "What it's like to work with us",
   items: [
     {
       quote:
-        "They shipped in six weeks what our previous agency couldn't finish in six months. The difference was the process, not the price.",
-      name: "Sarah Whitfield",
-      role: "Founder, GracePoint Medical",
-      initials: "SW",
+        "Clear process from the first call. We always knew what was being built, what came next, and what it would cost.",
+      service: "Website Development",
     },
     {
       quote:
-        "Our organic traffic tripled in one quarter. They explained every decision in language I could take straight to my board.",
-      name: "Daniel Okafor",
-      role: "CMO, Workoura",
-      initials: "DO",
+        "They took a rough idea and turned it into a product we were proud to launch. Communication was fast and honest throughout.",
+      service: "Product Design & UI/UX",
     },
     {
       quote:
-        "The storefront looks like a brand ten times our size. Conversion went from 1.2% to 3.4% in the first month.",
-      name: "Ayesha Rahman",
-      role: "Owner, Halwaiii",
-      initials: "AR",
+        "Our new storefront feels like a much bigger brand. The checkout is smooth and the store is easy for us to manage.",
+      service: "E-Commerce",
     },
     {
       quote:
-        "Genuinely responsive team. Questions answered same day, and they pushed back when we were about to make a mistake.",
-      name: "Marco Bellini",
-      role: "Product Lead, Health Mate",
-      initials: "MB",
+        "Genuinely responsive team. Questions answered the same day, and they pushed back when we were about to make a mistake.",
+      service: "Business Automation",
     },
   ],
 };
