@@ -25,7 +25,7 @@ export function Careers() {
       <Starfield count={40} seed={41} className="opacity-50" />
       <div
         aria-hidden="true"
-        className="absolute left-1/2 top-1/4 -z-10 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-accent)_10%,transparent),transparent_70%)] blur-3xl"
+        className="absolute left-1/2 top-1/4 -z-10 h-[30rem] w-[30rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-accent)_10%,transparent),transparent_70%)]"
       />
 
       <div className="shell relative">

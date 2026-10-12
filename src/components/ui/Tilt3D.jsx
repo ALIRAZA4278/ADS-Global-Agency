@@ -87,7 +87,7 @@ export function Tilt3D({
         onMouseMove={handleMove}
         onMouseLeave={handleLeave}
         className={cn(
-          "relative h-full transition-transform duration-200 ease-out will-change-transform",
+          "relative h-full transition-transform duration-200 ease-out",
           innerClassName
         )}
         style={{

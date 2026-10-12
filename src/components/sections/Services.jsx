@@ -73,7 +73,6 @@ export function Services() {
         <Reveal delay={0.1}>
           <div
             ref={trackRef}
-            data-lenis-prevent
             className="hide-scrollbar mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain pb-2 sm:mt-16"
           >
             {services.items.map((service, index) => (
@@ -83,7 +82,7 @@ export function Services() {
                 className="w-[86%] shrink-0 snap-start sm:w-[62%] lg:w-[46%]"
               >
                 <Tilt3D innerClassName="rounded-2xl" max={6}>
-                  <SpotlightCard as="article" className="h-full p-7 sm:p-8">
+                  <SpotlightCard as="article" className="h-full p-6 sm:p-8">
                     {/* Oversized index, echoing the process deck. */}
                     <span
                       aria-hidden="true"
@@ -98,8 +97,10 @@ export function Services() {
                       className="pointer-events-none absolute left-0 top-8 h-16 w-0.5 origin-top scale-y-0 rounded-full bg-[linear-gradient(180deg,var(--color-brand),var(--color-accent))] transition-transform duration-500 group-hover/spot:scale-y-100"
                     />
 
-                    <div className="relative flex h-full gap-6">
-                      <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-line bg-ink text-brand-soft transition-all duration-300 group-hover/spot:border-brand/40 group-hover/spot:text-accent">
+                    {/* Mobile stacks the icon above the copy, so the text gets the
+                        card's full width; side by side from sm up. */}
+                    <div className="relative flex h-full flex-col gap-5 sm:flex-row sm:gap-6">
+                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-line bg-ink sm:h-14 sm:w-14 text-brand-soft transition-all duration-300 group-hover/spot:border-brand/40 group-hover/spot:text-accent">
                         <Icon name={service.icon} className="h-6 w-6" />
                       </span>
 

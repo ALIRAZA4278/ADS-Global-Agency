@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronLeft, ChevronRight, Expand, MousePointer2, Plus, X } from "lucide-react";
@@ -37,6 +38,13 @@ const tabs = [
   })),
 ];
 
+const noopSubscribe = () => () => {};
+
+/** False during SSR and hydration, true after: gates the body portal. */
+function useIsClient() {
+  return useSyncExternalStore(noopSubscribe, () => true, () => false);
+}
+
 function describe(item) {
   const kind = labels[item.category];
   return item.title ? `${kind} for ${item.title}` : kind;
@@ -52,6 +60,7 @@ export function PortfolioGallery() {
   const [shown, setShown] = useState(PAGE_SIZE);
   const [openIndex, setOpenIndex] = useState(null);
   const lastTileRef = useRef(null);
+  const isClient = useIsClient();
 
   const items =
     filter === ALL
@@ -129,7 +138,7 @@ export function PortfolioGallery() {
             >
               <Plus className="h-4 w-4" />
               Load more
-              <span className="text-faint">
+              <span className="text-muted">
                 ({items.length - shown} more)
               </span>
             </Button>
@@ -137,16 +146,24 @@ export function PortfolioGallery() {
         )}
       </div>
 
-      <AnimatePresence>
-        {openIndex !== null && (
-          <Lightbox
-            items={items}
-            index={openIndex}
-            onIndex={setOpenIndex}
-            onClose={close}
-          />
+      {/* Portalled to <body>: the section has content-visibility (paint
+          containment), which would otherwise make it the containing block
+          for this position: fixed overlay. The portal stays mounted so
+          AnimatePresence can still play the closing fade. */}
+      {isClient &&
+        createPortal(
+          <AnimatePresence>
+            {openIndex !== null && (
+              <Lightbox
+                items={items}
+                index={openIndex}
+                onIndex={setOpenIndex}
+                onClose={close}
+              />
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </section>
   );
 }
@@ -196,7 +213,7 @@ function Tile({ item, onOpen }) {
         {scrolls ? (
           <Image
             src={item.src}
-            alt={describe(item)}
+            alt=""
             width={item.width}
             height={item.height}
             sizes={TILE_SIZES}
@@ -209,7 +226,7 @@ function Tile({ item, onOpen }) {
         ) : (
           <Image
             src={item.src}
-            alt={describe(item)}
+            alt=""
             fill
             sizes={TILE_SIZES}
             placeholder="blur"

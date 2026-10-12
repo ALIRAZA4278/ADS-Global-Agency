@@ -76,17 +76,21 @@ export function Navbar() {
           className={cn(
             "transition-all duration-500",
             scrolled
-              ? "border-b border-line bg-ink/85 backdrop-blur-xl"
+              ? "border-b border-line bg-ink/85 backdrop-blur-md"
               : "border-b border-transparent bg-transparent"
           )}
         >
           <nav className="shell flex h-18 items-center justify-between gap-6 py-4">
-            <a href="#top" aria-label={brand.fullName} className="flex items-center">
+            {/* The image alt names the link; an aria-label too would read the
+                name twice. */}
+            <a href="#top" className="flex items-center">
               <Image
-                src="/logo-mark.png"
+                src="/logo-mark.webp"
                 alt={brand.fullName}
-                width={2172}
-                height={601}
+                // Display size (sm:h-12), so the srcset tops out at 2x of
+                // what's shown instead of the 2172px source.
+                width={174}
+                height={48}
                 preload
                 className="h-11 w-auto sm:h-12"
               />

@@ -115,11 +115,11 @@ function FeatureList({ features }) {
 
   return (
     <div className="mt-6 flex-1 border-t border-line pt-6">
-      {/* data-lenis-prevent lets the wheel scroll this list instead of being
-          captured by the page's smooth scroll. The bottom fade is a mask, not
-          an overlay, so it works on the featured card's tinted background. */}
+      {/* Lenis (allowNestedScroll) passes the wheel to this list while it can
+          scroll, then back to the page at either end, so it never traps the
+          page. The bottom fade is a mask, not an overlay, so it works on the
+          featured card's tinted background. */}
       <div
-        data-lenis-prevent
         tabIndex={0}
         aria-label={`${features.length} included features`}
         onScroll={(event) => {
@@ -127,7 +127,7 @@ function FeatureList({ features }) {
           setAtEnd(el.scrollTop + el.clientHeight >= el.scrollHeight - 4);
         }}
         className={cn(
-          "max-h-80 overflow-y-auto overscroll-contain pr-2 [scrollbar-color:var(--color-line-strong)_transparent] [scrollbar-width:thin]",
+          "max-h-80 overflow-y-auto pr-2 [scrollbar-color:var(--color-line-strong)_transparent] [scrollbar-width:thin]",
           !atEnd && "mask-[linear-gradient(to_bottom,black_80%,transparent)]"
         )}
       >

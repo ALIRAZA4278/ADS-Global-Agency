@@ -38,18 +38,30 @@
   --animate-shimmer: shimmer 2.6s linear infinite;
   --animate-pulse-ring: pulse-ring 3s ease-out infinite;
   --animate-scroll-hint: scroll-hint 2s ease-in-out infinite;
-  /* Duration and delay are set per-star inline so the field doesn't pulse in unison. */
-  --animate-twinkle: twinkle 4s ease-in-out infinite;
+  /* Each starfield layer sets its own duration/delay inline, so the layers
+     drift in and out of phase rather than pulsing in unison. Opacity only:
+     it runs on the compositor, with no repaint. */
+  --animate-twinkle: twinkle 6s ease-in-out infinite;
+  /* Above-the-fold entrance. Transform only, never opacity: text that starts
+     invisible can't be painted (or counted as LCP) until it fades in. */
+  --animate-rise: rise 0.8s cubic-bezier(0.21, 0.47, 0.32, 0.98) both;
 
   @keyframes twinkle {
     0%,
     100% {
-      opacity: var(--star-opacity, 0.5);
-      transform: scale(1);
+      opacity: 1;
     }
     50% {
-      opacity: calc(var(--star-opacity, 0.5) * 0.28);
-      transform: scale(0.7);
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      transform: translate3d(0, 22px, 0);
+    }
+    to {
+      transform: none;
     }
   }
 
@@ -235,6 +247,20 @@
      rather than a screen-height of empty padding above it. Both Lenis and
      native anchor jumps read this alongside html's scroll-padding-top. */
   scroll-margin-top: -5rem;
+  /* Off-screen sections skip style, layout and paint until they come near
+     the viewport, which takes most of the long page out of the first render.
+     `auto` in the intrinsic size makes the browser remember each section's
+     real height once it has rendered, so the scrollbar settles after the
+     first pass. (Paint containment also makes each section the containing
+     block for position: fixed children, so overlays such as the gallery
+     lightbox are portalled to <body>.) */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1000px;
+  /* Set by Providers before the first anchor jump: every section renders
+     once, so the jump measures real heights instead of the estimate. */
+  :root[data-render-all] & {
+    content-visibility: visible;
+  }
   @media (width >= 768px) {
     padding-block: 8rem;
     scroll-margin-top: -7rem;

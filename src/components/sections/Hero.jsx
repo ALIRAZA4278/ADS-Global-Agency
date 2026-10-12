@@ -1,7 +1,3 @@
-"use client";
-
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "motion/react";
 import { ArrowRight, Check } from "lucide-react";
 import { hero } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -9,67 +5,48 @@ import { Button } from "@/components/ui/Button";
 import { InquiryForm } from "@/components/inquiry/InquiryForm";
 import { Starfield } from "@/components/ui/Starfield";
 
-const rise = {
-  hidden: { opacity: 0, y: 26 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.75, ease: [0.21, 0.47, 0.32, 0.98] },
-  },
-};
+/**
+ * A server component: the hero is the page's LCP, so its copy is in the HTML
+ * and painted on first frame, not held at opacity 0 until JavaScript hydrates
+ * and fades it in. The entrance is a CSS slide (transform only, see
+ * `animate-rise` in globals.css), which runs without JS and never hides the
+ * text. Only the form and buttons are client islands.
+ */
+const step = (index) => ({ animationDelay: `${index * 80}ms` });
 
 export function Hero() {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-
-  // Only the backdrop parallaxes. The copy and the form hold still — drifting
-  // or fading a form while someone is filling it in is hostile.
-  const glowY = useTransform(scrollYProgress, [0, 1], [0, -70]);
-
   return (
-    <section
-      ref={ref}
-      id="top"
-      className="relative overflow-hidden pt-40 pb-20 lg:pt-48 lg:pb-28"
-    >
-      <Backdrop y={glowY} />
+    <section id="top" className="relative overflow-hidden pt-40 pb-20 lg:pt-48 lg:pb-28">
+      <Backdrop />
 
       <div className="shell relative z-10">
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{ visible: { transition: { staggerChildren: 0.09 } } }}
-          className="grid gap-12 lg:grid-cols-[1fr_minmax(0,29rem)] lg:items-start lg:gap-x-16 lg:gap-y-10 xl:gap-x-20"
-        >
+        <div className="grid gap-12 lg:grid-cols-[1fr_minmax(0,29rem)] lg:items-start lg:gap-x-16 lg:gap-y-10 xl:gap-x-20">
           {/* Pitch */}
           <div>
             <h1 className="text-4xl leading-[1.06] tracking-tight sm:text-5xl xl:text-6xl">
-              {hero.titleLines.map((line) => (
-                <motion.span
+              {hero.titleLines.map((line, index) => (
+                <span
                   key={line.text}
-                  variants={rise}
+                  style={step(index)}
                   className={cn(
-                    "block",
+                    "block animate-rise",
                     line.bold ? "font-bold" : "font-light text-body/90",
                     line.gradient && "text-gradient"
                   )}
                 >
                   {line.text}
-                </motion.span>
+                </span>
               ))}
             </h1>
 
-            <motion.p
-              variants={rise}
-              className="mt-7 max-w-lg text-pretty leading-relaxed text-muted"
+            <p
+              style={step(2)}
+              className="mt-7 max-w-lg animate-rise text-pretty leading-relaxed text-muted"
             >
               {hero.description}
-            </motion.p>
+            </p>
 
-            <motion.ul variants={rise} className="mt-8 flex flex-col gap-3">
+            <ul style={step(3)} className="mt-8 flex animate-rise flex-col gap-3">
               {hero.trust.map((item) => (
                 <li key={item} className="flex items-center gap-3 text-sm text-body/85">
                   <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-accent/35 bg-accent/10 text-accent">
@@ -78,9 +55,9 @@ export function Hero() {
                   {item}
                 </li>
               ))}
-            </motion.ul>
+            </ul>
 
-            <motion.div variants={rise} className="mt-9 flex flex-wrap items-center gap-4">
+            <div style={step(4)} className="mt-9 flex animate-rise flex-wrap items-center gap-4">
               <Button
                 href={hero.secondaryCta.href}
                 variant="outline"
@@ -91,16 +68,12 @@ export function Hero() {
                 <ArrowRight className="h-4 w-4" />
               </Button>
               <TrustpilotButton href={hero.trustpilotHref} />
-            </motion.div>
+            </div>
           </div>
 
           {/* The form keeps the #contact anchor, so every existing CTA on the
               page still lands on it now that the contact section is gone. */}
-          <motion.div
-            variants={rise}
-            id="contact"
-            className="lg:sticky lg:top-36"
-          >
+          <div id="contact" style={step(2)} className="animate-rise lg:sticky lg:top-36">
             <div className="relative rounded-3xl border border-line bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-surface))] p-6 shadow-[0_40px_120px_-50px_var(--color-brand)] sm:p-8">
               <span
                 aria-hidden="true"
@@ -118,17 +91,17 @@ export function Hero() {
                 <InquiryForm idPrefix="hero" />
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
-
 // A pill button in Trustpilot's green, sized to sit beside the hero CTA.
 // The star is hand-drawn rather than an external logo asset, which keeps the
-// page free of outside image requests.
+// page free of outside image requests. Text is near-black, not white: white
+// on this green is 2.6:1, well under the 4.5:1 that readable text needs.
 const TRUSTPILOT_GREEN = "#00B67A";
 const STAR_PATH =
   "M0,-10 L2.9,-3.1 L10,-3.1 L4.3,1.2 L6.5,8 L0,3.8 L-6.5,8 L-4.3,1.2 L-10,-3.1 L-2.9,-3.1 Z";
@@ -137,7 +110,7 @@ function TrustpilotButton({ href }) {
   const content = (
     <>
       <svg viewBox="-10 -10 20 20" aria-hidden="true" className="h-5 w-5">
-        <path d={STAR_PATH} fill="#fff" />
+        <path d={STAR_PATH} fill="currentColor" />
       </svg>
       Trustpilot Reviews
     </>
@@ -145,7 +118,7 @@ function TrustpilotButton({ href }) {
 
   const className =
     "inline-flex h-14 w-full items-center justify-center gap-2 whitespace-nowrap rounded-full px-8 sm:w-auto " +
-    "text-base font-semibold text-white shadow-[0_10px_40px_-14px_#00B67A]";
+    "text-base font-semibold text-[#04140d] shadow-[0_10px_40px_-14px_#00B67A]";
   const style = { backgroundColor: TRUSTPILOT_GREEN };
 
   // No profile URL yet — plain, not a link to nowhere. Set hero.trustpilotHref
@@ -171,16 +144,22 @@ function TrustpilotButton({ href }) {
   );
 }
 
-/** Starfield, drifting colour blobs and a fade into the next section. */
-function Backdrop({ y }) {
+/**
+ * Starfield, drifting colour blobs and a fade into the next section.
+ *
+ * The blobs are radial gradients that already fade to transparent, so they
+ * need no `blur()` filter; a blur on an element this size is one of the
+ * costliest things to repaint, and these animate continuously.
+ */
+function Backdrop() {
   return (
-    <motion.div style={{ y }} aria-hidden="true" className="absolute inset-0">
+    <div aria-hidden="true" className="absolute inset-0">
       <Starfield count={110} seed={11} />
 
-      <div className="absolute right-[6%] top-[4%] h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-brand)_20%,transparent),transparent_65%)] blur-3xl animate-drift" />
-      <div className="absolute left-[-12%] bottom-[-10%] h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-accent)_14%,transparent),transparent_65%)] blur-3xl animate-drift-slow" />
+      <div className="absolute right-[6%] top-[4%] h-[34rem] w-[34rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-brand)_20%,transparent),transparent_65%)] animate-drift" />
+      <div className="absolute left-[-12%] bottom-[-10%] h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-accent)_14%,transparent),transparent_65%)] animate-drift-slow" />
 
       <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(to_top,var(--color-ink),transparent)]" />
-    </motion.div>
+    </div>
   );
 }

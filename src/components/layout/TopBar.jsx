@@ -13,7 +13,7 @@ import { Flag } from "@/components/ui/Flag";
  */
 export function TopBar() {
   return (
-    <div className="border-b border-line bg-ink-2/80 backdrop-blur-xl">
+    <div className="border-b border-line bg-ink-2">
       <div className="shell flex h-12 items-center justify-between gap-5 text-sm">
         <div className="flex min-w-0 items-center gap-6 overflow-x-auto">
           {/* With the email gone, the phones are the bar's content on every

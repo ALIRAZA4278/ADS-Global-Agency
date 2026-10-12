@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useInView, useReducedMotion } from "motion/react";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { testimonials } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -42,22 +42,24 @@ export function Testimonials() {
   const [paused, setPaused] = useState(false);
   const reduceMotion = useReducedMotion();
   const stageRef = useRef(null);
+  const inView = useInView(stageRef, { margin: "100px" });
 
   const go = useCallback((direction) => {
     setActive((current) => (current + direction + COUNT) % COUNT);
   }, []);
 
-  // Autoplay, held while the visitor is hovering, focused inside, or has the
-  // tab in the background.
+  // Autoplay, held while the visitor is hovering, focused inside, has the tab
+  // in the background, or has scrolled away — no point animating eight 3D
+  // cards nobody can see.
   useEffect(() => {
-    if (paused || reduceMotion) return;
+    if (paused || reduceMotion || !inView) return;
 
     const timer = setInterval(() => {
       if (!document.hidden) go(1);
     }, AUTOPLAY_MS);
 
     return () => clearInterval(timer);
-  }, [paused, reduceMotion, go]);
+  }, [paused, reduceMotion, inView, go]);
 
   const handleKeyDown = (event) => {
     if (event.key === "ArrowLeft") {
@@ -73,7 +75,7 @@ export function Testimonials() {
     <section id="reviews" className="section-y relative overflow-x-clip">
       <div
         aria-hidden="true"
-        className="absolute left-1/2 top-0 -z-10 h-96 w-[52rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,color-mix(in_oklab,var(--color-accent)_8%,transparent),transparent_70%)] blur-3xl"
+        className="absolute left-1/2 top-0 -z-10 h-96 w-[52rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,color-mix(in_oklab,var(--color-accent)_8%,transparent),transparent_70%)]"
       />
 
       <div className="shell">
@@ -117,21 +119,26 @@ export function Testimonials() {
             <ChevronLeft className="h-4.5 w-4.5" />
           </ArrowButton>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center">
             {testimonials.items.map((item, index) => (
+              // The button is a 24px tap target; the dot inside is the visual.
               <button
                 key={index}
                 type="button"
                 onClick={() => setActive(index)}
                 aria-label={`Show testimonial ${index + 1}`}
                 aria-current={index === active}
-                className={cn(
-                  "h-1.5 rounded-full transition-all duration-400",
-                  index === active
-                    ? "w-8 bg-[linear-gradient(90deg,var(--color-brand),var(--color-accent))]"
-                    : "w-1.5 bg-line-strong hover:bg-muted"
-                )}
-              />
+                className="group/dot flex h-6 min-w-6 items-center justify-center px-[5px]"
+              >
+                <span
+                  className={cn(
+                    "h-1.5 rounded-full transition-all duration-400",
+                    index === active
+                      ? "w-8 bg-[linear-gradient(90deg,var(--color-brand),var(--color-accent))]"
+                      : "w-1.5 bg-line-strong group-hover/dot:bg-muted"
+                  )}
+                />
+              </button>
             ))}
           </div>
 

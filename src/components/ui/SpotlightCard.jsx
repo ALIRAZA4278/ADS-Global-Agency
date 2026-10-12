@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -12,13 +12,22 @@ import { cn } from "@/lib/utils";
  */
 export function SpotlightCard({ children, className, as: Tag = "div", ...props }) {
   const ref = useRef(null);
+  const frame = useRef(0);
 
+  useEffect(() => () => cancelAnimationFrame(frame.current), []);
+
+  // Batched into one rAF per frame: reading the rect straight after the
+  // previous move's style write would force a layout on every mousemove.
   const handleMouseMove = (event) => {
-    const node = ref.current;
-    if (!node) return;
-    const rect = node.getBoundingClientRect();
-    node.style.setProperty("--spot-x", `${event.clientX - rect.left}px`);
-    node.style.setProperty("--spot-y", `${event.clientY - rect.top}px`);
+    const { clientX, clientY } = event;
+    cancelAnimationFrame(frame.current);
+    frame.current = requestAnimationFrame(() => {
+      const node = ref.current;
+      if (!node) return;
+      const rect = node.getBoundingClientRect();
+      node.style.setProperty("--spot-x", `${clientX - rect.left}px`);
+      node.style.setProperty("--spot-y", `${clientY - rect.top}px`);
+    });
   };
 
   return (

@@ -6,6 +6,9 @@ const nextConfig = {
     formats: ["image/avif", "image/webp"],
   },
   experimental: {
+    // The whole site is one page with ~12KB of Tailwind CSS: inlining it
+    // removes the only render-blocking request before first paint.
+    inlineCss: true,
     serverActions: {
       // Résumé uploads in the careers form are capped at 4MB; the extra
       // headroom covers multipart boundaries and the other fields.

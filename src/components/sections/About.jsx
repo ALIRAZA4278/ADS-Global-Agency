@@ -14,7 +14,7 @@ export function About() {
       {/* Soft wash so the section separates from the ones either side. */}
       <div
         aria-hidden="true"
-        className="absolute left-1/2 top-1/2 -z-10 h-[36rem] w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-brand)_10%,transparent),transparent_70%)] blur-3xl"
+        className="absolute left-1/2 top-1/2 -z-10 h-[36rem] w-[36rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-brand)_10%,transparent),transparent_70%)]"
       />
 
       <div className="shell">
@@ -77,7 +77,7 @@ export function About() {
                 initial={{ rotate: 0 }}
                 animate={{ rotate: 360 }}
                 transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
-                className="pointer-events-none absolute -inset-px -z-10 rounded-3xl opacity-40 [background:conic-gradient(from_0deg,transparent,var(--color-brand),transparent_38%,var(--color-accent),transparent_75%)] blur-[2px]"
+                className="pointer-events-none absolute -inset-px -z-10 rounded-3xl opacity-40 [background:conic-gradient(from_0deg,transparent,var(--color-brand),transparent_38%,var(--color-accent),transparent_75%)]"
               />
 
               <div className="rounded-[1.25rem] bg-ink-2 p-6 sm:p-7">
@@ -135,7 +135,7 @@ function TeamMember({ member }) {
             <span aria-hidden="true" className="bg-grid absolute inset-0 opacity-40" />
             <span
               aria-hidden="true"
-              className="absolute h-24 w-24 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-brand)_30%,transparent),transparent_70%)] blur-2xl"
+              className="absolute h-24 w-24 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--color-brand)_30%,transparent),transparent_70%)]"
             />
             <span className="relative text-3xl font-bold tracking-tight text-gradient">
               {initials}

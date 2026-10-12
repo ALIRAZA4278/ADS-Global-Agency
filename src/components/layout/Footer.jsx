@@ -19,7 +19,7 @@ export function Footer() {
       />
       <div
         aria-hidden="true"
-        className="absolute bottom-[-16rem] left-1/2 h-[26rem] w-[46rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,color-mix(in_oklab,var(--color-brand)_12%,transparent),transparent_70%)] blur-3xl"
+        className="absolute bottom-[-16rem] left-1/2 h-[26rem] w-[46rem] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,color-mix(in_oklab,var(--color-brand)_12%,transparent),transparent_70%)]"
       />
 
       <div className="shell relative py-12">
@@ -27,10 +27,12 @@ export function Footer() {
         <div className="flex flex-col items-center gap-6 text-center md:flex-row md:justify-between md:text-left">
           <a href="#top" className="inline-flex items-center">
             <Image
-              src="/logo-mark.png"
+              src="/logo-mark.webp"
               alt={brand.fullName}
-              width={2172}
-              height={601}
+              // Display size (h-9), so next/image's srcset tops out at 2x of
+              // what's shown instead of the 2172px source.
+              width={130}
+              height={36}
               className="h-9 w-auto"
             />
           </a>

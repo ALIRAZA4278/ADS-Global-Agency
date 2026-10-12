@@ -30,12 +30,26 @@ export function Providers({ children }) {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       touchMultiplier: 1.6,
+      // Nested scrollers (the services slider, long package lists) get the
+      // wheel only along an axis they can actually scroll, and only until
+      // they hit their end; everything else stays with the page. Marking
+      // them data-lenis-prevent instead handed them every wheel event, so
+      // vertical scrolling stalled whenever the cursor was over one.
+      allowNestedScroll: true,
     });
 
     let frame = requestAnimationFrame(function raf(time) {
       lenis.raf(time);
       frame = requestAnimationFrame(raf);
     });
+
+    // Sections render lazily (content-visibility: auto), so until each has
+    // been on screen its height is only an estimate. Before anything jumps
+    // across the page, render them all once so positions are real.
+    const renderAllSections = () => {
+      document.documentElement.dataset.renderAll = "";
+    };
+    if (window.location.hash) renderAllSections();
 
     // Hash links must go through Lenis or the page jumps and then snaps back.
     const handleAnchorClick = (event) => {
@@ -50,6 +64,7 @@ export function Providers({ children }) {
 
       event.preventDefault();
       window.history.replaceState(null, "", hash);
+      renderAllSections();
 
       // Measure two frames later, not now. A click from the mobile menu also
       // closes it, which releases body's overflow lock and brings the
@@ -62,17 +77,30 @@ export function Providers({ children }) {
       // Lenis's scroll-padding/scroll-margin reading, so the section's content
       // (its .shell, skipping the section's top padding) lands a fixed gap
       // under the fixed header whatever the breakpoint or header height.
+      //
+      // renderAllSections() above makes the measurement exact; the
+      // post-scroll check is a safety net for anything that changed height
+      // mid-scroll (an image or font landing late), and is usually a no-op.
+      const measure = () => {
+        const header = document.querySelector("header");
+        const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
+        const anchorPoint = target.querySelector(":scope > .shell") ?? target;
+        return Math.max(
+          0,
+          anchorPoint.getBoundingClientRect().top + window.scrollY - headerBottom - HEADER_GAP
+        );
+      };
+
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          const header = document.querySelector("header");
-          const headerBottom = header ? header.getBoundingClientRect().bottom : 0;
-          const anchorPoint = target.querySelector(":scope > .shell") ?? target;
-          const y =
-            anchorPoint.getBoundingClientRect().top +
-            window.scrollY -
-            headerBottom -
-            HEADER_GAP;
-          lenis.scrollTo(Math.max(0, y));
+          lenis.scrollTo(measure(), {
+            onComplete: () => {
+              const corrected = measure();
+              if (Math.abs(corrected - window.scrollY) > 2) {
+                lenis.scrollTo(corrected, { duration: 0.45 });
+              }
+            },
+          });
         });
       });
     };
