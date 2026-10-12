@@ -13,14 +13,8 @@ import { useInquiry } from "@/components/inquiry/InquiryContext";
 
 export function Packages() {
   const { openInquiry } = useInquiry();
-  // "All" stays available but is not the default: it lists every tier of every
-  // category at once, which is a lot of scrolling before the first decision.
-  const [filter, setFilter] = useState(packages.categories[1]);
-
-  const visible =
-    filter === "All"
-      ? packages.plans
-      : packages.plans.filter((plan) => plan.category === filter);
+  const [filter, setFilter] = useState(packages.categories[0]);
+  const visible = packages.plans.filter((plan) => plan.category === filter);
 
   return (
     <section id="packages" className="section-y relative overflow-hidden">

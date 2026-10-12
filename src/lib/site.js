@@ -60,7 +60,6 @@ export const navLinks = [
 ];
 
 export const hero = {
-  eyebrow: "Digital Agency",
   /**
    * Rendered one line per entry. `bold` flips the weight so the headline
    * reads light-then-heavy; `gradient` paints the final line in the accent.
@@ -385,7 +384,6 @@ export const packages = {
   description:
     "Fixed-scope packages across everything we build. Pick a category to see its tiers \u2014 every price is the full cost, agreed before we start.",
   categories: [
-    "All",
     "Website Design",
     "E-Commerce",
     "Social Media Marketing",
@@ -1124,6 +1122,11 @@ export const packages = {
 export const testimonials = {
   eyebrow: "Client stories",
   title: "What it's like to work with us",
+  // Instagram highlight of client feedback screenshots.
+  proofCta: {
+    label: "Proof? Right here.",
+    href: "https://www.instagram.com/s/aGlnaGxpZ2h0OjE4MTMzNTQ2OTIxMzg5NDg0?xtok=MWl2NDNzNTVjOTNjMA==",
+  },
   items: [
     {
       name: "Jacob",
@@ -1189,7 +1192,7 @@ export const faqs = {
     },
     {
       q: "What happens after launch?",
-      a: "Every development package includes three months of support — bug fixes, small content changes and performance monitoring. After that you can move to a monthly retainer or take full ownership of the code.",
+      a: "Every development package includes 14 days of free post-launch support — bug fixes, small content changes and performance monitoring. After that you can move to a monthly retainer or take full ownership of the code.",
     },
     {
       q: "Who owns the code and design files?",

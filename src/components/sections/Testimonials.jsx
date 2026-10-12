@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { testimonials } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
@@ -138,6 +139,19 @@ export function Testimonials() {
             <ChevronRight className="h-4.5 w-4.5" />
           </ArrowButton>
         </div>
+
+        <Reveal delay={0.1} className="mt-12 flex justify-center">
+          <Button
+            href={testimonials.proofCta.href}
+            target="_blank"
+            rel="noreferrer"
+            size="lg"
+          >
+            {testimonials.proofCta.label}
+            <ArrowUpRight className="h-4 w-4" />
+            <span className="sr-only">(opens Instagram in a new tab)</span>
+          </Button>
+        </Reveal>
 
         {/* Screen readers get the position without watching the animation. */}
         <p aria-live="polite" className="sr-only">
