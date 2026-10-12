@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { ChevronLeft, ChevronRight, Quote, Star, UserRound } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { testimonials } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/ui/Reveal";
@@ -94,7 +94,7 @@ export function Testimonials() {
             onMouseLeave={() => setPaused(false)}
             onFocus={() => setPaused(true)}
             onBlur={() => setPaused(false)}
-            className="relative mt-14 h-[28rem] rounded-3xl focus-visible:outline-none sm:h-[24rem]"
+            className="relative mt-14 h-[30rem] rounded-3xl focus-visible:outline-none sm:h-[26rem]"
             style={{ perspective: "1400px" }}
           >
             {testimonials.items.map((item, index) => (
@@ -141,7 +141,8 @@ export function Testimonials() {
 
         {/* Screen readers get the position without watching the animation. */}
         <p aria-live="polite" className="sr-only">
-          Testimonial {active + 1} of {COUNT}: {testimonials.items[active].service}
+          Testimonial {active + 1} of {COUNT}: {testimonials.items[active].name},{" "}
+          {testimonials.items[active].company}
         </p>
       </div>
     </section>
@@ -211,22 +212,33 @@ function Slide({ item, offset, onSelect, onSwipe }) {
           </div>
         </div>
 
-        <blockquote className="mt-6 flex-1 text-pretty text-lg leading-relaxed text-body/90">
+        <blockquote className="mt-6 flex-1 text-pretty text-base leading-relaxed sm:text-lg text-body/90">
           {item.quote}
         </blockquote>
 
         <figcaption className="mt-7 flex items-center gap-3.5 border-t border-line pt-6">
-          <span className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-[linear-gradient(140deg,color-mix(in_oklab,var(--color-brand)_28%,transparent),color-mix(in_oklab,var(--color-accent)_22%,transparent))] text-white">
-            <UserRound className="h-5 w-5" />
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line bg-[linear-gradient(140deg,color-mix(in_oklab,var(--color-brand)_28%,transparent),color-mix(in_oklab,var(--color-accent)_22%,transparent))] text-sm font-semibold text-white">
+            {initials(item.name)}
           </span>
           <span>
-            <span className="block text-sm font-medium">Client</span>
-            <span className="block text-xs text-faint">{item.service}</span>
+            <span className="block text-sm font-medium">{item.name}</span>
+            <span className="block text-xs text-faint">{item.company}</span>
           </span>
         </figcaption>
       </motion.figure>
     </div>
   );
+}
+
+/** "Byron Jara" → "BJ", "Mr. Gee Gab" → "GG"; honorifics don't count. */
+function initials(name) {
+  return name
+    .replace(/^(mr|mrs|ms|dr)\.?\s+/i, "")
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
 }
 
 function ArrowButton({ children, label, onClick }) {

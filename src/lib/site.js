@@ -1117,34 +1117,60 @@ export const packages = {
 };
 
 /**
- * DUMMY reviews — placeholders until real client feedback is in. Kept
- * deliberately anonymous (no names, no companies) and free of specific
- * figures, so nothing on the page reads as a claim about a real client.
- * `service` is the only attribution shown under each quote.
+ * Real client reviews. Long ones are trimmed for length — sentences dropped
+ * or joined, meaning unchanged — so every card fits the carousel's fixed
+ * stage height.
  */
 export const testimonials = {
   eyebrow: "Client stories",
   title: "What it's like to work with us",
   items: [
     {
+      name: "Jacob",
+      company: "Fitments Corner",
       quote:
-        "Clear process from the first call. We always knew what was being built, what came next, and what it would cost.",
-      service: "Website Development",
+        "These guys are amazing at social media! We have seen a big jump in engagement ever since we started working with Amy and her team. They really understand our brand and create content that fits our voice perfectly. HIGHLY RECOMMENDED!",
     },
     {
+      name: "Byron Jara",
+      company: "Aesthetic Story Clinic",
       quote:
-        "They took a rough idea and turned it into a product we were proud to launch. Communication was fast and honest throughout.",
-      service: "Product Design & UI/UX",
+        "We're really happy with the website you created for Aesthetic Story Clinic. Amy, Mack, and Andrew were all amazing throughout the process. Communication was easy, and everything was handled with care. Even after launch, you were just a message away.",
     },
     {
+      name: "Darlene Bird",
+      company: "TorqueTech Inspections",
       quote:
-        "Our new storefront feels like a much bigger brand. The checkout is smooth and the store is easy for us to manage.",
-      service: "E-Commerce",
+        "ADS Global Agency exceeded my expectations! They designed a sleek, professional, and highly functional website for my startup. They took the time to understand my business needs and delivered a website that truly represents my brand. I highly recommend ADS!",
     },
     {
+      name: "Mr. Gee Gab",
+      company: "GeePractice, England",
       quote:
-        "Genuinely responsive team. Questions answered the same day, and they pushed back when we were about to make a mistake.",
-      service: "Business Automation",
+        "ADS is a fantastic web design company. They built my company website from the beginning at a low price, and supplied the website content and business email address at a special discount. My accountancy practice website is working to perfection.",
+    },
+    {
+      name: "Lynsey",
+      company: "LJJ Business",
+      quote:
+        "Just to let you both know that I am getting extremely positive feedback on the website, from business reps in communities! A huge big thank you from me. You have both been amazing.",
+    },
+    {
+      name: "Diva",
+      company: "Miss Diva",
+      quote:
+        "Thank you so much for your help last year and just helping us get the business started, can't wait to work more with you this year \u{1F970}",
+    },
+    {
+      name: "Aminah",
+      company: "Security Solutions",
+      quote:
+        "Thanks a lot for all your help and support throughout the time. May God bless you with loads of happiness, it was a pleasure working with you.",
+    },
+    {
+      name: "Rebecca Ellen",
+      company: "MIKOROKKE",
+      quote: "Hey, thank you all! You've done amazing. Thank you for all the help!",
     },
   ],
 };
