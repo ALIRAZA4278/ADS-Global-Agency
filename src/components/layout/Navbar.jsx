@@ -156,10 +156,11 @@ export function Navbar() {
             data-lenis-prevent
             className="fixed inset-0 z-40 overflow-y-auto bg-ink/95 backdrop-blur-xl lg:hidden"
           >
-            {/* min-h-full + justify-center centres the list when it fits and
-                lets it scroll when it doesn't; the top padding clears the
-                utility bar and header, which render above this overlay. */}
-            <div className="shell flex min-h-full flex-col justify-center gap-1 pt-32 pb-14">
+            {/* The list starts right under the header rather than centring in
+                the screen, which left a dead gap above it on tall phones. The
+                top padding clears the utility bar (h-12) and header (h-18),
+                which render above this overlay, plus a little breathing room. */}
+            <div className="shell flex flex-col gap-1 pt-34 pb-14">
               {navLinks.map((link, index) => (
                 <motion.a
                   key={link.href}
