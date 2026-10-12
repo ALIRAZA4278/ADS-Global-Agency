@@ -1173,6 +1173,26 @@ export const faqs = {
       q: "Can you work with our existing team?",
       a: "Regularly. We embed alongside in-house designers and developers, follow your conventions and review process, and hand back work your team can maintain.",
     },
+    {
+      q: "What are your payment terms?",
+      a: "50% upfront to start the project, and the remaining 50% on completion.",
+    },
+    {
+      q: "What do you need from me to get started?",
+      a: "Your brief, brand assets and any references you like. If you don't have these yet, we can help you build them.",
+    },
+    {
+      q: "How many revisions are included?",
+      a: "Every package includes 5 rounds of revisions. Extra rounds can be added if needed.",
+    },
+    {
+      q: "Which platforms do you build on?",
+      a: "Every platform except AI site builders — Shopify, Wix, WordPress, or fully custom with Next.js, Node.js, HTML, CSS and PHP. We recommend what fits your goals and budget.",
+    },
+    {
+      q: "Do you offer branding along with web design?",
+      a: "Yes. Logo, brand identity, social media creatives and stationery can all be bundled with your website.",
+    },
   ],
 };
 
