@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { Marquee } from "@/components/sections/Marquee";
+import { PortfolioGallery } from "@/components/sections/PortfolioGallery";
 import { Portfolio } from "@/components/sections/Portfolio";
 import { Services } from "@/components/sections/Services";
 import { Packages } from "@/components/sections/Packages";
@@ -18,6 +19,7 @@ export default function Home() {
       <main>
         <Hero />
         <Marquee />
+        <PortfolioGallery />
         <Portfolio />
         <Services />
         <Packages />

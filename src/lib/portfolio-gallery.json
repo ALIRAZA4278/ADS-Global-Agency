@@ -1,0 +1,351 @@
+{
+  "categories": [
+    {
+      "slug": "logos",
+      "label": "Logo Design"
+    },
+    {
+      "slug": "social",
+      "label": "Social Media"
+    },
+    {
+      "slug": "cards",
+      "label": "Business Cards"
+    }
+  ],
+  "items": [
+    {
+      "src": "/portfolio/logos/logos-01.webp",
+      "width": 1254,
+      "height": 1254,
+      "category": "logos",
+      "title": "Witko Tile",
+      "background": "#01308c",
+      "blurDataURL": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAwAgCdASoMAAwAA4BaJbACdLoAAwkSNV+mIAD+8YGdq1yU5Mxtde17kcQg8rsY/A3EzZgEzy8y/wo2F/ne51SfchHE+5k9/XeLS8AA"
+    },
+    {
+      "src": "/portfolio/social/social-01.webp",
+      "width": 1600,
+      "height": 1600,
+      "category": "social",
+      "title": "My Good Celebrant",
+      "background": "#264873",
+      "blurDataURL": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACwAQCdASoMAAwAA4BaJZACdADW0yQAAP7o7LJUZXdHT0oO8EPOXAmfuRKik4go6AAAAA=="
+    },
+    {
+      "src": "/portfolio/cards/cards-01.webp",
+      "width": 1280,
+      "height": 853,
+      "category": "cards",
+      "title": null,
+      "background": "#c9c2b7",
+      "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADwAQCdASoMAAgAA4BaJYwCsAEKphuI3AAA/vHfNBRDgulrATGZJFwljQqsp4Mlk4uIBu0zLKnix3DvCch/AAAA"
+    },
+    {
+      "src": "/portfolio/logos/logos-02.webp",
+      "width": 1600,
+      "height": 1599,
+      "category": "logos",
+      "title": null,
+      "background": "#ffffff",
+      "blurDataURL": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADQAQCdASoMAAwAA4BaJZwAAujS3xXu6AD++LMJ/daqC8hb1mc4YWaZLh0UjSTY9KyvB9c1O4Gnxo4AAAA="
+    },
+    {
+      "src": "/portfolio/social/social-02.webp",
+      "width": 1080,
+      "height": 1080,
+      "category": "social",
+      "title": "Cemar",
+      "background": "#372727",
+      "blurDataURL": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADwAQCdASoMAAwAA4BaJYgCsAEOPEccUAAA/vGo8A8e3EJz+NTORjn7gf27jRGQp82MuxwBXfGKGA28NyxVdxhyrR5w+B1LmVR2cUDAAAA="
+    },
+    {
+      "src": "/portfolio/cards/cards-02.webp",
+      "width": 1600,
+      "height": 1095,
+      "category": "cards",
+      "title": null,
+      "background": "#a1a1a1",
+      "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADwAQCdASoMAAgAA4BaJaQAAuySSswmFwAAzjLiboUx8obAwF4HAKWOMrV6B4Bl8Htz6KAOgM8q7riD284agAAA"
+    },
+    {
+      "src": "/portfolio/logos/logos-03.webp",
+      "width": 1600,
+      "height": 1600,
+      "category": "logos",
+      "title": "For The Chosen",
+      "background": "#ffffff",
+      "blurDataURL": "data:image/webp;base64,UklGRj4AAABXRUJQVlA4IDIAAACQAQCdASoMAAwAA4BaJaQAAubgnQAA/viwRXddh0jqsSxQ30572/GT+6JUXm6NHgAAAA=="
+    },
+    {
+      "src": "/portfolio/social/social-03.webp",
+      "width": 1000,
+      "height": 1500,
+      "category": "social",
+      "title": null,
+      "background": "#383433",
+      "blurDataURL": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAACwAQCdASoIAAwAA4BaJZwAApwpbGFgAP7sW8VFFP2pVd/G2xIcPdX18OWEY/sIaz+Y6W6pAv4n2gTtjXuLiRbAigAAAA=="
+    },
+    {
+      "src": "/portfolio/cards/cards-03.webp",
+      "width": 1600,
+      "height": 1066,
+      "category": "cards",
+      "title": null,
+      "background": "#2e3232",
+      "blurDataURL": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAAAwAgCdASoMAAgAA4BaJZQAD4iw7ModEiqYAAD+wk+GbgESl4AAnZDxzLFP+MCSoOW7N1/ZShT3eaEqz2lfzxavTsuEK01xdAA="
+    },
+    {
+      "src": "/portfolio/logos/logos-04.webp",
+      "width": 1290,
+      "height": 1372,
+      "category": "logos",
+      "title": "01 Studio",
+      "background": "#ffffff",
+      "blurDataURL": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADQAQCdASoLAAwAA4BaJaQAAubMz/8QAAD++LBqVcPaTp0Z78G91FgJbFngJb3085h8zgAAAAA="
+    },
+    {
+      "src": "/portfolio/social/social-04.webp",
+      "width": 1600,
+      "height": 1600,
+      "category": "social",
+      "title": "Webified Labs",
+      "background": "#edeeef",
+      "blurDataURL": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAACwAQCdASoMAAwAA4BaJaQAAuTtRMAAAP71ScORheF0YeYS/VhA2Ub0uY7istaeSC3Eb/Y+tHIErTeHJZUAAA=="
+    },
+    {
+      "src": "/portfolio/cards/cards-04.webp",
+      "width": 1280,
+      "height": 960,
+      "category": "cards",
+      "title": null,
+      "background": "#d9d9d2",
+      "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAACwAQCdASoMAAkAA4BaJZwAAu15levAAP7opEJ4uvL2zTUw7pJy1rxHEtpe+fnNw2L22HUCiXAAAA=="
+    },
+    {
+      "src": "/portfolio/logos/logos-05.webp",
+      "width": 1600,
+      "height": 1599,
+      "category": "logos",
+      "title": "Dipstick",
+      "background": "#bca6a3",
+      "blurDataURL": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAQAgCdASoMAAwAA4BaJbACdAD0SCz1cOIAAP37npuNOwtfk6Pf+ecWHCv/RSgTq/Fk93QziHuyHarcBnLFp2ad4tz1NNrdG/77T8HL+T8qKeYaCsxW220g9mkfJ3AA"
+    },
+    {
+      "src": "/portfolio/social/social-05.webp",
+      "width": 1080,
+      "height": 1080,
+      "category": "social",
+      "title": "Timezone",
+      "background": "#121211",
+      "blurDataURL": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAQCdASoMAAwAA4BaJZQCw7ELYKEj5AAA/vbZXx5NCufY4BdHitRkXarrsiVc/pGMstnwkKgTglSfmumcN24ZO/YMy01oAOrnkAAA"
+    },
+    {
+      "src": "/portfolio/cards/cards-05.webp",
+      "width": 1600,
+      "height": 1066,
+      "category": "cards",
+      "title": null,
+      "background": "#2e3232",
+      "blurDataURL": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADwAQCdASoMAAgAA4BaJZQCw7ELMblDAgAA/uTleCx53IHJXRKjLi4x+txOqfu/J13MS7Na/yqnGkldGVXyusDd1uNpnSAA"
+    },
+    {
+      "src": "/portfolio/logos/logos-06.webp",
+      "width": 1599,
+      "height": 1600,
+      "category": "logos",
+      "title": "Fowler Plumbing & Gas",
+      "background": "#ffffff",
+      "blurDataURL": "data:image/webp;base64,UklGRjgAAABXRUJQVlA4ICwAAACQAQCdASoMAAwAA4BaJaQAAuZfjwAA/viwZCTaDBSawD0SjRKoew4jaAAAAA=="
+    },
+    {
+      "src": "/portfolio/social/social-06.webp",
+      "width": 1600,
+      "height": 1600,
+      "category": "social",
+      "title": "Technotics",
+      "background": "#4f0e0f",
+      "blurDataURL": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAwAgCdASoMAAwAA4BaJbACdAEQzUVzJB2EAAD+75Mj3d7HPdE1CGZrNNjri0uZS2kSmPVto6PcInFjclBRiPbI48z/lB8XL+MJS7C41h8DIAAA"
+    },
+    {
+      "src": "/portfolio/logos/logos-07.webp",
+      "width": 1600,
+      "height": 1600,
+      "category": "logos",
+      "title": "Minica",
+      "background": "#ffffff",
+      "blurDataURL": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADwAQCdASoMAAwAA4BaJZwCdH8AGBTQ/AAA/viwA9fsjilizc5/hMg2cguyNMUc/K5x0HxKAAA="
+    },
+    {
+      "src": "/portfolio/social/social-07.webp",
+      "width": 1080,
+      "height": 1080,
+      "category": "social",
+      "title": "Timezone",
+      "background": "#0b0904",
+      "blurDataURL": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAADwAQCdASoMAAwAA4BaJZwAAudsR/91bgAA/vkXziUGNhQjMEL7TIJjhbOirBoFHlY0ltlbd622hEexJdS2eh8AAAA="
+    },
+    {
+      "src": "/portfolio/logos/logos-08.webp",
+      "width": 698,
+      "height": 698,
+      "category": "logos",
+      "title": "Mummy Noodle",
+      "background": "#fece53",
+      "blurDataURL": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAAAwAgCdASoMAAwAA4BaJbACdLoAAnYLB5u0gAD+7V/Ao34hyNHvxw2qu9z19ioXrPU3nbAg9n/rnvZ9E/ZGvFsVwdMAAA=="
+    },
+    {
+      "src": "/portfolio/social/social-08.webp",
+      "width": 1080,
+      "height": 1080,
+      "category": "social",
+      "title": "Curbside Repairs",
+      "background": "#152324",
+      "blurDataURL": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAQAgCdASoMAAwAA4BaJbACdADcSxmHZSwAAP7xtFTGgNIaUqvcOw2CC0NbBuiLlHsXoJAh+TTEv/o63n4pTy4mQ9KJhgQHWR84eq5MKzy282Eb2tJR5qdajnD5BpYA"
+    },
+    {
+      "src": "/portfolio/logos/logos-09.webp",
+      "width": 1600,
+      "height": 1600,
+      "category": "logos",
+      "title": null,
+      "background": "#ffffff",
+      "blurDataURL": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAACwAQCdASoMAAwAA4BaJZAAAvdseSaQAP739J1YphXYJUeNd8UcqXI7YJ+B3/pIj/Wl0990UHpkS1b83rhyWJiDvrKvf+pl6EMYwugbQAA="
+    },
+    {
+      "src": "/portfolio/social/social-09.webp",
+      "width": 1080,
+      "height": 1080,
+      "category": "social",
+      "title": "AL Accountants",
+      "background": "#e2e6db",
+      "blurDataURL": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADwAQCdASoMAAwAA4BaJQAAYsv2sAAIEAAA/vH4zGP6bi1OoEVBxZeHRcqct3LZYLsqmW3E4Smsmp5P4+d+17STEw6KUbwRIIXatzOD3V7fn6wcDwgutwAA"
+    },
+    {
+      "src": "/portfolio/logos/logos-10.webp",
+      "width": 1600,
+      "height": 1600,
+      "category": "logos",
+      "title": "The Scar Bookings",
+      "background": "#160c1f",
+      "blurDataURL": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADQAQCdASoMAAwAA4BaJQBOgCHaZebvtAD+95VhERwhER/Yhj/98JcoacIkZ93G0+ZzGIzphmB1Zp9q5DJwAAAA"
+    },
+    {
+      "src": "/portfolio/social/social-10.webp",
+      "width": 1212,
+      "height": 1600,
+      "category": "social",
+      "title": null,
+      "background": "#282622",
+      "blurDataURL": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoJAAwAA4BaJZQAAp1x1PLoAAD+g8h1LIPYxWTxwShGtbfFu96P7GrK3jc87BqSRCjAoVyekxhj4LmzyJwLM/hflgAAAA=="
+    },
+    {
+      "src": "/portfolio/logos/logos-11.webp",
+      "width": 1600,
+      "height": 1083,
+      "category": "logos",
+      "title": "Animal Foster Carers Registry",
+      "background": "#ffffff",
+      "blurDataURL": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAADQAQCdASoMAAgAA4BaJZACw7Ddql4yMAD+91wcEgcZfEV7WwVjG7YWAK63LMVijxR+QsisbdBRSSI4Bp88YUxJAAA="
+    },
+    {
+      "src": "/portfolio/social/social-11.webp",
+      "width": 1225,
+      "height": 1600,
+      "category": "social",
+      "title": null,
+      "background": "#33353a",
+      "blurDataURL": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAADQAQCdASoJAAwAA4BaJZQC7AD5aEW4wAD+6eHfKABoOuLHxPwsjgjWaYQriR7iWsFXzvsxTEfVejAA"
+    },
+    {
+      "src": "/portfolio/logos/logos-12.webp",
+      "width": 1600,
+      "height": 1600,
+      "category": "logos",
+      "title": "Herbleen",
+      "background": "#eaeae6",
+      "blurDataURL": "data:image/webp;base64,UklGRjQAAABXRUJQVlA4ICgAAACwAQCdASoMAAwAA4BaJZwAAudQTO4gAP70zkne3csUpRL9C+36QAAA"
+    },
+    {
+      "src": "/portfolio/social/social-12.webp",
+      "width": 738,
+      "height": 1600,
+      "category": "social",
+      "title": null,
+      "background": "#4e5052",
+      "blurDataURL": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADQAQCdASoGAAwAA4BaJaQAAucduw9EAADyp+3tuS1X36UAWjN/Zx8AHIpMcIk7yZchBby3j5HMXf3SwAAAAA=="
+    },
+    {
+      "src": "/portfolio/logos/logos-13.webp",
+      "width": 654,
+      "height": 652,
+      "category": "logos",
+      "title": null,
+      "background": "#000000",
+      "blurDataURL": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAADQAQCdASoMAAwAA4BaJaQAAu19wOWQAAD++cUhVQYFBc87KTWk5jpKHcNV70AA"
+    },
+    {
+      "src": "/portfolio/social/social-13.webp",
+      "width": 1199,
+      "height": 1600,
+      "category": "social",
+      "title": null,
+      "background": "#757575",
+      "blurDataURL": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAQAgCdASoJAAwAA4BaJaQAD5AuzlfS8KeAAP6s3nAIcnGTseOyGYKWNTxcONnj8mM+KGs9HydfuvVupy701nzz4358iQmZEQPUnOFjnNoaAAAA"
+    },
+    {
+      "src": "/portfolio/logos/logos-14.webp",
+      "width": 902,
+      "height": 902,
+      "category": "logos",
+      "title": "Chunkology",
+      "background": "#ffffff",
+      "blurDataURL": "data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACQAQCdASoMAAwAA4BaJZQAAuaaH4AA/viwPkvy4VkAHtqXOZVDBT9/nn/8EQAA"
+    },
+    {
+      "src": "/portfolio/social/social-14.webp",
+      "width": 1230,
+      "height": 1600,
+      "category": "social",
+      "title": null,
+      "background": "#958b78",
+      "blurDataURL": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAAAQAgCdASoJAAwAA4BaJZACdAYp5baquBLAAP7iWPMgJkC5sfLuVYmB9Du2l5EG68D+o4m6pkDPoDkoMuvQre596ZDf9uj9vBc3FlN70j74TRxoAAA="
+    },
+    {
+      "src": "/portfolio/logos/logos-15.webp",
+      "width": 1600,
+      "height": 1600,
+      "category": "logos",
+      "title": "Wexanite",
+      "background": "#000000",
+      "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoMAAwAA4BaJZQAAudk3O3MwAAA/vm/0aArfquh0f5+O7zPBa/KSoo8vXqvt8iqVluAAA=="
+    },
+    {
+      "src": "/portfolio/social/social-15.webp",
+      "width": 1080,
+      "height": 1350,
+      "category": "social",
+      "title": "Cemar",
+      "background": "#161414",
+      "blurDataURL": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADwAQCdASoKAAwAA4BaJZQAAudkcD0RkzAA/vbiwjCZ1u9mSgCjjqDnj1bbuQ8UlFmDNovz7YWMGO5aRufQylkafD2AAA=="
+    },
+    {
+      "src": "/portfolio/logos/logos-16.webp",
+      "width": 1600,
+      "height": 1600,
+      "category": "logos",
+      "title": "The Nanoplasty Specialist",
+      "background": "#ffffff",
+      "blurDataURL": "data:image/webp;base64,UklGRjIAAABXRUJQVlA4ICYAAACwAQCdASoMAAwAA4BaJaQAAudfVUwAAP74r6Sv5C5zQFkJ44AAAA=="
+    },
+    {
+      "src": "/portfolio/logos/logos-17.webp",
+      "width": 1600,
+      "height": 1599,
+      "category": "logos",
+      "title": "Nuvarah",
+      "background": "#ffffff",
+      "blurDataURL": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADQAQCdASoMAAwAA4BaJZwC7AEKmZeYAAD++LmKe4jDd8msw1BXLrU0fZdOGJunAH7YtF7Yo2vRoEAUAAA="
+    }
+  ]
+}

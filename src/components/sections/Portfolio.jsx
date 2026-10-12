@@ -19,7 +19,7 @@ export function Portfolio() {
   const { openInquiry } = useInquiry();
 
   return (
-    <section id="portfolio" className="section-y relative">
+    <section id="archives" className="section-y relative">
       <div className="shell">
         <SectionHeading
           eyebrow={portfolio.eyebrow}

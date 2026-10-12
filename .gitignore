@@ -41,3 +41,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw portfolio exports; scripts/optimize-portfolio.mjs builds public/portfolio from them
+/assets/portfolio-source/

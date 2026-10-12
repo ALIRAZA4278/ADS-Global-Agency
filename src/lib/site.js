@@ -52,7 +52,7 @@ export const brand = {
  * light up the moment the page loads.
  */
 export const navLinks = [
-  { label: "Portfolio", href: "#portfolio" },
+  { label: "Portfolio", href: "#portfolio", sections: ["#portfolio", "#archives"] },
   { label: "Services", href: "#services" },
   { label: "Pricing", href: "#packages" },
   { label: "About", href: "#about" },
@@ -339,10 +339,23 @@ export const services = {
  * linking out rather than trying to mirror the work inline. id="portfolio"
  * is what the nav and the hero's "See our work" CTA both point at.
  */
-export const portfolio = {
+/**
+ * The image gallery. Its images and their categories come from
+ * portfolio-gallery.json, which scripts/optimize-portfolio.mjs generates.
+ */
+export const gallery = {
   eyebrow: "Selected work",
   title: "See the work,",
   titleHighlight: "not just the pitch",
+  description:
+    "Logos, social creative and print we've designed for real businesses. A selection; the full archives are just below.",
+};
+
+/** The three archive links, shown right after the gallery. */
+export const portfolio = {
+  eyebrow: "Full archives",
+  title: "Still curious?",
+  titleHighlight: "Browse everything",
   description:
     "Three archives, kept current: branding and graphics, live websites you can click through, and product design straight from Figma.",
   items: [

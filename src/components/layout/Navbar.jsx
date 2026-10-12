@@ -27,13 +27,17 @@ export function Navbar() {
   const updateActiveSection = useCallback(() => {
     const line = window.innerHeight * 0.35;
     let current = "";
-    for (const link of navLinks) {
-      const section = document.querySelector(link.href);
-      if (!section) continue;
-      const { top, bottom } = section.getBoundingClientRect();
-      if (top <= line && bottom > line) {
-        current = link.href;
-        break;
+    // A link can own more than one section (Portfolio covers the gallery and
+    // the archive links), via its optional `sections` list.
+    outer: for (const link of navLinks) {
+      for (const selector of link.sections ?? [link.href]) {
+        const section = document.querySelector(selector);
+        if (!section) continue;
+        const { top, bottom } = section.getBoundingClientRect();
+        if (top <= line && bottom > line) {
+          current = link.href;
+          break outer;
+        }
       }
     }
     setActiveSection(current);
