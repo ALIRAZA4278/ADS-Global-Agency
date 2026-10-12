@@ -1,10 +1,7 @@
-"use client";
-
-import { motion } from "motion/react";
 import Image from "next/image";
 import { about, team } from "@/lib/site";
 import { Icon, SocialIcon } from "@/components/ui/Icon";
-import { Reveal, Stagger } from "@/components/ui/Reveal";
+import { Reveal, Stagger, StaggerItem } from "@/components/ui/Reveal";
 
 export function About() {
   return (
@@ -48,8 +45,8 @@ export function About() {
             ))}
 
             <Stagger className="mt-10 flex flex-col gap-4" delay={0.1}>
-              {about.values.map((value) => (
-                <Stagger.Item key={value.title}>
+              {about.values.map((value, index) => (
+                <StaggerItem key={value.title} index={index}>
                   <div className="group flex gap-4 rounded-2xl border border-transparent p-4 transition-colors duration-300 hover:border-line hover:bg-white/[0.02]">
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-line bg-ink text-accent transition-colors duration-300 group-hover:border-accent/40">
                       <Icon name={value.icon} className="h-5 w-5" />
@@ -63,7 +60,7 @@ export function About() {
                       </p>
                     </div>
                   </div>
-                </Stagger.Item>
+                </StaggerItem>
               ))}
             </Stagger>
           </div>
@@ -72,12 +69,9 @@ export function About() {
           <Reveal from="left" delay={0.1} className="lg:sticky lg:top-32">
             <div className="relative rounded-3xl border border-line bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-surface))] p-2">
               {/* Rotating conic sheen behind the panel edge. */}
-              <motion.div
+              <div
                 aria-hidden="true"
-                initial={{ rotate: 0 }}
-                animate={{ rotate: 360 }}
-                transition={{ duration: 26, repeat: Infinity, ease: "linear" }}
-                className="pointer-events-none absolute -inset-px -z-10 rounded-3xl opacity-40 [background:conic-gradient(from_0deg,transparent,var(--color-brand),transparent_38%,var(--color-accent),transparent_75%)]"
+                className="pointer-events-none absolute -inset-px -z-10 animate-[spin_26s_linear_infinite] rounded-3xl opacity-40 [background:conic-gradient(from_0deg,transparent,var(--color-brand),transparent_38%,var(--color-accent),transparent_75%)]"
               />
 
               <div className="rounded-[1.25rem] bg-ink-2 p-6 sm:p-7">

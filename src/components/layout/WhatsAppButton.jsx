@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
 import { brand } from "@/lib/site";
 import { SocialIcon } from "@/components/ui/Icon";
+import { cn } from "@/lib/utils";
 
 const WHATSAPP_GREEN = "#25D366";
 
@@ -31,37 +31,36 @@ export function WhatsAppButton() {
   )}`;
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.a
-          href={href}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`Chat with us on WhatsApp at ${brand.whatsapp.display}`}
-          initial={{ opacity: 0, scale: 0.8, y: 12 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.8, y: 12 }}
-          transition={{ duration: 0.25, ease: [0.21, 0.47, 0.32, 0.98] }}
-          whileHover={{ scale: 1.06 }}
-          whileTap={{ scale: 0.95 }}
-          className="group/wa fixed bottom-6 right-6 z-[60] flex h-14 w-14 items-center justify-center rounded-full text-white shadow-[0_12px_36px_-8px_rgba(37,211,102,0.7)] sm:bottom-8 sm:right-8"
-          style={{ backgroundColor: WHATSAPP_GREEN }}
-        >
-          {/* Attention ring, purely decorative. */}
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 rounded-full animate-pulse-ring"
-            style={{ backgroundColor: WHATSAPP_GREEN }}
-          />
-
-          <SocialIcon name="whatsapp" className="relative h-7 w-7" />
-
-          {/* Label slides out on hover; hidden from touch, which has no hover. */}
-          <span className="pointer-events-none absolute right-full mr-3 hidden whitespace-nowrap rounded-full border border-line bg-ink px-4 py-2 text-sm text-body opacity-0 shadow-lg transition-opacity duration-300 group-hover/wa:opacity-100 lg:block">
-            Chat on WhatsApp
-          </span>
-        </motion.a>
+    // Always mounted and toggled with a CSS transition; `inert` keeps the
+    // hidden button out of the tab order and away from screen readers.
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`Chat with us on WhatsApp at ${brand.whatsapp.display}`}
+      inert={!visible}
+      className={cn(
+        "group/wa fixed bottom-6 right-6 z-[60] flex h-14 w-14 items-center justify-center rounded-full text-white shadow-[0_12px_36px_-8px_rgba(37,211,102,0.7)] sm:bottom-8 sm:right-8",
+        "transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.21,0.47,0.32,0.98)]",
+        visible
+          ? "translate-y-0 scale-100 opacity-100 hover:scale-[1.06] active:scale-95"
+          : "pointer-events-none translate-y-3 scale-[0.8] opacity-0"
       )}
-    </AnimatePresence>
+      style={{ backgroundColor: WHATSAPP_GREEN }}
+    >
+      {/* Attention ring, purely decorative. */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-0 rounded-full animate-pulse-ring"
+        style={{ backgroundColor: WHATSAPP_GREEN }}
+      />
+
+      <SocialIcon name="whatsapp" className="relative h-7 w-7" />
+
+      {/* Label slides out on hover; hidden from touch, which has no hover. */}
+      <span className="pointer-events-none absolute right-full mr-3 hidden whitespace-nowrap rounded-full border border-line bg-ink px-4 py-2 text-sm text-body opacity-0 shadow-lg transition-opacity duration-300 group-hover/wa:opacity-100 lg:block">
+        Chat on WhatsApp
+      </span>
+    </a>
   );
 }

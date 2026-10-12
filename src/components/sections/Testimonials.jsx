@@ -1,8 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion } from "motion/react";
-import { ArrowUpRight, ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { testimonials } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
@@ -40,9 +39,20 @@ function ringOffset(index, active) {
 export function Testimonials() {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
-  const reduceMotion = useReducedMotion();
   const stageRef = useRef(null);
-  const inView = useInView(stageRef, { margin: "100px" });
+  const [inView, setInView] = useState(false);
+
+  // Autoplay only runs while the carousel is (nearly) on screen.
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "100px" }
+    );
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, []);
 
   const go = useCallback((direction) => {
     setActive((current) => (current + direction + COUNT) % COUNT);
@@ -52,14 +62,15 @@ export function Testimonials() {
   // in the background, or has scrolled away — no point animating eight 3D
   // cards nobody can see.
   useEffect(() => {
-    if (paused || reduceMotion || !inView) return;
+    if (paused || !inView) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const timer = setInterval(() => {
       if (!document.hidden) go(1);
     }, AUTOPLAY_MS);
 
     return () => clearInterval(timer);
-  }, [paused, reduceMotion, inView, go]);
+  }, [paused, inView, go]);
 
   const handleKeyDown = (event) => {
     if (event.key === "ArrowLeft") {
@@ -176,10 +187,40 @@ function Slide({ item, offset, onSelect, onSwipe }) {
   const pose = depth[Math.min(distance, depth.length - 1)];
   const isActive = offset === 0;
   const side = Math.sign(offset);
+  const swipeStart = useRef(null);
+
+  // A CSS transition on transform does the travelling; the curve overshoots
+  // a touch, standing in for the old spring.
+  const transform = [
+    `translate3d(${side * pose.x}%, 0, ${hidden ? -420 : pose.z}px)`,
+    `rotateY(${-side * pose.rotate}deg)`,
+    `scale(${hidden ? 0.7 : pose.scale})`,
+  ].join(" ");
+
+  // Swipe on the front card only, so a gesture can't be captured by a card
+  // buried behind it. Horizontal flicks past 60px change slides; vertical
+  // movement is left to the page (touch-action: pan-y).
+  const swipeHandlers = isActive
+    ? {
+        onPointerDown: (event) => {
+          swipeStart.current = event.clientX;
+        },
+        onPointerUp: (event) => {
+          if (swipeStart.current === null) return;
+          const dx = event.clientX - swipeStart.current;
+          swipeStart.current = null;
+          if (dx < -60) onSwipe(1);
+          else if (dx > 60) onSwipe(-1);
+        },
+        onPointerCancel: () => {
+          swipeStart.current = null;
+        },
+      }
+    : {};
 
   return (
     // The wrapper centres the card; every transform then happens on the
-    // motion element, so nothing fights over the transform property.
+    // figure, so nothing fights over the transform property.
     <div
       className={cn(
         "absolute inset-0 flex items-center justify-center",
@@ -187,29 +228,14 @@ function Slide({ item, offset, onSelect, onSwipe }) {
       )}
       style={{ zIndex: COUNT - distance, transformStyle: "preserve-3d" }}
     >
-      <motion.figure
-        animate={{
-          x: `${side * pose.x}%`,
-          z: hidden ? -420 : pose.z,
-          rotateY: -side * pose.rotate,
-          scale: hidden ? 0.7 : pose.scale,
-          opacity: hidden ? 0 : 1,
-        }}
-        transition={{ type: "spring", stiffness: 190, damping: 26, mass: 0.9 }}
-        // Only the front card takes the drag, so a swipe can't be captured by
-        // a card buried behind it.
-        drag={isActive ? "x" : false}
-        dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.16}
-        onDragEnd={(_, info) => {
-          const throw_ = info.offset.x + info.velocity.x * 0.06;
-          if (throw_ < -70) onSwipe(1);
-          else if (throw_ > 70) onSwipe(-1);
-        }}
+      <figure
+        style={{ transform, opacity: hidden ? 0 : 1 }}
+        {...swipeHandlers}
         onClick={isActive ? undefined : onSelect}
         aria-hidden={!isActive}
         className={cn(
-          "relative flex w-[min(88vw,34rem)] flex-col overflow-hidden rounded-3xl border p-7 sm:p-9",
+          "relative flex w-[min(88vw,34rem)] touch-pan-y flex-col overflow-hidden rounded-3xl border p-7 sm:p-9",
+          "transition-[transform,opacity] duration-700 ease-[cubic-bezier(0.34,1.2,0.5,1)]",
           "bg-[linear-gradient(150deg,var(--color-surface-2),var(--color-surface))]",
           isActive
             ? "cursor-grab border-brand/35 shadow-[0_40px_100px_-50px_var(--color-brand)] active:cursor-grabbing"
@@ -217,20 +243,15 @@ function Slide({ item, offset, onSelect, onSwipe }) {
         )}
       >
         {/* Darkens a neighbouring card without making it see-through. */}
-        <motion.span
+        <span
           aria-hidden="true"
-          animate={{ opacity: hidden ? 1 : pose.scrim }}
-          transition={{ duration: 0.4 }}
-          className="pointer-events-none absolute inset-0 z-20 rounded-3xl bg-ink"
+          style={{ opacity: hidden ? 1 : pose.scrim }}
+          className="pointer-events-none absolute inset-0 z-20 rounded-3xl bg-ink transition-opacity duration-400"
         />
 
         <div className="flex items-center justify-between">
           <Quote className="h-7 w-7 text-brand/45" />
-          <div className="flex gap-0.5">
-            {Array.from({ length: 5 }).map((_, starIndex) => (
-              <Star key={starIndex} className="h-3.5 w-3.5 fill-accent text-accent" />
-            ))}
-          </div>
+          <FiveStars />
         </div>
 
         <blockquote className="mt-6 flex-1 text-pretty text-base leading-relaxed sm:text-lg text-body/90">
@@ -246,7 +267,7 @@ function Slide({ item, offset, onSelect, onSwipe }) {
             <span className="block text-xs text-faint">{item.company}</span>
           </span>
         </figcaption>
-      </motion.figure>
+      </figure>
     </div>
   );
 }
@@ -260,6 +281,32 @@ function initials(name) {
     .map((word) => word[0])
     .join("")
     .toUpperCase();
+}
+
+// Lucide's star outline, five abreast in one SVG rather than five icons.
+const STAR =
+  "M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z";
+
+function FiveStars() {
+  return (
+    <svg
+      viewBox="0 0 130 24"
+      role="img"
+      aria-label="Rated 5 out of 5"
+      className="h-3.5 w-[4.6rem] fill-accent text-accent"
+    >
+      {[0, 1, 2, 3, 4].map((index) => (
+        <path
+          key={index}
+          d={STAR}
+          transform={`translate(${index * 26.5} 0)`}
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinejoin="round"
+        />
+      ))}
+    </svg>
+  );
 }
 
 function ArrowButton({ children, label, onClick }) {

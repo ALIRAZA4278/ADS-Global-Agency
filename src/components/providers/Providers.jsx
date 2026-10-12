@@ -1,16 +1,14 @@
 "use client";
 
 import { useEffect } from "react";
-import { MotionConfig } from "motion/react";
 import Lenis from "lenis";
 import { InquiryProvider } from "@/components/inquiry/InquiryContext";
 
 /**
- * Wraps the app in inertial smooth scrolling and a single motion config.
+ * Wraps the app in inertial smooth scrolling and the enquiry context.
  *
- * `reducedMotion="user"` makes every motion component drop transform and
- * layout animations when the OS asks for reduced motion, keeping only fades —
- * so individual components don't each have to check the preference.
+ * Animations are plain CSS, so reduced motion is handled once, globally, by
+ * the prefers-reduced-motion rules in globals.css.
  */
 // Breathing room between the fixed header and a section landed on by a link.
 const HEADER_GAP = 20;
@@ -115,8 +113,6 @@ export function Providers({ children }) {
   }, []);
 
   return (
-    <MotionConfig reducedMotion="user">
-      <InquiryProvider>{children}</InquiryProvider>
-    </MotionConfig>
+    <InquiryProvider>{children}</InquiryProvider>
   );
 }

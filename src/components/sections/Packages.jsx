@@ -1,15 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { packages } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
+import { FilterTabs } from "@/components/ui/FilterTabs";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Tilt3D } from "@/components/ui/Tilt3D";
 import { useInquiry } from "@/components/inquiry/InquiryContext";
+
+const categoryOptions = packages.categories.map((category) => ({
+  value: category,
+  label: category,
+}));
 
 export function Packages() {
   const { openInquiry } = useInquiry();
@@ -32,43 +37,26 @@ export function Packages() {
         />
 
         <Reveal delay={0.14} className="mt-10 flex justify-center">
-          <div className="inline-flex max-w-5xl flex-wrap justify-center gap-1 rounded-3xl border border-line bg-white/[0.02] p-1.5">
-            {packages.categories.map((category) => (
-              <button
-                key={category}
-                type="button"
-                onClick={() => setFilter(category)}
-                aria-pressed={filter === category}
-                className={cn(
-                  "relative rounded-full px-4 py-2 text-sm transition-colors duration-200",
-                  filter === category ? "text-white" : "text-muted hover:text-white"
-                )}
-              >
-                {filter === category && (
-                  <motion.span
-                    layoutId="package-filter-pill"
-                    className="absolute inset-0 rounded-full bg-[linear-gradient(100deg,var(--color-brand-deep),var(--color-brand))]"
-                    transition={{ type: "spring", stiffness: 340, damping: 30 }}
-                  />
-                )}
-                <span className="relative z-10">{category}</span>
-              </button>
-            ))}
-          </div>
+          <FilterTabs
+            label="Package category"
+            options={categoryOptions}
+            value={filter}
+            onChange={setFilter}
+            className="max-w-5xl"
+          />
         </Reveal>
 
         {/* Three columns: every category ships exactly three tiers. */}
-        <motion.div layout className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          <AnimatePresence mode="popLayout">
-            {visible.map((plan) => (
-              <PlanCard
-                key={`${plan.category}-${plan.name}`}
-                plan={plan}
-                onSelect={openInquiry}
-              />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {visible.map((plan, index) => (
+            <PlanCard
+              key={`${plan.category}-${plan.name}`}
+              plan={plan}
+              index={index}
+              onSelect={openInquiry}
+            />
+          ))}
+        </div>
 
         <Reveal delay={0.1}>
           <div className="mt-12 flex flex-col items-center justify-between gap-6 rounded-3xl border border-line bg-[linear-gradient(140deg,var(--color-surface-2),var(--color-surface))] p-8 text-center sm:p-10 md:flex-row md:text-left">
@@ -101,8 +89,9 @@ function FeatureList({ features }) {
   const items = (
     <ul className="flex flex-col gap-3">
       {features.map((feature) => (
-        <li key={feature} className="flex items-start gap-2.5 text-sm text-body/80">
-          <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+        // The tick is the `list-check` pseudo-element, not an icon per line:
+        // the website tiers list 20-35 features each.
+        <li key={feature} className="list-check flex items-start gap-2.5 text-sm text-body/80">
           {feature}
         </li>
       ))}
@@ -140,18 +129,13 @@ function FeatureList({ features }) {
   );
 }
 
-function PlanCard({ plan, onSelect }) {
+function PlanCard({ plan, index, onSelect }) {
   const isCustom = plan.price === null;
 
   return (
-    <motion.article
-      layout
-      initial={{ opacity: 0, y: 18 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -12 }}
-      transition={{ duration: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
-      className="h-full"
-    >
+    // Cards are keyed by plan, so switching category mounts fresh ones and
+    // the CSS entrance plays, staggered across the row.
+    <article className="h-full animate-enter" style={{ animationDelay: `${index * 60}ms` }}>
       <Tilt3D innerClassName="rounded-3xl" max={6}>
         <div
           className={cn(
@@ -201,6 +185,6 @@ function PlanCard({ plan, onSelect }) {
           </Button>
         </div>
       </Tilt3D>
-    </motion.article>
+    </article>
   );
 }

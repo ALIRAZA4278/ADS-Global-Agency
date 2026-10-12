@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { brand, navLinks } from "@/lib/site";
 import { cn } from "@/lib/utils";
+import { usePresence } from "@/lib/use-presence";
 import { Button } from "@/components/ui/Button";
 import Image from "next/image";
 import { TopBar } from "@/components/layout/TopBar";
@@ -15,7 +15,10 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
-  const { scrollY, scrollYProgress } = useScroll();
+  const progressRef = useRef(null);
+  const pillRef = useRef(null);
+  const linksRef = useRef(null);
+  const menu = usePresence(menuOpen, 250);
 
   // Highlight the nav link for the section that spans a fixed line ~35% down
   // the viewport. Computed from positions on every scroll rather than from
@@ -43,21 +46,51 @@ export function Navbar() {
     setActiveSection(current);
   }, []);
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setScrolled(latest > 24);
-    updateActiveSection();
-  });
-
+  // One scroll listener, coalesced to a frame: the header state, the active
+  // link and the reading-progress bar (written straight to its transform, so
+  // it never re-renders anything).
   useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const { scrollY, innerHeight } = window;
+      const max = document.documentElement.scrollHeight - innerHeight;
+      setScrolled(scrollY > 24);
+      updateActiveSection();
+      if (progressRef.current) {
+        progressRef.current.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`;
+      }
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
     // First pass on the next frame, so a page that loads mid-scroll (back
     // button, #hash URL) highlights the right link before any scroll event.
-    const frame = requestAnimationFrame(updateActiveSection);
-    window.addEventListener("resize", updateActiveSection);
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
     return () => {
       cancelAnimationFrame(frame);
-      window.removeEventListener("resize", updateActiveSection);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
     };
   }, [updateActiveSection]);
+
+  // Slide the highlight pill under the active link. Positioned from the
+  // link's own box, so it follows label widths without hard-coded sizes.
+  useEffect(() => {
+    const pill = pillRef.current;
+    const list = linksRef.current;
+    if (!pill || !list) return;
+    const link = activeSection && list.querySelector(`a[href="${activeSection}"]`);
+    if (!link) {
+      pill.style.opacity = "0";
+      return;
+    }
+    pill.style.opacity = "1";
+    pill.style.width = `${link.offsetWidth}px`;
+    pill.style.transform = `translateX(${link.offsetLeft}px)`;
+  }, [activeSection]);
 
   // An open mobile menu must not scroll the page behind it.
   useEffect(() => {
@@ -96,7 +129,12 @@ export function Navbar() {
               />
             </a>
 
-            <ul className="hidden items-center gap-1 lg:flex">
+            <ul ref={linksRef} className="relative hidden items-center gap-1 lg:flex">
+              <li
+                aria-hidden="true"
+                ref={pillRef}
+                className="pointer-events-none absolute left-0 top-0 h-full rounded-full border border-line-strong bg-white/[0.06] opacity-0 transition-[transform,width,opacity] duration-300 ease-[cubic-bezier(0.21,0.47,0.32,0.98)]"
+              />
               {navLinks.map((link) => {
                 const isActive = activeSection === link.href;
                 return (
@@ -108,13 +146,6 @@ export function Navbar() {
                         isActive ? "text-white" : "text-muted hover:text-white"
                       )}
                     >
-                      {isActive && (
-                        <motion.span
-                          layoutId="nav-pill"
-                          className="absolute inset-0 rounded-full border border-line-strong bg-white/[0.06]"
-                          transition={{ type: "spring", stiffness: 320, damping: 30 }}
-                        />
-                      )}
                       <span className="relative z-10">{link.label}</span>
                     </a>
                   </li>
@@ -143,22 +174,20 @@ export function Navbar() {
           </nav>
 
           {/* Reading-progress hairline. */}
-          <motion.div
-            className="h-px origin-left bg-[linear-gradient(90deg,var(--color-brand),var(--color-accent))]"
-            style={{ scaleX: scrollYProgress }}
+          <div
+            ref={progressRef}
+            className="h-px origin-left scale-x-0 bg-[linear-gradient(90deg,var(--color-brand),var(--color-accent))]"
           />
         </div>
       </header>
 
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+      {menu.mounted && (
+          <div
             data-lenis-prevent
-            className="fixed inset-0 z-40 overflow-y-auto bg-ink/95 backdrop-blur-xl lg:hidden"
+            className={cn(
+              "fixed inset-0 z-40 overflow-y-auto bg-ink/95 backdrop-blur-xl transition-opacity duration-250 lg:hidden",
+              menu.visible ? "opacity-100" : "opacity-0"
+            )}
           >
             {/* The list starts right under the header rather than centring in
                 the screen, which left a dead gap above it on tall phones. The
@@ -166,26 +195,29 @@ export function Navbar() {
                 which render above this overlay, plus a little breathing room. */}
             <div className="shell flex flex-col gap-1 pt-34 pb-14">
               {navLinks.map((link, index) => (
-                <motion.a
+                <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.06 * index + 0.08, duration: 0.4 }}
-                  className="flex items-center justify-between border-b border-line py-4 text-2xl font-medium text-body transition-colors hover:text-accent"
+                  style={{ transitionDelay: menu.visible ? `${0.06 * index + 0.08}s` : "0s" }}
+                  className={cn(
+                    "flex items-center justify-between border-b border-line py-4 text-2xl font-medium text-body",
+                    "transition-[opacity,transform,color] duration-400 hover:text-accent",
+                    menu.visible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                  )}
                 >
                   {link.label}
                   <span className="font-mono text-xs tabular-nums text-faint">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                </motion.a>
+                </a>
               ))}
-              <motion.div
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.06 * navLinks.length + 0.08, duration: 0.4 }}
-                className="pt-7"
+              <div
+                style={{ transitionDelay: menu.visible ? `${0.06 * navLinks.length + 0.08}s` : "0s" }}
+                className={cn(
+                  "pt-7 transition-[opacity,transform] duration-400",
+                  menu.visible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+                )}
               >
                 <Button
                   size="lg"
@@ -198,11 +230,10 @@ export function Navbar() {
                 >
                   Get a free quote
                 </Button>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+      )}
     </>
   );
 }

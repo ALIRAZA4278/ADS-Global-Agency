@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState } from "react";
-import { motion } from "motion/react";
 import { ArrowRight, Check, ShieldCheck } from "lucide-react";
 import { submitEnquiry } from "@/app/actions";
 import { budgetOptions, inquiry, serviceOptions } from "@/lib/site";
@@ -26,11 +25,7 @@ export function InquiryForm({ idPrefix, firstFieldRef, onDone }) {
 
   if (state.status === "success") {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="flex min-h-80 flex-col items-center justify-center text-center"
-      >
+      <div className="flex min-h-80 animate-enter flex-col items-center justify-center text-center">
         <span className="flex h-16 w-16 items-center justify-center rounded-full border border-accent/40 bg-accent/10 text-accent">
           <Check className="h-7 w-7" />
         </span>
@@ -49,7 +44,7 @@ export function InquiryForm({ idPrefix, firstFieldRef, onDone }) {
             Close
           </button>
         )}
-      </motion.div>
+      </div>
     );
   }
 

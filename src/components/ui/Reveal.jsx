@@ -1,41 +1,36 @@
 "use client";
 
-import { motion } from "motion/react";
-
-const offsets = {
-  up: { x: 0, y: 28 },
-  down: { x: 0, y: -28 },
-  left: { x: 32, y: 0 },
-  right: { x: -32, y: 0 },
-  none: { x: 0, y: 0 },
-};
+import { useEffect, useRef } from "react";
 
 /**
  * Fades content in the first time it scrolls into view.
- * `delay` staggers siblings; `from` picks the direction it travels from.
+ * `delay` (seconds) staggers siblings; `from` picks the direction it travels
+ * from.
  *
- * Reduced-motion is handled globally by <MotionConfig reducedMotion="user">
- * in Providers — transforms are dropped there and only the fade survives.
+ * The animation itself is a CSS transition on `[data-reveal]` (globals.css);
+ * all this component does is mark the element `data-shown` once it enters
+ * the viewport. Every Reveal on the page shares one IntersectionObserver.
+ * Reduced motion is handled by the global reduced-motion rules, which make
+ * the transition instant.
  */
 export function Reveal({
   children,
   className,
   delay = 0,
   from = "up",
-  duration = 0.7,
-  as = "div",
+  as: Tag = "div",
+  style,
   ...props
 }) {
-  const Tag = motion[as] ?? motion.div;
-  const offset = offsets[from] ?? offsets.up;
+  const ref = useRef(null);
+  useReveal(ref);
 
   return (
     <Tag
+      ref={ref}
+      data-reveal={from}
       className={className}
-      initial={{ opacity: 0, ...offset }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+      style={delay ? { ...style, "--reveal-delay": `${delay}s` } : style}
       {...props}
     >
       {children}
@@ -44,42 +39,65 @@ export function Reveal({
 }
 
 /**
- * Parent wrapper that reveals its `Stagger.Item` children in sequence.
- * Cheaper than giving every child its own viewport observer.
+ * Wrapper whose `StaggerItem` children reveal in sequence once the wrapper
+ * enters the viewport — one observed element for the whole group.
  */
-export function Stagger({ children, className, delay = 0, step = 0.09, ...props }) {
+export function Stagger({ children, className, delay = 0, step = 0.09, style, ...props }) {
+  const ref = useRef(null);
+  useReveal(ref);
+
   return (
-    <motion.div
+    <div
+      ref={ref}
+      data-reveal-group=""
       className={className}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
-      variants={{
-        hidden: {},
-        visible: { transition: { staggerChildren: step, delayChildren: delay } },
-      }}
+      style={{ ...style, "--stagger-delay": `${delay}s`, "--stagger-step": `${step}s` }}
       {...props}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
-Stagger.Item = function StaggerItem({ children, className, ...props }) {
+/**
+ * One step of a Stagger; `index` sets its place in the sequence. A separate
+ * export, not `Stagger.Item`: server components can only reach a client
+ * module's named exports, not properties hung off them.
+ */
+export function StaggerItem({ children, className, index = 0, style, ...props }) {
   return (
-    <motion.div
-      className={className}
-      variants={{
-        hidden: { opacity: 0, y: 24 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.65, ease: [0.21, 0.47, 0.32, 0.98] },
-        },
-      }}
-      {...props}
-    >
+    <div data-reveal-item="" className={className} style={{ ...style, "--i": index }} {...props}>
       {children}
-    </motion.div>
+    </div>
   );
-};
+}
+
+let observer = null;
+
+function getObserver() {
+  if (!observer) {
+    observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.setAttribute("data-shown", "");
+          observer.unobserve(entry.target);
+        }
+      },
+      // Matches the old motion viewport margin: trigger a little after the
+      // element's top edge clears the bottom of the screen.
+      { rootMargin: "0px 0px -80px 0px" }
+    );
+  }
+  return observer;
+}
+
+function useReveal(ref) {
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const io = getObserver();
+    io.observe(node);
+    return () => io.unobserve(node);
+  }, [ref]);
+}

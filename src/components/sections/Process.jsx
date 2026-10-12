@@ -1,12 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
-import {
-  motion,
-  useMotionValueEvent,
-  useScroll,
-  useTransform,
-} from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import { process } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -20,26 +14,57 @@ const TOTAL = process.steps.length;
  * The phase cards stack into a deck as you scroll: each one pins a little
  * lower than the last, so earlier phases stay visible as a sliver behind the
  * one you're reading. A sticky rail on the left tracks which is in focus.
+ *
+ * Scroll progress through the deck (0 when its top reaches 30% down the
+ * viewport, 1 when its bottom reaches 90%) is written to one CSS variable,
+ * --deck-p, on the section. The rail beam, each card's shrink and its scrim
+ * are all calc()'d from it in CSS, so scrolling never re-renders the cards;
+ * React only hears about it when the active phase changes.
  */
 export function Process() {
+  const sectionRef = useRef(null);
   const deckRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { scrollYProgress } = useScroll({
-    target: deckRef,
-    offset: ["start 30%", "end 90%"],
-  });
+  useEffect(() => {
+    const section = sectionRef.current;
+    const deck = deckRef.current;
+    if (!section || !deck) return;
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    // Split the deck's travel evenly between the phases.
-    const next = Math.min(TOTAL - 1, Math.floor(latest * TOTAL));
-    setActiveIndex(next < 0 ? 0 : next);
-  });
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const { top, height } = deck.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const travel = height - 0.6 * vh;
+      const progress = travel > 0 ? Math.min(1, Math.max(0, (0.3 * vh - top) / travel)) : 0;
+      section.style.setProperty("--deck-p", progress.toFixed(4));
+      // Split the deck's travel evenly between the phases.
+      setActiveIndex(Math.min(TOTAL - 1, Math.floor(progress * TOTAL)));
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, []);
 
   return (
     // overflow-x-clip, not overflow-hidden: `hidden` would make this section a
     // scroll container and the sticky deck inside it would never pin.
-    <section id="process" className="section-y relative overflow-x-clip">
+    <section
+      ref={sectionRef}
+      id="process"
+      className="section-y relative overflow-x-clip"
+      style={{ "--deck-p": 0 }}
+    >
       <Starfield count={45} seed={23} className="opacity-60" />
 
       <div className="shell relative">
@@ -66,7 +91,7 @@ export function Process() {
             </Reveal>
 
             <Reveal delay={0.18}>
-              <PhaseRail activeIndex={activeIndex} progress={scrollYProgress} />
+              <PhaseRail activeIndex={activeIndex} />
             </Reveal>
           </div>
 
@@ -77,7 +102,6 @@ export function Process() {
                 key={step.number}
                 step={step}
                 index={index}
-                progress={scrollYProgress}
                 isActive={activeIndex === index}
               />
             ))}
@@ -89,23 +113,22 @@ export function Process() {
 }
 
 /** Vertical rail whose beam fills with the deck's scroll progress. */
-function PhaseRail({ activeIndex, progress }) {
-  const beamScale = useTransform(progress, [0, 1], [0, 1]);
-
+function PhaseRail({ activeIndex }) {
   return (
-    <ol className="mt-12 hidden lg:block">
-      <div className="relative pl-8">
-        {/* Track + beam. */}
-        <span
-          aria-hidden="true"
-          className="absolute left-[7px] top-2 bottom-2 w-px bg-line"
-        />
-        <motion.span
-          aria-hidden="true"
-          style={{ scaleY: beamScale }}
-          className="absolute left-[7px] top-2 bottom-2 w-px origin-top bg-[linear-gradient(180deg,var(--color-brand),var(--color-accent))]"
-        />
+    // The track and beam sit beside the list rather than inside it: an <ol>
+    // may only hold <li> children.
+    <div className="relative mt-12 hidden pl-8 lg:block">
+      {/* Track + beam. */}
+      <span
+        aria-hidden="true"
+        className="absolute left-[7px] top-2 bottom-2 w-px bg-line"
+      />
+      <span
+        aria-hidden="true"
+        className="absolute left-[7px] top-2 bottom-2 w-px origin-top scale-y-(--deck-p) bg-[linear-gradient(180deg,var(--color-brand),var(--color-accent))]"
+      />
 
+      <ol>
         {process.steps.map((step, index) => {
           const isActive = index === activeIndex;
           const isDone = index < activeIndex;
@@ -139,35 +162,35 @@ function PhaseRail({ activeIndex, progress }) {
             </li>
           );
         })}
-      </div>
-    </ol>
+      </ol>
+    </div>
   );
 }
 
-function PhaseCard({ step, index, progress, isActive }) {
+function PhaseCard({ step, index, isActive }) {
   // Once a card is pinned, the cards arriving after it push it back: it shrinks
   // so the stack reads as depth rather than a flat overlap. Nothing arrives
   // after the final card, so it is never buried.
+  //
+  // --bury runs 0 -> 1 over the stretch of the deck after this card's turn
+  // (from (index + 1) / TOTAL to the end), straight from --deck-p.
   const isLast = index === TOTAL - 1;
-  const range = isLast ? [0, 1] : [(index + 1) / TOTAL, 1];
-  const scale = useTransform(
-    progress,
-    range,
-    isLast ? [1, 1] : [1, 1 - (TOTAL - index - 1) * 0.045]
-  );
-  // Buried cards darken under a scrim rather than losing opacity — fading the
-  // card itself would make the one underneath show straight through it.
-  const scrim = useTransform(progress, range, isLast ? [0, 0] : [0, 0.78]);
+  const start = (index + 1) / TOTAL;
+  const shrink = isLast ? 0 : (TOTAL - index - 1) * 0.045;
 
   return (
     <div
       className="sticky pb-6"
       // Each card pins ~1.6rem lower than the one before, leaving the previous
       // card's top edge peeking out of the deck.
-      style={{ top: `${7 + index * 1.6}rem`, zIndex: index + 1 }}
+      style={{
+        top: `${7 + index * 1.6}rem`,
+        zIndex: index + 1,
+        "--bury": isLast ? 0 : `clamp(0, calc((var(--deck-p) - ${start}) / ${1 - start}), 1)`,
+      }}
     >
-      <motion.article
-        style={{ scale }}
+      <article
+        style={{ transform: `scale(calc(1 - var(--bury) * ${shrink}))` }}
         className={cn(
           "relative origin-top overflow-hidden rounded-3xl border p-7 transition-colors duration-500 sm:p-9",
           isActive
@@ -175,9 +198,11 @@ function PhaseCard({ step, index, progress, isActive }) {
             : "border-line bg-[linear-gradient(150deg,var(--color-surface-2),var(--color-surface))]"
         )}
       >
-        <motion.span
+        {/* Buried cards darken under a scrim rather than losing opacity —
+            fading the card itself would make the one underneath show through. */}
+        <span
           aria-hidden="true"
-          style={{ opacity: scrim }}
+          style={{ opacity: "calc(var(--bury) * 0.78)" }}
           className="pointer-events-none absolute inset-0 z-20 rounded-3xl bg-ink"
         />
         {/* Oversized watermark numeral. */}
@@ -229,7 +254,7 @@ function PhaseCard({ step, index, progress, isActive }) {
             </li>
           ))}
         </ul>
-      </motion.article>
+      </article>
     </div>
   );
 }

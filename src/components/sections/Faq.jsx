@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
 import { Plus } from "lucide-react";
 import { faqs } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -63,23 +62,26 @@ export function Faq() {
                     </button>
                   </h3>
 
-                  <AnimatePresence initial={false}>
-                    {isOpen && (
-                      <motion.div
-                        id={panelId}
-                        role="region"
-                        aria-labelledby={buttonId}
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.34, ease: [0.21, 0.47, 0.32, 0.98] }}
-                      >
-                        <p className="px-6 pb-6 text-sm leading-relaxed text-muted sm:px-7">
-                          {item.a}
-                        </p>
-                      </motion.div>
+                  {/* Animating grid-template-rows between 0fr and 1fr gives a
+                      true height-auto transition in CSS. Closed panels stay
+                      in the DOM (hidden from assistive tech via `inert`), so
+                      answers are still in the page for search engines. */}
+                  <div
+                    id={panelId}
+                    role="region"
+                    aria-labelledby={buttonId}
+                    inert={!isOpen}
+                    className={cn(
+                      "grid transition-[grid-template-rows,opacity] duration-[340ms] ease-[cubic-bezier(0.21,0.47,0.32,0.98)]",
+                      isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                     )}
-                  </AnimatePresence>
+                  >
+                    <div className="overflow-hidden">
+                      <p className="px-6 pb-6 text-sm leading-relaxed text-muted sm:px-7">
+                        {item.a}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </Reveal>
             );

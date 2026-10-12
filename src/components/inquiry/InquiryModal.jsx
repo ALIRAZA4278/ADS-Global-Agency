@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "motion/react";
 import { X } from "lucide-react";
 import { inquiry } from "@/lib/site";
 import { InquiryForm } from "@/components/inquiry/InquiryForm";
+import { cn } from "@/lib/utils";
+import { usePresence } from "@/lib/use-presence";
 
 /**
  * Hosts the enquiry form for CTAs further down the page, where scrolling all
@@ -13,6 +14,7 @@ import { InquiryForm } from "@/components/inquiry/InquiryForm";
 export function InquiryModal({ open, onClose }) {
   const panelRef = useRef(null);
   const firstFieldRef = useRef(null);
+  const { mounted, visible } = usePresence(open, 300);
 
   // Esc closes, and the page behind must not scroll while the dialog is up.
   useEffect(() => {
@@ -65,31 +67,29 @@ export function InquiryModal({ open, onClose }) {
   }, [open]);
 
   return (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.22 }}
+    mounted && (
+        <div
           data-lenis-prevent
-          className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-ink/85 p-4 backdrop-blur-md sm:items-center sm:p-6"
+          className={cn(
+            "fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-ink/85 p-4 backdrop-blur-md transition-opacity duration-200 sm:items-center sm:p-6",
+            visible ? "opacity-100" : "opacity-0"
+          )}
           onMouseDown={(event) => {
             // Only a click that starts on the backdrop closes — dragging a text
             // selection out of the panel should not dismiss the form.
             if (event.target === event.currentTarget) onClose();
           }}
         >
-          <motion.div
+          <div
             ref={panelRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="inquiry-title"
-            initial={{ opacity: 0, y: 24, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.98 }}
-            transition={{ duration: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="relative my-auto w-full max-w-2xl overflow-hidden rounded-3xl border border-line bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-surface))] p-6 shadow-[0_40px_120px_-40px_var(--color-brand)] sm:p-9"
+            className={cn(
+              "relative my-auto w-full max-w-2xl overflow-hidden rounded-3xl border border-line bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-surface))] p-6 shadow-[0_40px_120px_-40px_var(--color-brand)] sm:p-9",
+              "transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.21,0.47,0.32,0.98)]",
+              visible ? "translate-y-0 scale-100 opacity-100" : "translate-y-6 scale-[0.97] opacity-0"
+            )}
           >
             <span
               aria-hidden="true"
@@ -122,9 +122,8 @@ export function InquiryModal({ open, onClose }) {
                 onDone={onClose}
               />
             </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+          </div>
+        </div>
+    )
   );
 }

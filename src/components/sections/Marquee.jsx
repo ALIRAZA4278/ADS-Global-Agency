@@ -33,10 +33,9 @@ function Row({ items, reverse = false, className }) {
           <span
             key={`${item}-${index}`}
             aria-hidden={reverse || index >= items.length}
-            className={cn(
-              "flex shrink-0 items-center gap-3 text-sm font-medium tracking-wide transition-colors duration-300 hover:text-body",
-              reverse ? "text-faint/60" : "text-faint"
-            )}
+            // Both rows keep full text-faint for 4.5:1 contrast; the dot
+            // colour is what sets the second row apart.
+            className="flex shrink-0 items-center gap-3 text-sm font-medium tracking-wide text-faint transition-colors duration-300 hover:text-body"
           >
             <span
               className={cn(

@@ -17,7 +17,8 @@
   /* Text */
   --color-body: #e8ecf5;
   --color-muted: #8d98ad;
-  --color-faint: #626d80;
+  /* 4.8:1 on the darkest surfaces, the floor for readable body text. */
+  --color-faint: #748093;
 
   /* Accent ramp */
   --color-brand: #2f7bff;
@@ -292,6 +293,21 @@
   }
 }
 
+/* A tick before each list item, drawn as a masked pseudo-element in the
+   accent colour, so long feature lists don't carry an SVG per line. */
+@utility list-check {
+  &::before {
+    content: "";
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.125rem;
+    background-color: var(--color-accent);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+  }
+}
+
 /* Masks the ends of the logo marquee so items fade instead of clipping. */
 @utility mask-edges {
   mask-image: linear-gradient(
@@ -301,6 +317,69 @@
     #000 88%,
     transparent
   );
+}
+
+/* ------------------------------------------------------------------ *
+ * Scroll reveal (see components/ui/Reveal.jsx)
+ *
+ * Hidden until Reveal's shared observer marks the element data-shown.
+ * Transform + opacity only, so the transition runs on the compositor.
+ * ------------------------------------------------------------------ */
+[data-reveal],
+[data-reveal-group] > [data-reveal-item] {
+  --reveal-ease: cubic-bezier(0.21, 0.47, 0.32, 0.98);
+  opacity: 0;
+  transition:
+    opacity 0.7s var(--reveal-ease),
+    transform 0.7s var(--reveal-ease);
+  transition-delay: var(--reveal-delay, 0s);
+}
+[data-reveal="up"],
+[data-reveal-group] > [data-reveal-item] {
+  transform: translate3d(0, 28px, 0);
+}
+[data-reveal="left"] {
+  transform: translate3d(32px, 0, 0);
+}
+[data-reveal="right"] {
+  transform: translate3d(-32px, 0, 0);
+}
+[data-reveal-group] > [data-reveal-item] {
+  transition-delay: calc(var(--stagger-delay, 0s) + var(--i, 0) * var(--stagger-step, 0.09s));
+}
+[data-reveal][data-shown],
+[data-reveal-group][data-shown] > [data-reveal-item] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Without JavaScript nothing would ever mark them shown. */
+@media (scripting: none) {
+  [data-reveal],
+  [data-reveal-group] > [data-reveal-item] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* One-shot entrance for elements mounted on demand (filtered cards,
+   overlays): plays once on insertion, no observer needed. */
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@utility animate-enter {
+  animation: enter 0.45s cubic-bezier(0.21, 0.47, 0.32, 0.98) both;
+}
+@utility animate-fade-in {
+  animation: fade-in 0.25s ease-out both;
 }
 
 /* ------------------------------------------------------------------ *

@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, Check, Paperclip, X } from "lucide-react";
 import { submitApplication } from "@/app/actions";
 import { careers } from "@/lib/site";
@@ -68,13 +67,10 @@ export function Careers() {
           {/* Application form */}
           <Reveal from="left" delay={0.1}>
             <div className="relative rounded-3xl border border-line bg-[linear-gradient(160deg,var(--color-surface-2),var(--color-surface))] p-7 sm:p-9">
-              <AnimatePresence mode="wait">
-                {state.status === "success" ? (
-                  <motion.div
+              {state.status === "success" ? (
+                  <div
                     key="success"
-                    initial={{ opacity: 0, scale: 0.96 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="flex min-h-96 flex-col items-center justify-center text-center"
+                    className="flex min-h-96 animate-enter flex-col items-center justify-center text-center"
                   >
                     <span className="flex h-16 w-16 items-center justify-center rounded-full border border-accent/40 bg-accent/10 text-accent">
                       <Check className="h-7 w-7" />
@@ -85,13 +81,11 @@ export function Careers() {
                     <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted">
                       {careers.successBody}
                     </p>
-                  </motion.div>
+                  </div>
                 ) : (
-                  <motion.form
+                  <form
                     key="form"
                     action={formAction}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
                     className="flex flex-col gap-5"
                     noValidate
                   >
@@ -227,9 +221,8 @@ export function Careers() {
                         <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                       )}
                     </button>
-                  </motion.form>
+                  </form>
                 )}
-              </AnimatePresence>
             </div>
           </Reveal>
         </div>
