@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
-import { process } from "@/lib/site";
+import { workProcess } from "@/lib/site";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { Starfield } from "@/components/ui/Starfield";
 
-const TOTAL = process.steps.length;
+const TOTAL = workProcess.steps.length;
 
 /**
  * The phase cards stack into a deck as you scroll: each one pins a little
@@ -73,20 +73,20 @@ export function Process() {
           <div className="lg:sticky lg:top-28">
             <Reveal from="none">
               <p className="text-xs font-medium uppercase tracking-[0.34em] text-accent sm:text-sm">
-                {process.eyebrow}
+                {workProcess.eyebrow}
               </p>
             </Reveal>
 
             <Reveal delay={0.06}>
               <h2 className="mt-5 text-balance text-3xl font-bold leading-[1.15] tracking-tight sm:text-4xl">
-                {process.title}{" "}
-                <span className="text-gradient">{process.titleHighlight}</span>
+                {workProcess.title}{" "}
+                <span className="text-gradient">{workProcess.titleHighlight}</span>
               </h2>
             </Reveal>
 
             <Reveal delay={0.12}>
               <p className="mt-5 max-w-md text-pretty leading-relaxed text-muted">
-                {process.description}
+                {workProcess.description}
               </p>
             </Reveal>
 
@@ -97,7 +97,7 @@ export function Process() {
 
           {/* The deck. */}
           <div ref={deckRef} className="flex flex-col">
-            {process.steps.map((step, index) => (
+            {workProcess.steps.map((step, index) => (
               <PhaseCard
                 key={step.number}
                 step={step}
@@ -129,7 +129,7 @@ function PhaseRail({ activeIndex }) {
       />
 
       <ol>
-        {process.steps.map((step, index) => {
+        {workProcess.steps.map((step, index) => {
           const isActive = index === activeIndex;
           const isDone = index < activeIndex;
 

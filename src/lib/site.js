@@ -97,7 +97,7 @@ export const marqueeItems = [
   "Webflow",
 ];
 
-export const process = {
+export const workProcess = {
   eyebrow: "Our Process",
   title: "Three phases,",
   titleHighlight: "one clear line of sight",
