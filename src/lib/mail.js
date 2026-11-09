@@ -8,8 +8,8 @@
  */
 import nodemailer from "nodemailer";
 
-const DEFAULT_INQUIRY_TO = "aussiedesignsolutions@gmail.com";
-const DEFAULT_CAREERS_TO = "career@adsglobalagency.com";
+const DEFAULT_INQUIRY_TO = "support@adsglobalagency.com";
+const DEFAULT_CAREERS_TO = "support@adsglobalagency.com";
 
 let transport;
 

@@ -46,8 +46,8 @@ errors while preserving what the visitor typed, and email the result.
 
 | Form | Where | Action | Sent to |
 | --- | --- | --- | --- |
-| Enquiry | Hero, plus the "Get a free quote" modal | `submitEnquiry` | `INQUIRY_TO` (default `aussiedesignsolutions@gmail.com`) |
-| Application | `#careers` | `submitApplication` | `CAREERS_TO` (default `career@adsglobalagency.com`), résumé attached |
+| Enquiry | Hero, plus the "Get a free quote" modal | `submitEnquiry` | `INQUIRY_TO` (default `support@adsglobalagency.com`) |
+| Application | `#careers` | `submitApplication` | `CAREERS_TO` (default `support@adsglobalagency.com`), résumé attached |
 
 Mail goes out through Hostinger SMTP via `src/lib/mail.js`. Reply-to is set to
 the visitor, so answering from the inbox reaches them directly.
